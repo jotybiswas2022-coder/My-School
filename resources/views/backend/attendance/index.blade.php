@@ -17,7 +17,7 @@
         <div class="filter-grid">
             <div>
                 <label style="font-size:.78rem;font-weight:600;display:block;margin-bottom:6px;">Class</label>
-                <select name="class_id" class="form-select" onchange="this.form.submit()">
+                <select name="class_id" class="form-select">
                     <option value="">Select class</option>
                     @foreach ($classes as $class)
                         <option value="{{ $class->id }}" @selected($classId == $class->id)>{{ $class->name }}</option>
@@ -121,14 +121,22 @@
 
     @push('scripts')
         <script>
-            document.querySelectorAll('[data-mark-all]').forEach((btn) => {
-                btn.addEventListener('click', () => {
-                    const status = btn.dataset.markAll;
-                    document.querySelectorAll('#attendanceForm input[type="radio"][value="' + status + '"]').forEach((radio) => {
-                        radio.checked = true;
+            const bindMarkAll = () => {
+                document.querySelectorAll('[data-mark-all]').forEach((btn) => {
+                    if (btn.dataset.bound) return;
+                    btn.dataset.bound = '1';
+
+                    btn.addEventListener('click', () => {
+                        const status = btn.dataset.markAll;
+                        document.querySelectorAll('#attendanceForm input[type="radio"][value="' + status + '"]').forEach((radio) => {
+                            radio.checked = true;
+                        });
                     });
                 });
-            });
+            };
+
+            bindMarkAll();
+            document.addEventListener('admin:live-swapped', bindMarkAll);
         </script>
     @endpush
 @endsection

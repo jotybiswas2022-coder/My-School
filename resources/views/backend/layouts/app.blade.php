@@ -219,6 +219,26 @@
         .filter-bar { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; margin-bottom: 20px; }
         .filter-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); align-items: end; }
 
+        /* ============ LIVE SEARCH ============ */
+        .filter-search { position: relative; display: block; }
+        .filter-search .form-control { padding-left: 36px; padding-right: 38px; }
+        .live-spin {
+            position: absolute; left: 13px; top: 50%; width: 14px; height: 14px; margin-top: -7px;
+            border-radius: 50%; border: 2px solid rgba(37,99,235,.2); border-top-color: var(--primary);
+            opacity: 0; transition: opacity .15s ease;
+        }
+        .filter-search.is-loading .live-spin { opacity: 1; animation: spin .65s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .live-clear {
+            position: absolute; right: 8px; top: 50%; transform: translateY(-50%); display: none; place-items: center;
+            width: 22px; height: 22px; padding: 0; border: none; border-radius: 50%;
+            background: #E2E8F0; color: var(--muted); font-size: 1rem; line-height: 1; cursor: pointer;
+        }
+        .live-clear.show { display: grid; }
+        .live-clear:hover { background: var(--danger); color: #fff; }
+        .live-results { transition: opacity .18s ease; }
+        .live-results.is-fetching { opacity: .5; pointer-events: none; }
+
         /* ============ MODAL ============ */
         .b-modal { position: fixed; inset: 0; background: rgba(15,23,42,.68); backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; padding: 20px; z-index: 3000; }
         .b-modal.open { display: flex; animation: fadeIn .2s ease; }
@@ -310,6 +330,118 @@
             backdrop && backdrop.addEventListener('click', close);
         })();
 
+        // ---------- Live search (every admin list screen) ----------
+        (function () {
+            const forms = Array.from(document.querySelectorAll('form.filter-bar'));
+            if (!forms.length) return;
+
+            // The results are the cards/grids that follow the filter bar.
+            const targetsOf = (form) => {
+                const targets = [];
+                let el = form.nextElementSibling;
+
+                while (el) {
+                    if (el.classList.contains('b-card') || el.classList.contains('b-grid') || el.classList.contains('b-table-wrap')) {
+                        targets.push(el);
+                    }
+                    el = el.nextElementSibling;
+                }
+
+                // Prefer the cards that actually hold rows, so side panels (e.g. "Publish Results") stay untouched.
+                const withRows = targets.filter((t) => t.matches('.b-grid') || t.querySelector('.b-table-wrap, .b-empty, .pg'));
+
+                return withRows.length ? withRows : targets;
+            };
+
+            forms.forEach((form) => {
+                const targets = targetsOf(form);
+                if (!targets.length) return;
+
+                const results = document.createElement('div');
+                results.className = 'live-results';
+                targets[0].parentNode.insertBefore(results, targets[0]);
+                targets.forEach((node) => results.appendChild(node));
+
+                // Wrap every text field: spinner on the left, clear button on the right.
+                const wraps = Array.from(form.querySelectorAll('input[type="text"], input[type="search"]')).map((input) => {
+                    const wrap = document.createElement('span');
+                    wrap.className = 'filter-search';
+                    input.parentNode.insertBefore(wrap, input);
+                    wrap.appendChild(input);
+                    wrap.insertAdjacentHTML('afterbegin', '<span class="live-spin" aria-hidden="true"></span>');
+
+                    const clear = document.createElement('button');
+                    clear.type = 'button';
+                    clear.className = 'live-clear';
+                    clear.setAttribute('aria-label', 'Clear search');
+                    clear.innerHTML = '&times;';
+                    wrap.appendChild(clear);
+
+                    const sync = () => clear.classList.toggle('show', input.value !== '');
+                    sync();
+                    clear.addEventListener('click', () => { input.value = ''; sync(); input.focus(); schedule(); });
+
+                    return wrap;
+                });
+
+                let timer = null;
+                let lastUrl = null;
+                let seq = 0;
+
+                const url = () => {
+                    const params = new URLSearchParams();
+                    new FormData(form).forEach((value, key) => {
+                        if (String(value).trim() !== '') params.append(key, value);
+                    });
+
+                    const qs = params.toString();
+                    const base = form.getAttribute('action') || window.location.pathname;
+
+                    return qs ? base + '?' + qs : base;
+                };
+
+                const run = () => {
+                    const target = url();
+                    if (target === lastUrl) return;
+                    lastUrl = target;
+
+                    const token = ++seq;
+                    wraps.forEach((w) => w.classList.add('is-loading'));
+                    results.classList.add('is-fetching');
+
+                    fetch(target, { credentials: 'same-origin', headers: { 'X-Requested-With': 'fetch' } })
+                        .then((res) => { if (!res.ok) throw new Error('request failed'); return res.text(); })
+                        .then((html) => {
+                            if (token !== seq) return;
+
+                            const doc = new DOMParser().parseFromString(html, 'text/html');
+                            const docForm = doc.querySelector('form.filter-bar');
+                            const fresh = docForm ? targetsOf(docForm) : [];
+                            if (!fresh.length) throw new Error('no results in response');
+
+                            results.replaceChildren(...fresh.map((node) => document.importNode(node, true)));
+                            history.replaceState(null, '', target);
+                            document.dispatchEvent(new CustomEvent('admin:live-swapped', { detail: { root: results } }));
+                        })
+                        .catch(() => { lastUrl = null; form.submit(); })
+                        .finally(() => {
+                            if (token === seq) {
+                                wraps.forEach((w) => w.classList.remove('is-loading'));
+                                results.classList.remove('is-fetching');
+                            }
+                        });
+                };
+
+                const schedule = () => { clearTimeout(timer); timer = setTimeout(run, 300); };
+
+                form.addEventListener('submit', (e) => { e.preventDefault(); clearTimeout(timer); run(); });
+                form.addEventListener('input', (e) => { if (e.target.matches('input')) schedule(); });
+                form.addEventListener('change', (e) => { if (e.target.matches('select, input')) schedule(); });
+
+                lastUrl = url();
+            });
+        })();
+
         // ---------- Confirmation modal ----------
         (function () {
             const modal = document.getElementById('confirmModal');
@@ -358,13 +490,15 @@
         })();
 
         // ---------- Select-all checkboxes ----------
-        (function () {
-            document.querySelectorAll('[data-check-all]').forEach((master) => {
+        function bindSelectAll(root) {
+            root.querySelectorAll('[data-check-all]').forEach((master) => {
                 master.addEventListener('change', () => {
-                    document.querySelectorAll(master.dataset.checkAll).forEach((cb) => { cb.checked = master.checked; });
+                    root.querySelectorAll(master.dataset.checkAll).forEach((cb) => { cb.checked = master.checked; });
                 });
             });
-        })();
+        }
+        bindSelectAll(document);
+        document.addEventListener('admin:live-swapped', (e) => bindSelectAll(e.detail.root));
 
         // ---------- Auto-dismiss alerts ----------
         document.querySelectorAll('[data-dismiss]').forEach((el) => {

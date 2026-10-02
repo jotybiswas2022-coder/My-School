@@ -13,6 +13,19 @@
         </div>
     </div>
 
+    <form method="GET" class="filter-bar">
+        <div class="filter-grid">
+            <div>
+                <label style="font-size:.78rem;font-weight:600;display:block;margin-bottom:6px;">Search</label>
+                <input type="text" name="q" class="form-control" value="{{ request('q') }}" placeholder="Exam name">
+            </div>
+            <div style="display:flex;gap:8px;">
+                <button class="b-btn b-btn-primary">Filter</button>
+                <a href="{{ route('admin.exams.index') }}" class="b-btn b-btn-outline">Reset</a>
+            </div>
+        </div>
+    </form>
+
     @if ($exams->isEmpty())
         <div class="b-card">
             <div class="b-empty">
