@@ -11,7 +11,7 @@
             <p>{{ $editing ? 'Update class details and subject allocation.' : 'Create a new class level.' }}</p>
         </div>
         <div class="page-actions">
-            <a href="{{ route('admin.classes.index') }}" class="b-btn b-btn-outline">← Back</a>
+            <a href="{{ route('admin.classes.index') }}" class="b-btn b-btn-outline"><i class="bi bi-arrow-left"></i> Back</a>
         </div>
     </div>
 

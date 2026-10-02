@@ -39,7 +39,7 @@
     <div class="b-card">
         @if ($messages->isEmpty())
             <div class="b-empty">
-                <div class="b-empty-ico">✉</div>
+                <div class="b-empty-ico"><i class="bi bi-envelope"></i></div>
                 <h3>No messages found</h3>
                 <p style="font-size:.86rem;">Messages from the website contact form will appear here.</p>
             </div>

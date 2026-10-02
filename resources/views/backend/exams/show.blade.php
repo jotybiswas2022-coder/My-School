@@ -13,7 +13,7 @@
             </p>
         </div>
         <div class="page-actions">
-            <a href="{{ route('admin.exams.index') }}" class="b-btn b-btn-outline">← Back</a>
+            <a href="{{ route('admin.exams.index') }}" class="b-btn b-btn-outline"><i class="bi bi-arrow-left"></i> Back</a>
             <a href="{{ route('admin.results.create', ['exam_id' => $exam->id]) }}" class="b-btn b-btn-primary">Enter Marks</a>
             <form method="POST" action="{{ route('admin.exams.publish', $exam) }}">
                 @csrf
@@ -30,7 +30,7 @@
 
             @if ($exam->examSubjects->isEmpty())
                 <div class="b-empty">
-                    <div class="b-empty-ico">◈</div>
+                    <div class="b-empty-ico"><i class="bi bi-book"></i></div>
                     <h3>No subjects scheduled</h3>
                     <p style="font-size:.86rem;">Assign subjects using the form to build the exam schedule.</p>
                 </div>

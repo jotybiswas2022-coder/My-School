@@ -9,7 +9,7 @@
             <p>{{ $student->name }} · {{ $student->student_id }}</p>
         </div>
         <div class="page-actions">
-            <a href="{{ route('admin.students.index') }}" class="b-btn b-btn-outline">← Back</a>
+            <a href="{{ route('admin.students.index') }}" class="b-btn b-btn-outline"><i class="bi bi-arrow-left"></i> Back</a>
             <a href="{{ route('admin.students.edit', $student) }}" class="b-btn b-btn-primary">Edit Student</a>
         </div>
     </div>
@@ -79,7 +79,7 @@
                 <div class="b-card-head"><h3>Recent Results</h3></div>
                 @if ($results->isEmpty())
                     <div class="b-empty" style="padding:44px 22px;">
-                        <div class="b-empty-ico">★</div>
+                        <div class="b-empty-ico"><i class="bi bi-trophy"></i></div>
                         <h3>No results recorded</h3>
                     </div>
                 @else

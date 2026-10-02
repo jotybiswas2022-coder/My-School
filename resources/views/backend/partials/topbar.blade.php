@@ -37,7 +37,7 @@
 @endphp
 
 <header class="topbar">
-    <button type="button" class="topbar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">☰</button>
+    <button type="button" class="topbar-toggle" id="sidebarToggle" aria-label="Toggle sidebar"><i class="bi bi-list"></i></button>
 
     <nav class="topbar-crumbs" aria-label="Breadcrumb">
         <a href="{{ route('admin.dashboard') }}">Admin</a>

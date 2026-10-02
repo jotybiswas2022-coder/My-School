@@ -73,7 +73,7 @@
     <div class="b-card">
         @if ($results->isEmpty())
             <div class="b-empty">
-                <div class="b-empty-ico">★</div>
+                <div class="b-empty-ico"><i class="bi bi-trophy"></i></div>
                 <h3>No results found</h3>
                 <p style="font-size:.86rem;">Use the marks entry screen to record results.</p>
             </div>

@@ -11,7 +11,7 @@
             <p>{{ $editing ? 'Update exam details.' : 'Create a new exam.' }}</p>
         </div>
         <div class="page-actions">
-            <a href="{{ route('admin.exams.index') }}" class="b-btn b-btn-outline">← Back</a>
+            <a href="{{ route('admin.exams.index') }}" class="b-btn b-btn-outline"><i class="bi bi-arrow-left"></i> Back</a>
         </div>
     </div>
 

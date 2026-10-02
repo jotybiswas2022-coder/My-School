@@ -9,7 +9,7 @@
             <p>Class-wise and student-wise attendance summary.</p>
         </div>
         <div class="page-actions">
-            <a href="{{ route('admin.attendance.index') }}" class="b-btn b-btn-outline">← Mark Attendance</a>
+            <a href="{{ route('admin.attendance.index') }}" class="b-btn b-btn-outline"><i class="bi bi-arrow-left"></i> Mark Attendance</a>
         </div>
     </div>
 
@@ -70,7 +70,7 @@
 
         @if ($perStudent->isEmpty())
             <div class="b-empty">
-                <div class="b-empty-ico">◔</div>
+                <div class="b-empty-ico"><i class="bi bi-calendar-check"></i></div>
                 <h3>No attendance records for this period</h3>
                 <p style="font-size:.86rem;">Try adjusting the date range or filters.</p>
             </div>

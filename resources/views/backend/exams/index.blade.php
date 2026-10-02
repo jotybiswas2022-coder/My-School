@@ -29,7 +29,7 @@
     @if ($exams->isEmpty())
         <div class="b-card">
             <div class="b-empty">
-                <div class="b-empty-ico">✎</div>
+                <div class="b-empty-ico"><i class="bi bi-pencil-square"></i></div>
                 <h3>No exams yet</h3>
                 <p style="font-size:.86rem;">Create an exam to start recording results.</p>
             </div>

@@ -9,7 +9,7 @@
             <p>{{ $album->category }} · {{ $album->images->count() }} photos</p>
         </div>
         <div class="page-actions">
-            <a href="{{ route('admin.gallery.index') }}" class="b-btn b-btn-outline">← Back</a>
+            <a href="{{ route('admin.gallery.index') }}" class="b-btn b-btn-outline"><i class="bi bi-arrow-left"></i> Back</a>
             <a href="{{ route('gallery.show', $album) }}" target="_blank" class="b-btn b-btn-outline">Preview</a>
         </div>
     </div>
@@ -20,7 +20,7 @@
 
             @if ($album->images->isEmpty())
                 <div class="b-empty">
-                    <div class="b-empty-ico">🖼</div>
+                    <div class="b-empty-ico"><i class="bi bi-images"></i></div>
                     <h3>No images uploaded</h3>
                     <p style="font-size:.86rem;">Use the upload panel to add photos to this album.</p>
                 </div>

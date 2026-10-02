@@ -38,7 +38,7 @@
     <div class="b-card">
         @if ($teachers->isEmpty())
             <div class="b-empty">
-                <div class="b-empty-ico">◍</div>
+                <div class="b-empty-ico"><i class="bi bi-person-badge"></i></div>
                 <h3>No teachers found</h3>
                 <p style="font-size:.86rem;">Add your first teacher to get started.</p>
             </div>

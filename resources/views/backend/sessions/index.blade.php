@@ -16,7 +16,7 @@
 
             @if ($sessions->isEmpty())
                 <div class="b-empty">
-                    <div class="b-empty-ico">◷</div>
+                    <div class="b-empty-ico"><i class="bi bi-calendar-range"></i></div>
                     <h3>No academic sessions</h3>
                     <p style="font-size:.86rem;">Create a session such as "2025-2026" to get started.</p>
                 </div>

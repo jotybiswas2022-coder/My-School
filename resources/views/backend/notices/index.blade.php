@@ -38,7 +38,7 @@
     <div class="b-card">
         @if ($notices->isEmpty())
             <div class="b-empty">
-                <div class="b-empty-ico">📢</div>
+                <div class="b-empty-ico"><i class="bi bi-megaphone"></i></div>
                 <h3>No notices yet</h3>
                 <p style="font-size:.86rem;">Create your first notice to keep everyone informed.</p>
             </div>

@@ -16,7 +16,7 @@
     @if ($classes->isEmpty())
         <div class="b-card">
             <div class="b-empty">
-                <div class="b-empty-ico">▦</div>
+                <div class="b-empty-ico"><i class="bi bi-diagram-3"></i></div>
                 <h3>No classes yet</h3>
                 <p style="font-size:.86rem;">Create your first class to begin building the academic structure.</p>
                 <a href="{{ route('admin.classes.create') }}" class="b-btn b-btn-primary" style="margin-top:16px;">+ Add Class</a>
@@ -53,7 +53,7 @@
                                         <button type="button" class="badge badge-muted"
                                                 data-confirm="Remove section {{ $section->name }}?"
                                                 style="border:none;cursor:pointer;font-family:inherit;">
-                                            Section {{ $section->name }} ✕
+                                            Section {{ $section->name }} <i class="bi bi-x"></i>
                                         </button>
                                     </form>
                                 @empty

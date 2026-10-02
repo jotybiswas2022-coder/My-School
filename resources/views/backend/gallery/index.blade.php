@@ -29,7 +29,7 @@
     @if ($albums->isEmpty())
         <div class="b-card">
             <div class="b-empty">
-                <div class="b-empty-ico">🖼</div>
+                <div class="b-empty-ico"><i class="bi bi-images"></i></div>
                 <h3>No albums yet</h3>
                 <p style="font-size:.86rem;">Create an album to start uploading photos.</p>
                 <button type="button" class="b-btn b-btn-primary" style="margin-top:16px;" data-modal-open="albumModal">+ Add Album</button>
@@ -45,7 +45,7 @@
                         @elseif ($item->images->first())
                             <img src="{{ asset('storage/' . $item->images->first()->image) }}" alt="{{ $item->title }}" style="width:100%;height:100%;object-fit:cover;">
                         @else
-                            🖼
+                            <i class="bi bi-images" style="font-size:1.6rem;color:var(--primary);"></i>
                         @endif
                     </div>
                     <div class="b-card-body">
@@ -76,7 +76,7 @@
         <div class="b-modal-box">
             <div class="b-modal-head">
                 <h3>Create Album</h3>
-                <button type="button" class="b-modal-close" data-modal-close>✕</button>
+                <button type="button" class="b-modal-close" data-modal-close aria-label="Close"><i class="bi bi-x-lg"></i></button>
             </div>
             <form method="POST" action="{{ route('admin.gallery.store') }}" enctype="multipart/form-data">
                 @csrf

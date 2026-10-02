@@ -11,7 +11,7 @@
             <p>{{ $editing ? 'Update this event.' : 'Create a new school event.' }}</p>
         </div>
         <div class="page-actions">
-            <a href="{{ route('admin.events.index') }}" class="b-btn b-btn-outline">← Back</a>
+            <a href="{{ route('admin.events.index') }}" class="b-btn b-btn-outline"><i class="bi bi-arrow-left"></i> Back</a>
         </div>
     </div>
 

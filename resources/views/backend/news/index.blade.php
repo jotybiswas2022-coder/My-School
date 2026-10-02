@@ -38,7 +38,7 @@
     <div class="b-card">
         @if ($news->isEmpty())
             <div class="b-empty">
-                <div class="b-empty-ico">📰</div>
+                <div class="b-empty-ico"><i class="bi bi-newspaper"></i></div>
                 <h3>No news articles yet</h3>
                 <p style="font-size:.86rem;">Publish your first article to keep the community updated.</p>
             </div>
@@ -57,7 +57,7 @@
                                             @if ($article->featured_image)
                                                 <img src="{{ asset('storage/' . $article->featured_image) }}" alt="{{ $article->title }}">
                                             @else
-                                                📰
+                                                <i class="bi bi-newspaper"></i>
                                             @endif
                                         </span>
                                         <strong>{{ \Illuminate\Support\Str::limit($article->title, 50) }}</strong>

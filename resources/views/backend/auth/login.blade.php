@@ -10,6 +10,8 @@
         <link rel="icon" href="{{ asset('storage/' . $settings['favicon']) }}">
     @endif
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
@@ -99,7 +101,7 @@
             <button type="submit" class="btn" id="loginBtn">Sign In to Dashboard</button>
         </form>
 
-        <p class="back"><a href="{{ route('home') }}">← Back to website</a></p>
+        <p class="back"><a href="{{ route('home') }}"><i class="bi bi-arrow-left"></i> Back to website</a></p>
     </div>
 
     <script>

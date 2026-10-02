@@ -9,7 +9,7 @@
             <p>From {{ $message->name }} · {{ $message->created_at->format('d M Y, h:i A') }}</p>
         </div>
         <div class="page-actions">
-            <a href="{{ route('admin.messages.index') }}" class="b-btn b-btn-outline">← Back</a>
+            <a href="{{ route('admin.messages.index') }}" class="b-btn b-btn-outline"><i class="bi bi-arrow-left"></i> Back</a>
             <form method="POST" action="{{ route('admin.messages.read', $message) }}">
                 @csrf
                 <button class="b-btn b-btn-outline">{{ $message->is_read ? 'Mark Unread' : 'Mark Read' }}</button>

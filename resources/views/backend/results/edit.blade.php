@@ -9,7 +9,7 @@
             <p>{{ $result->student->name ?? '—' }} · {{ $result->subject->name ?? '—' }}</p>
         </div>
         <div class="page-actions">
-            <a href="{{ route('admin.results.index') }}" class="b-btn b-btn-outline">← Back</a>
+            <a href="{{ route('admin.results.index') }}" class="b-btn b-btn-outline"><i class="bi bi-arrow-left"></i> Back</a>
         </div>
     </div>
 

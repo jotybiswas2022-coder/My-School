@@ -9,7 +9,7 @@
             <p>{{ $teacher->name }} · {{ $teacher->designation }}</p>
         </div>
         <div class="page-actions">
-            <a href="{{ route('admin.teachers.index') }}" class="b-btn b-btn-outline">← Back</a>
+            <a href="{{ route('admin.teachers.index') }}" class="b-btn b-btn-outline"><i class="bi bi-arrow-left"></i> Back</a>
             <a href="{{ route('admin.teachers.edit', $teacher) }}" class="b-btn b-btn-primary">Edit Teacher</a>
         </div>
     </div>
@@ -62,7 +62,7 @@
                 <div class="b-card-head"><h3>Assigned Subjects</h3></div>
                 @if ($teacher->subjects->isEmpty())
                     <div class="b-empty" style="padding:44px 22px;">
-                        <div class="b-empty-ico">◈</div>
+                        <div class="b-empty-ico"><i class="bi bi-book"></i></div>
                         <h3>No subjects assigned</h3>
                     </div>
                 @else

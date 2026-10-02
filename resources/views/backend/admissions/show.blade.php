@@ -9,7 +9,7 @@
             <p>Application {{ $admission->application_id }} · submitted {{ $admission->created_at->format('d M Y, h:i A') }}</p>
         </div>
         <div class="page-actions">
-            <a href="{{ route('admin.admissions.index') }}" class="b-btn b-btn-outline">← Back</a>
+            <a href="{{ route('admin.admissions.index') }}" class="b-btn b-btn-outline"><i class="bi bi-arrow-left"></i> Back</a>
             <form method="POST" action="{{ route('admin.admissions.destroy', $admission) }}">
                 @csrf @method('DELETE')
                 <button type="button" class="b-btn b-btn-danger" data-confirm="Delete application {{ $admission->application_id }}?">Delete Application</button>

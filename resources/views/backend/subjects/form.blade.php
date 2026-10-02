@@ -11,7 +11,7 @@
             <p>{{ $editing ? 'Update subject information.' : 'Create a new subject.' }}</p>
         </div>
         <div class="page-actions">
-            <a href="{{ route('admin.subjects.index') }}" class="b-btn b-btn-outline">← Back</a>
+            <a href="{{ route('admin.subjects.index') }}" class="b-btn b-btn-outline"><i class="bi bi-arrow-left"></i> Back</a>
         </div>
     </div>
 

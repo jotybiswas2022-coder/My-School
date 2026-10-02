@@ -73,17 +73,17 @@
 
     <div class="b-grid b-grid-4 dash-block dash-stats">
         @foreach ([
-            ['Students', $stats['students'], '◉', '#2563EB'],
-            ['Teachers', $stats['teachers'], '◍', '#0EA5E9'],
-            ['Classes', $stats['classes'], '▦', '#8B5CF6'],
-            ['Subjects', $stats['subjects'], '◈', '#16A34A'],
-            ['Notices', $stats['notices'], '📢', '#F59E0B'],
-            ['Events', $stats['events'], '📅', '#EC4899'],
-            ['News', $stats['news'], '📰', '#14B8A6'],
-            ['Pending Admissions', $stats['pendingAdmissions'], '📝', '#DC2626'],
+            ['Students', $stats['students'], 'bi-people', '#2563EB'],
+            ['Teachers', $stats['teachers'], 'bi-person-badge', '#0EA5E9'],
+            ['Classes', $stats['classes'], 'bi-diagram-3', '#8B5CF6'],
+            ['Subjects', $stats['subjects'], 'bi-book', '#16A34A'],
+            ['Notices', $stats['notices'], 'bi-megaphone', '#F59E0B'],
+            ['Events', $stats['events'], 'bi-calendar-event', '#EC4899'],
+            ['News', $stats['news'], 'bi-newspaper', '#14B8A6'],
+            ['Pending Admissions', $stats['pendingAdmissions'], 'bi-file-earmark-text', '#DC2626'],
         ] as $i => $card)
             <div class="stat-card" style="--accent: {{ $card[3] }}; animation-delay: {{ $i * 0.05 }}s;">
-                <div class="stat-ico">{{ $card[2] }}</div>
+                <div class="stat-ico"><i class="bi {{ $card[2] }}"></i></div>
                 <div>
                     <div class="stat-value">{{ number_format($card[1]) }}</div>
                     <div class="stat-label">{{ $card[0] }}</div>
@@ -94,21 +94,21 @@
 
     <div class="b-grid b-grid-3 dash-block dash-today">
         <div class="stat-card" style="--accent:#16A34A;">
-            <div class="stat-ico">✓</div>
+            <div class="stat-ico"><i class="bi bi-check-lg"></i></div>
             <div>
                 <div class="stat-value">{{ (int) ($todayAttendance['present'] ?? 0) }}</div>
                 <div class="stat-label">Present Today</div>
             </div>
         </div>
         <div class="stat-card" style="--accent:#DC2626;">
-            <div class="stat-ico">✕</div>
+            <div class="stat-ico"><i class="bi bi-x-lg"></i></div>
             <div>
                 <div class="stat-value">{{ (int) ($todayAttendance['absent'] ?? 0) }}</div>
                 <div class="stat-label">Absent Today</div>
             </div>
         </div>
         <div class="stat-card" style="--accent:#F59E0B;">
-            <div class="stat-ico">!</div>
+            <div class="stat-ico"><i class="bi bi-clock-history"></i></div>
             <div>
                 <div class="stat-value">{{ (int) ($todayAttendance['late'] ?? 0) }}</div>
                 <div class="stat-label">Late Today</div>
@@ -124,7 +124,7 @@
             </div>
             @if ($recentAdmissions->isEmpty())
                 <div class="b-empty">
-                    <div class="b-empty-ico">📝</div>
+                    <div class="b-empty-ico"><i class="bi bi-file-earmark-text"></i></div>
                     <h3>No applications yet</h3>
                     <p style="font-size:.85rem;">New admission applications will appear here.</p>
                 </div>
@@ -157,7 +157,7 @@
             </div>
             @if ($recentNotices->isEmpty())
                 <div class="b-empty">
-                    <div class="b-empty-ico">📢</div>
+                    <div class="b-empty-ico"><i class="bi bi-megaphone"></i></div>
                     <h3>No notices yet</h3>
                 </div>
             @else
@@ -188,7 +188,7 @@
             </div>
             @if ($upcomingEvents->isEmpty())
                 <div class="b-empty">
-                    <div class="b-empty-ico">📅</div>
+                    <div class="b-empty-ico"><i class="bi bi-calendar-event"></i></div>
                     <h3>No upcoming events</h3>
                 </div>
             @else
@@ -216,7 +216,7 @@
             </div>
             @if ($recentMessages->isEmpty())
                 <div class="b-empty">
-                    <div class="b-empty-ico">✉</div>
+                    <div class="b-empty-ico"><i class="bi bi-envelope"></i></div>
                     <h3>No messages yet</h3>
                 </div>
             @else

@@ -38,7 +38,7 @@
     <div class="b-card">
         @if ($subjects->isEmpty())
             <div class="b-empty">
-                <div class="b-empty-ico">◈</div>
+                <div class="b-empty-ico"><i class="bi bi-book"></i></div>
                 <h3>No subjects found</h3>
                 <p style="font-size:.86rem;">Add subjects and assign them to classes and teachers.</p>
             </div>

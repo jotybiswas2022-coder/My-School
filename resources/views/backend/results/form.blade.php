@@ -9,7 +9,7 @@
             <p>Select an exam, class and subject to enter marks for all students.</p>
         </div>
         <div class="page-actions">
-            <a href="{{ route('admin.results.index') }}" class="b-btn b-btn-outline">← Back to Results</a>
+            <a href="{{ route('admin.results.index') }}" class="b-btn b-btn-outline"><i class="bi bi-arrow-left"></i> Back to Results</a>
         </div>
     </div>
 
@@ -51,7 +51,7 @@
     @if (! $examId || ! $classId || ! $subjectId)
         <div class="b-card">
             <div class="b-empty">
-                <div class="b-empty-ico">✎</div>
+                <div class="b-empty-ico"><i class="bi bi-pencil-square"></i></div>
                 <h3>Select filters to begin</h3>
                 <p style="font-size:.86rem;">Choose an exam, class and subject to load the student list.</p>
             </div>
@@ -59,7 +59,7 @@
     @elseif ($students->isEmpty())
         <div class="b-card">
             <div class="b-empty">
-                <div class="b-empty-ico">◉</div>
+                <div class="b-empty-ico"><i class="bi bi-people"></i></div>
                 <h3>No students in this class</h3>
                 <p style="font-size:.86rem;">Add students to the selected class first.</p>
             </div>

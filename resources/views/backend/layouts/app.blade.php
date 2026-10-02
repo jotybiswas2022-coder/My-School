@@ -11,6 +11,8 @@
         <link rel="icon" href="{{ asset('storage/' . $settings['favicon']) }}">
     @endif
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
     <style>
         :root {
             --primary: #2563EB;
@@ -72,7 +74,7 @@
         }
         .sidebar-link:hover { background: var(--sidebar-hover); color: #fff; }
         .sidebar-link.active { background: var(--gradient); color: #fff; box-shadow: 0 10px 22px -14px rgba(37,99,235,.95); }
-        .sidebar-link .ico { width: 20px; text-align: center; font-size: .95rem; flex-shrink: 0; }
+        .sidebar-link .ico { width: 20px; text-align: center; font-size: .95rem; flex-shrink: 0; line-height: 1; }
         .sidebar-link .count {
             margin-left: auto; background: var(--danger); color: #fff; font-size: .68rem; font-weight: 700;
             padding: 1px 7px; border-radius: 999px;

@@ -50,7 +50,7 @@
     <div class="b-card">
         @if ($admissions->isEmpty())
             <div class="b-empty">
-                <div class="b-empty-ico">📝</div>
+                <div class="b-empty-ico"><i class="bi bi-file-earmark-text"></i></div>
                 <h3>No applications found</h3>
                 <p style="font-size:.86rem;">New applications from the website will appear here.</p>
             </div>

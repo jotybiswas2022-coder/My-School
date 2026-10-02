@@ -49,7 +49,7 @@
     <div class="b-card">
         @if ($students->isEmpty())
             <div class="b-empty">
-                <div class="b-empty-ico">◉</div>
+                <div class="b-empty-ico"><i class="bi bi-people"></i></div>
                 <h3>No students found</h3>
                 <p style="font-size:.86rem;">Add your first student or adjust the filters above.</p>
                 <a href="{{ route('admin.students.create') }}" class="b-btn b-btn-primary" style="margin-top:16px;">+ Add Student</a>

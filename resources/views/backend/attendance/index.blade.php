@@ -56,13 +56,13 @@
 
         @if (! $classId)
             <div class="b-empty">
-                <div class="b-empty-ico">◔</div>
+                <div class="b-empty-ico"><i class="bi bi-calendar-check"></i></div>
                 <h3>Select a class</h3>
                 <p style="font-size:.86rem;">Choose a class to load students and mark attendance.</p>
             </div>
         @elseif ($students->isEmpty())
             <div class="b-empty">
-                <div class="b-empty-ico">◉</div>
+                <div class="b-empty-ico"><i class="bi bi-people"></i></div>
                 <h3>No students in this class</h3>
                 <p style="font-size:.86rem;">Add students to this class to mark attendance.</p>
             </div>

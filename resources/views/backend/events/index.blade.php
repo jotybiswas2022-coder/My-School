@@ -29,7 +29,7 @@
     <div class="b-card">
         @if ($events->isEmpty())
             <div class="b-empty">
-                <div class="b-empty-ico">📅</div>
+                <div class="b-empty-ico"><i class="bi bi-calendar-event"></i></div>
                 <h3>No events yet</h3>
                 <p style="font-size:.86rem;">Create your first event to show it on the website.</p>
             </div>
@@ -48,7 +48,7 @@
                                             @if ($event->image)
                                                 <img src="{{ asset('storage/' . $event->image) }}" alt="{{ $event->title }}">
                                             @else
-                                                📅
+                                                <i class="bi bi-calendar-event"></i>
                                             @endif
                                         </span>
                                         <strong>{{ \Illuminate\Support\Str::limit($event->title, 45) }}</strong>

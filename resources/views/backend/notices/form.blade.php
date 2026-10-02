@@ -11,7 +11,7 @@
             <p>{{ $editing ? 'Update this notice.' : 'Publish a new announcement.' }}</p>
         </div>
         <div class="page-actions">
-            <a href="{{ route('admin.notices.index') }}" class="b-btn b-btn-outline">← Back</a>
+            <a href="{{ route('admin.notices.index') }}" class="b-btn b-btn-outline"><i class="bi bi-arrow-left"></i> Back</a>
         </div>
     </div>
 
