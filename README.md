@@ -86,6 +86,30 @@ php artisan serve
 
 Open <http://127.0.0.1:8000>.
 
+### XAMPP with the document root above `public/`
+
+If the document root is `htdocs` and the project lives in `htdocs/core`, two extra files are
+needed next to `core/` so that PHP requests and static files both resolve:
+
+```php
+// htdocs/index.php
+require __DIR__.'/core/vendor/autoload.php';
+$app = require_once __DIR__.'/core/bootstrap/app.php';
+$app->handleRequest(Request::capture());
+```
+
+```apache
+# htdocs/.htaccess — inside the existing RewriteEngine block, before the front-controller rule
+RewriteCond %{DOCUMENT_ROOT}/core/public/$1 -f
+RewriteRule ^(.+)$ core/public/$1 [L]
+```
+
+The second rule maps `/storage/...` and `/images/...` to `core/public/...`, which is what every
+`asset('storage/...')` call in the views expects.
+
+> **Do not set `ASSET_URL`** in this setup. With `ASSET_URL` present, `asset()` prefixes
+> *all* URLs with it and every image/link under `storage/` returns 404.
+
 ## 7. Admin login
 
 | Field | Value |
