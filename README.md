@@ -1,59 +1,226 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# My School — School Website & Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A complete, production-style **school website** plus **school management system** built with **PHP, Laravel, Blade and vanilla JavaScript**.
 
-## About Laravel
+The public website and the administration panel share one coherent, modern design language, while remaining completely separate in structure and access control.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Technology
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+| Layer | Choice |
+| --- | --- |
+| Backend | PHP 8.2+ / Laravel 12 |
+| Templating | Blade (HTML + **inline CSS only**) |
+| Styling | Inline `<style>` blocks & style attributes — **no CSS framework** |
+| Frontend JS | Vanilla JavaScript only — **no jQuery / React / Vue / Alpine / Livewire / Inertia** |
+| Database | MySQL (or SQLite — see below) |
 
-## Learning Laravel
+> There are **no external CSS files** and **no external JavaScript libraries**. Every view carries its own inline styles.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 1. Installation
 
-## Laravel Sponsors
+```bash
+composer install
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 2. Environment setup
 
-### Premium Partners
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Then edit `.env` with your details (at minimum the database block below).
 
-## Contributing
+## 3. Database configuration
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+MySQL (default):
 
-## Code of Conduct
+```dotenv
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=my_school
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Prefer SQLite for a quick local run? Create the file and switch the driver:
 
-## Security Vulnerabilities
+```bash
+touch database/database.sqlite
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```dotenv
+DB_CONNECTION=sqlite
+DB_DATABASE=/absolute/path/to/database/database.sqlite
+```
 
-## License
+## 4. Migration
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+php artisan migrate
+```
+
+## 5. Seeding
+
+Creates the admin user, staff, classes, subjects, students, exams, results, notices, events, news, gallery albums, admissions and contact messages — plus generated sample images.
+
+```bash
+php artisan db:seed
+# or reset everything and reseed
+php artisan migrate:fresh --seed
+```
+
+## 6. Running the application
+
+```bash
+# create the storage symlink so uploaded/generated images are web-accessible
+php artisan storage:link
+
+php artisan serve
+```
+
+Open <http://127.0.0.1:8000>.
+
+## 7. Admin login
+
+| Field | Value |
+| --- | --- |
+| URL | `/admin/login` |
+| Email | `admin@myschool.edu` |
+| Password | `password` |
+
+Change this password immediately in any real deployment.
+
+## 8. Student login
+
+| Field | Value |
+| --- | --- |
+| URL | `/student/login` |
+| Student ID | `STU-2026-001` (…through `STU-2026-060`) |
+| Password | `password` |
+
+---
+
+## 9. Main features
+
+### Public website
+- Home page with hero, animated statistics, programs, principal's message, featured teachers, notices, events, news, masonry gallery, facilities, admission CTA and contact preview
+- About, Principal's Message, Academics, Classes, Subjects, Facilities
+- Teachers & Staff directory with search + department filter, and individual profiles
+- Student directory (non-sensitive information only)
+- Notice Board (search, category filter, pagination, attachments, detail page)
+- Events (upcoming / past tabs, detail page)
+- News (featured article, search, category filter, detail page)
+- Gallery albums with a vanilla-JS lightbox and category filter
+- Public **result search** producing a printable marksheet (grade + GPA)
+- Online **admission application** with generated Application ID and public status tracking
+- Contact form saving messages to the database
+- Mobile navigation, scroll reveal, animated counters, confirmation modals, toast-style alerts
+
+### Student portal
+- Login / logout using a dedicated `student` auth guard
+- Dashboard (attendance summary, latest results, recent notices, upcoming events, profile card)
+- Profile, Attendance history, Results grouped by exam, Notices, Academics
+
+### Admin panel (`/admin`)
+- Separate layout with responsive sidebar, topbar, breadcrumbs and dashboard cards
+- Dashboard statistics (students, teachers, classes, subjects, notices, events, news, pending admissions, unread messages) plus recent activity tables
+- **Students** CRUD + search + class/section filters + profile with attendance & results
+- **Teachers** CRUD + search + department filter + profile with assigned subjects
+- **Classes & Sections** CRUD with subject allocation
+- **Subjects** CRUD with teacher/class assignment
+- **Academic Sessions** CRUD with "current session" switching
+- **Exams** CRUD, exam subject scheduling, publish/unpublish results
+- **Results** bulk marks entry, single-result editing, publishing
+- **Attendance** daily marking (present / absent / late) with bulk actions, plus daily & per-student reports
+- **Notices / Events / News** CRUD with publish toggles, image/attachment uploads
+- **Gallery** album CRUD with multi-image upload
+- **Admissions** listing, search, status filter, detail view, approve / reject
+- **Contact messages** inbox with read/unread states and reply-by-email
+- **Website settings** (identity, contact details, principal, social links, logos, admission status)
+
+### Cross-cutting
+- Full server-side validation on every form
+- CSRF protection, authentication, authorization middleware
+- Secure password hashing, unique filenames for uploads, file type/size validation
+- Custom, on-brand **404 / 403 / 419 / 500 / 503** pages
+- Fully responsive layouts (desktop / laptop / tablet / mobile) with no separate mobile pages
+
+---
+
+## 10. Folder structure
+
+```
+app/
+├── Http/
+│   ├── Controllers/
+│   │   ├── Admin/          Admin panel controllers (CRUD for every module)
+│   │   ├── Frontend/       Public website controllers
+│   │   ├── Student/        Student auth + dashboard
+│   │   └── Concerns/       UploadsFiles trait (secure image uploads)
+│   └── Middleware/         AdminMiddleware, RedirectIfAuthenticated
+├── Models/                 Eloquent models with full relationships
+└── Providers/              Shares settings with all views, pagination view
+
+database/
+├── factories/              User factory
+├── migrations/             Complete schema
+└── seeders/                DatabaseSeeder with realistic sample data
+
+routes/
+├── web.php                 Public + student routes
+└── admin.php               Admin routes
+
+resources/views/
+├── errors/                 404, 403, 419, 500, 503
+├── partials/               Shared pagination partial
+├── frontend/
+│   ├── layouts/app.blade.php
+│   ├── partials/           Navbar, footer, flash, page-head
+│   ├── auth/               Student login
+│   ├── student/            Student portal (layout, sidebar, pages)
+│   └── *.blade.php         All public pages
+└── backend/
+    ├── layouts/app.blade.php
+    ├── partials/           Sidebar, topbar, flash
+    ├── auth/login.blade.php
+    └── <module>/           Index / form / show views for every module
+```
+
+---
+
+## Database schema
+
+`users`, `students`, `teachers`, `classes`, `sections`, `subjects`, `academic_sessions`,
+`class_subjects`, `attendances`, `exams`, `exam_subjects`, `results`, `notices`, `events`,
+`news`, `gallery_albums`, `gallery_images`, `admissions`, `contacts`, `settings`
+— all with proper foreign keys, unique constraints and indexes.
+
+Key relationships: Student → Class / Section / Attendance / Results, Teacher → Subjects,
+Class → Subjects / Students / Sections, Exam → Results / Subjects,
+GalleryAlbum → GalleryImages.
+
+---
+
+## Testing
+
+```bash
+php artisan test
+```
+
+The feature suite covers every public page, admin authentication and protection, the admin
+CRUD screens, student authentication, admission submission & validation, contact messages
+and result search.
+
+---
+
+## Notes
+
+- Uploads and seeded sample images live on the `public` disk; run `php artisan storage:link` once.
+- Settings are cached; saving them through the admin panel clears the cache automatically.
+- Only published notices, events, news, albums and results are visible publicly.

@@ -1,0 +1,525 @@
+@extends('frontend.layouts.app')
+
+@section('title', ($settings['school_name'] ?? 'My School') . ' — ' . ($settings['tagline'] ?? __('ui.home.meta_tagline')))
+
+@section('content')
+
+{{-- ===================== HERO ===================== --}}
+<section class="hero">
+    <div class="container container-wide">
+        <div class="hero-grid">
+            <div>
+                <span class="eyebrow" style="background:rgba(255,255,255,.14);color:#BFDBFE;">
+                    <i class="bi bi-patch-check-fill"></i>
+                    {{ $settings['established_year'] ?? '1998' }}
+                </span>
+                <h1 class="reveal">{{ __('ui.home.hero_title_1') }}<br><span class="accent">{{ __('ui.home.hero_title_2') }}</span></h1>
+                <p class="lead reveal">{{ __('ui.home.hero_lead') }}</p>
+
+                <div class="hero-actions reveal">
+                    <a href="{{ route('about') }}" class="btn btn-ghost">
+                        <i class="bi bi-compass"></i> {{ __('ui.home.explore_school') }}
+                    </a>
+                    <a href="{{ route('admission') }}" class="btn btn-primary" style="background:#fff;color:var(--secondary);box-shadow:0 14px 30px -14px rgba(0,0,0,.6);">
+                        <i class="bi bi-journal-text"></i> {{ __('ui.home.apply_admission') }}
+                    </a>
+                </div>
+
+                <div class="hero-badges reveal">
+                    <div class="hero-badge">
+                        <strong><span data-count="{{ $stats['students'] }}">0</span>+</strong>
+                        <span>{{ __('ui.home.stat_students') }}</span>
+                    </div>
+                    <div class="hero-badge">
+                        <strong><span data-count="{{ $stats['teachers'] }}">0</span>+</strong>
+                        <span>{{ __('ui.home.stat_teachers') }}</span>
+                    </div>
+                    <div class="hero-badge">
+                        <strong><span data-count="{{ $stats['years'] }}">0</span>+</strong>
+                        <span>{{ __('ui.home.stat_years') }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-visual reveal">
+                <div class="hero-card">
+                    <div class="hero-card-image"><i class="bi bi-mortarboard-fill"></i></div>
+                    <h3 style="color:#fff;font-size:1.1rem;margin-bottom:6px;">{{ __('ui.home.campus_card_title') }}</h3>
+                    <p style="font-size:.88rem;color:rgba(255,255,255,.72);">{{ __('ui.home.campus_card_text') }}</p>
+                </div>
+
+                <div class="float-chip chip-1">
+                    <span class="dot"><i class="bi bi-star-fill"></i></span>
+                    <span>{{ __('ui.home.top_ranked') }}<small>{{ __('ui.home.top_ranked_sub') }}</small></span>
+                </div>
+                <div class="float-chip chip-2">
+                    <span class="dot"><i class="bi bi-check-lg"></i></span>
+                    <span>{{ ($settings['admission_open'] ?? '1') === '1' ? __('ui.home.admissions_open') : __('ui.home.admissions_closed') }}<small>{{ __('ui.home.apply_online_today') }}</small></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{-- ===================== NOTICE TICKER ===================== --}}
+@if ($ticker->isNotEmpty())
+    <div class="ticker">
+        <span class="ticker-label"><span class="pulse"></span> {{ __('ui.home.latest') }}</span>
+        <div class="ticker-track">
+            @foreach ($ticker as $notice)
+                <a href="{{ route('notices.show', $notice) }}" class="ticker-item">{{ $notice->title }}</a>
+            @endforeach
+            @foreach ($ticker as $notice)
+                <a href="{{ route('notices.show', $notice) }}" class="ticker-item" aria-hidden="true">{{ $notice->title }}</a>
+            @endforeach
+        </div>
+    </div>
+@endif
+
+{{-- ===================== ABOUT PREVIEW ===================== --}}
+<section class="section">
+    <div class="container">
+        <div class="grid grid-2" style="align-items:center;gap:56px;">
+            <div class="reveal">
+                <span class="eyebrow"><i class="bi bi-building"></i> {{ __('ui.home.about_eyebrow') }}</span>
+                <h2 class="section-title">{{ __('ui.home.about_title') }}</h2>
+                <p class="section-sub" style="margin-bottom:22px;">
+                    {{ $settings['about_description'] ?? __('ui.home.about_fallback') }}
+                </p>
+
+                <div class="grid" style="grid-template-columns:1fr 1fr;gap:16px;margin-bottom:26px;">
+                    <div class="card" style="padding:20px;">
+                        <div class="icon-box" style="width:44px;height:44px;font-size:1.1rem;margin-bottom:12px;"><i class="bi bi-bullseye"></i></div>
+                        <h4 style="font-size:.98rem;margin-bottom:6px;">{{ __('ui.home.mission') }}</h4>
+                        <p class="muted" style="font-size:.85rem;">{{ \Illuminate\Support\Str::limit($settings['mission'] ?? __('ui.home.mission_fallback'), 110) }}</p>
+                    </div>
+                    <div class="card" style="padding:20px;">
+                        <div class="icon-box" style="width:44px;height:44px;font-size:1.1rem;margin-bottom:12px;"><i class="bi bi-eye"></i></div>
+                        <h4 style="font-size:.98rem;margin-bottom:6px;">{{ __('ui.home.vision') }}</h4>
+                        <p class="muted" style="font-size:.85rem;">{{ \Illuminate\Support\Str::limit($settings['vision'] ?? __('ui.home.vision_fallback'), 110) }}</p>
+                    </div>
+                </div>
+
+                <a href="{{ route('about') }}" class="btn btn-primary">
+                    <i class="bi bi-arrow-right"></i> {{ __('ui.home.read_more_about') }}
+                </a>
+            </div>
+
+            <div class="reveal">
+                <div class="grid" style="grid-template-columns:1fr 1fr;gap:18px;">
+                    @foreach ([
+                        ['bi-display', __('ui.home.feature_smart'), __('ui.home.feature_smart_desc')],
+                        ['bi-person-workspace', __('ui.home.feature_faculty'), __('ui.home.feature_faculty_desc')],
+                        ['bi-trophy', __('ui.home.feature_growth'), __('ui.home.feature_growth_desc')],
+                        ['bi-shield-fill-check', __('ui.home.feature_safe'), __('ui.home.feature_safe_desc')],
+                    ] as $i => $item)
+                        <div class="card card-hover" style="padding:24px;">
+                            <div class="icon-box" style="width:46px;height:46px;font-size:1.15rem;">
+                                <i class="bi {{ $item[0] }}"></i>
+                            </div>
+                            <h4 style="font-size:.95rem;margin-bottom:5px;">{{ $item[1] }}</h4>
+                            <p class="muted" style="font-size:.8rem;">{{ $item[2] }}</p>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{-- ===================== STATISTICS ===================== --}}
+<section class="section section-alt">
+    <div class="container">
+        <div class="section-head reveal">
+            <span class="eyebrow"><i class="bi bi-bar-chart-fill"></i> {{ __('ui.home.by_numbers') }}</span>
+            <h2 class="section-title">{{ __('ui.home.at_a_glance') }}</h2>
+        </div>
+
+        <div class="grid grid-4">
+            @foreach ([
+                ['bi-people-fill', __('ui.home.students_enrolled'), $stats['students'], '+'],
+                ['bi-person-badge-fill', __('ui.home.expert_teachers'), $stats['teachers'], '+'],
+                ['bi-easel-fill', __('ui.home.active_classes'), $stats['classes'], ''],
+                ['bi-award-fill', __('ui.home.years_excellence'), $stats['years'], '+'],
+            ] as $stat)
+                <div class="card card-hover reveal" style="text-align:center;padding:34px 22px;">
+                    <div class="icon-box" style="margin:0 auto 16px;"><i class="bi {{ $stat[0] }}"></i></div>
+                    <div style="font-size:2.4rem;font-weight:800;color:var(--primary);letter-spacing:-.03em;">
+                        <span data-count="{{ $stat[2] }}" data-suffix="">0</span>{{ $stat[3] }}
+                    </div>
+                    <p class="muted" style="font-weight:600;font-size:.86rem;margin-top:6px;">{{ $stat[1] }}</p>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+
+{{-- ===================== ACADEMIC PROGRAMS ===================== --}}
+<section class="section">
+    <div class="container">
+        <div class="section-head reveal">
+            <span class="eyebrow"><i class="bi bi-journal-bookmark-fill"></i> {{ __('ui.home.programs_eyebrow') }}</span>
+            <h2 class="section-title">{{ __('ui.home.programs_title') }}</h2>
+            <p class="section-sub">{{ __('ui.home.programs_sub') }}</p>
+        </div>
+
+        @if ($programs->isEmpty())
+            <div class="empty">
+                <div class="empty-icon"><i class="bi bi-journal-bookmark"></i></div>
+                <h3>{{ __('ui.home.programs_empty') }}</h3>
+                <p>{{ __('ui.home.programs_empty_text') }}</p>
+            </div>
+        @else
+            <div class="grid grid-3">
+                @foreach ($programs as $program)
+                    <div class="card card-hover reveal">
+                        <div class="card-body">
+                            <div class="icon-box">{{ mb_substr($program->name, 0, 1) }}</div>
+                            <h3 style="font-size:1.12rem;margin-bottom:8px;">{{ $program->name }}</h3>
+                            <p class="muted" style="font-size:.88rem;margin-bottom:16px;">
+                                {{ \Illuminate\Support\Str::limit($program->description ?? __('ui.home.program_fallback'), 100) }}
+                            </p>
+                            <div class="row-between">
+                                <span class="badge"><i class="bi bi-people"></i> {{ $program->students_count }} {{ __('ui.home.program_students') }}</span>
+                                <a href="{{ route('classes') }}" class="btn btn-outline btn-sm">{{ __('ui.common.learn_more') }}</a>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @endif
+    </div>
+</section>
+
+{{-- ===================== PRINCIPAL MESSAGE ===================== --}}
+<section class="section section-alt">
+    <div class="container">
+        <div class="grid grid-2" style="align-items:center;gap:56px;">
+            <div class="reveal" style="max-width:380px;">
+                <div class="card" style="padding:14px;">
+                    <div class="thumb" style="aspect-ratio:1/1;border-radius:18px;font-size:4rem;">
+                        @if (! empty($principal['photo']))
+                            <img src="{{ asset('storage/' . $principal['photo']) }}" alt="{{ $principal['name'] }}">
+                        @else
+                            <i class="bi bi-person-badge"></i>
+                        @endif
+                    </div>
+                </div>
+            </div>
+
+            <div class="reveal">
+                <span class="eyebrow"><i class="bi bi-chat-quote-fill"></i> {{ __('ui.home.principal_eyebrow') }}</span>
+                <h2 class="section-title">"{{ __('ui.home.principal_quote') }}"</h2>
+                <p class="section-sub" style="margin-bottom:20px;">
+                    {{ \Illuminate\Support\Str::limit($principal['message'], 300) }}
+                </p>
+                <div class="row-between" style="justify-content:flex-start;gap:20px;">
+                    <div>
+                        <strong style="display:block;color:var(--secondary);">{{ $principal['name'] }}</strong>
+                        <span class="muted" style="font-size:.84rem;">{{ $principal['designation'] }}</span>
+                    </div>
+                    <a href="{{ route('principal') }}" class="btn btn-primary btn-sm">{{ __('ui.common.read_more') }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{-- ===================== TEACHERS ===================== --}}
+@if ($featuredTeachers->isNotEmpty())
+    <section class="section">
+        <div class="container">
+            <div class="section-head reveal">
+                <span class="eyebrow"><i class="bi bi-people-fill"></i> {{ __('ui.home.faculty_eyebrow') }}</span>
+                <h2 class="section-title">{{ __('ui.home.faculty_title') }}</h2>
+                <p class="section-sub">{{ __('ui.home.faculty_sub') }}</p>
+            </div>
+
+            <div class="grid grid-4">
+                @foreach ($featuredTeachers as $teacher)
+                    <div class="card card-hover reveal" style="text-align:center;">
+                        <div class="card-body">
+                            <div class="avatar" style="width:88px;height:88px;margin:0 auto 16px;font-size:1.5rem;">
+                                @if ($teacher->photo)
+                                    <img src="{{ asset('storage/' . $teacher->photo) }}" alt="{{ $teacher->name }}">
+                                @else
+                                    {{ $teacher->initials() }}
+                                @endif
+                            </div>
+                            <h4 style="font-size:1rem;margin-bottom:4px;">{{ $teacher->name }}</h4>
+                            <p style="color:var(--primary);font-weight:600;font-size:.82rem;">{{ $teacher->designation }}</p>
+                            <p class="muted" style="font-size:.78rem;margin-top:6px;">{{ $teacher->department }}</p>
+                            <a href="{{ route('teachers.show', $teacher) }}" class="btn btn-outline btn-sm" style="margin-top:14px;">{{ __('ui.home.view_profile') }}</a>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+@endif
+
+{{-- ===================== LATEST NOTICES ===================== --}}
+@if ($notices->isNotEmpty())
+    <section class="section section-alt">
+        <div class="container">
+            <div class="row-between reveal" style="margin-bottom:40px;align-items:flex-end;">
+                <div>
+                    <span class="eyebrow"><i class="bi bi-megaphone-fill"></i> {{ __('ui.home.notices_eyebrow') }}</span>
+                    <h2 class="section-title" style="margin-bottom:0;">{{ __('ui.home.notices_title') }}</h2>
+                </div>
+                <a href="{{ route('notices') }}" class="btn btn-outline btn-sm">{{ __('ui.common.view_all') }}</a>
+            </div>
+
+            <div class="grid grid-2">
+                @foreach ($notices as $notice)
+                    <div class="card card-hover reveal">
+                        <div class="card-body">
+                            <div class="row-between" style="margin-bottom:12px;">
+                                <span class="badge">{{ __('ui.categories.' . $notice->category) }}</span>
+                                <span class="muted" style="font-size:.78rem;font-weight:600;">
+                                    <i class="bi bi-calendar3"></i> {{ optional($notice->published_at)->format('d M Y') }}
+                                </span>
+                            </div>
+                            <h3 style="font-size:1.04rem;margin-bottom:8px;">{{ $notice->title }}</h3>
+                            <p class="muted" style="font-size:.86rem;margin-bottom:14px;">{{ \Illuminate\Support\Str::limit(strip_tags($notice->description), 120) }}</p>
+                            <a href="{{ route('notices.show', $notice) }}" class="btn btn-outline btn-sm">{{ __('ui.common.view_details') }}</a>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+@endif
+
+{{-- ===================== UPCOMING EVENTS ===================== --}}
+@if ($events->isNotEmpty())
+    <section class="section">
+        <div class="container">
+            <div class="row-between reveal" style="margin-bottom:40px;align-items:flex-end;">
+                <div>
+                    <span class="eyebrow"><i class="bi bi-calendar-event-fill"></i> {{ __('ui.home.events_eyebrow') }}</span>
+                    <h2 class="section-title" style="margin-bottom:0;">{{ __('ui.home.events_title') }}</h2>
+                </div>
+                <a href="{{ route('events') }}" class="btn btn-outline btn-sm">{{ __('ui.common.view_all') }}</a>
+            </div>
+
+            <div class="grid grid-3">
+                @foreach ($events as $event)
+                    <div class="card card-hover reveal">
+                        <div class="thumb">
+                            @if ($event->image)
+                                <img src="{{ asset('storage/' . $event->image) }}" alt="{{ $event->title }}">
+                            @else
+                                <i class="bi bi-calendar-event"></i>
+                            @endif
+                        </div>
+                        <div class="card-body">
+                            <div class="badge badge-success" style="margin-bottom:10px;">
+                                <i class="bi bi-calendar3"></i> {{ $event->event_date->format('d M Y') }}
+                            </div>
+                            <h3 style="font-size:1.02rem;margin-bottom:8px;">{{ $event->title }}</h3>
+                            <div class="meta" style="margin-bottom:12px;">
+                                @if ($event->event_time)<span><i class="bi bi-clock"></i> {{ \Illuminate\Support\Str::substr($event->event_time, 0, 5) }}</span>@endif
+                                @if ($event->location)<span><i class="bi bi-geo-alt"></i> {{ $event->location }}</span>@endif
+                            </div>
+                            <p class="muted" style="font-size:.85rem;margin-bottom:14px;">{{ \Illuminate\Support\Str::limit(strip_tags($event->description), 90) }}</p>
+                            <a href="{{ route('events.show', $event) }}" class="btn btn-outline btn-sm">{{ __('ui.common.view_details') }}</a>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+@endif
+
+{{-- ===================== LATEST NEWS ===================== --}}
+@if ($latestNews->isNotEmpty())
+    <section class="section section-alt">
+        <div class="container">
+            <div class="row-between reveal" style="margin-bottom:40px;align-items:flex-end;">
+                <div>
+                    <span class="eyebrow"><i class="bi bi-newspaper"></i> {{ __('ui.home.news_eyebrow') }}</span>
+                    <h2 class="section-title" style="margin-bottom:0;">{{ __('ui.home.news_title') }}</h2>
+                </div>
+                <a href="{{ route('news') }}" class="btn btn-outline btn-sm">{{ __('ui.common.view_all') }}</a>
+            </div>
+
+            <div class="grid grid-3">
+                @foreach ($latestNews as $article)
+                    <div class="card card-hover reveal">
+                        <div class="thumb">
+                            @if ($article->featured_image)
+                                <img src="{{ asset('storage/' . $article->featured_image) }}" alt="{{ $article->title }}">
+                            @else
+                                <i class="bi bi-newspaper"></i>
+                            @endif
+                        </div>
+                        <div class="card-body">
+                            <div class="row-between" style="margin-bottom:10px;">
+                                <span class="badge">{{ __('ui.categories.' . $article->category) }}</span>
+                                <span class="muted" style="font-size:.76rem;font-weight:600;">{{ optional($article->published_at)->format('d M Y') }}</span>
+                            </div>
+                            <h3 style="font-size:1.02rem;margin-bottom:8px;">{{ $article->title }}</h3>
+                            <p class="muted" style="font-size:.85rem;margin-bottom:14px;">{{ \Illuminate\Support\Str::limit(strip_tags($article->description), 90) }}</p>
+                            <a href="{{ route('news.show', $article) }}" class="btn btn-outline btn-sm">{{ __('ui.common.read_more') }}</a>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+@endif
+
+{{-- ===================== GALLERY PREVIEW (masonry) ===================== --}}
+@if ($albums->isNotEmpty())
+    <section class="section">
+        <div class="container">
+            <div class="section-head reveal">
+                <span class="eyebrow"><i class="bi bi-images"></i> {{ __('ui.home.gallery_eyebrow') }}</span>
+                <h2 class="section-title">{{ __('ui.home.gallery_title') }}</h2>
+            </div>
+
+            <div class="masonry reveal">
+                @foreach ($albums as $album)
+                    <a href="{{ route('gallery.show', $album) }}" class="masonry-item">
+                        @if ($album->cover_image || $album->images->first())
+                            <img src="{{ asset('storage/' . ($album->cover_image ?? $album->images->first()->image)) }}" alt="{{ $album->title }}">
+                        @else
+                            <span class="masonry-fallback"><i class="bi bi-image"></i></span>
+                        @endif
+                        <span class="masonry-overlay">
+                            <strong>{{ $album->title }}</strong>
+                            <small>{{ __('ui.categories.' . $album->category) }} · {{ $album->images->count() }} {{ __('ui.home.photos') }}</small>
+                        </span>
+                    </a>
+                @endforeach
+            </div>
+
+            <div style="text-align:center;margin-top:36px;">
+                <a href="{{ route('gallery') }}" class="btn btn-primary">
+                    <i class="bi bi-images"></i> {{ __('ui.common.view_all') }}
+                </a>
+            </div>
+        </div>
+    </section>
+@endif
+
+{{-- ===================== FACILITIES ===================== --}}
+<section class="section section-alt">
+    <div class="container">
+        <div class="section-head reveal">
+            <span class="eyebrow"><i class="bi bi-buildings"></i> {{ __('ui.home.facilities_eyebrow') }}</span>
+            <h2 class="section-title">{{ __('ui.home.facilities_title') }}</h2>
+        </div>
+
+        <div class="grid grid-4">
+            @foreach ([
+                ['bi-display', __('ui.facilities.smart_classrooms')],
+                ['bi-droplet-half', __('ui.facilities.science_lab')],
+                ['bi-pc-display', __('ui.facilities.computer_lab')],
+                ['bi-book', __('ui.facilities.library')],
+                ['bi-trophy', __('ui.facilities.sports_ground')],
+                ['bi-bus-front', __('ui.facilities.transport')],
+                ['bi-shield-fill-check', __('ui.facilities.security')],
+                ['bi-cup-hot', __('ui.facilities.cafeteria')],
+            ] as $facility)
+                <div class="card card-hover reveal" style="text-align:center;padding:28px 20px;">
+                    <div class="icon-box" style="margin:0 auto 14px;"><i class="bi {{ $facility[0] }}"></i></div>
+                    <h4 style="font-size:.94rem;">{{ $facility[1] }}</h4>
+                </div>
+            @endforeach
+        </div>
+
+        <div style="text-align:center;margin-top:36px;">
+            <a href="{{ route('facilities') }}" class="btn btn-outline">{{ __('ui.home.learn_facilities') }}</a>
+        </div>
+    </div>
+</section>
+
+{{-- ===================== ADMISSION CTA ===================== --}}
+<section class="section">
+    <div class="container">
+        <div class="cta-panel reveal">
+            <div style="position:relative;z-index:1;">
+                <span class="eyebrow" style="background:rgba(255,255,255,.16);color:#BFDBFE;">
+                    <i class="bi bi-journal-text"></i>
+                    {{ __('ui.admission.status_heading', ['status' => ($settings['admission_open'] ?? '1') === '1' ? __('ui.admission.status_open') : __('ui.admission.status_closed')]) }}
+                </span>
+                <h2 style="color:#fff;font-size:clamp(1.6rem,3.4vw,2.4rem);margin-bottom:12px;">{{ __('ui.home.cta_title') }}</h2>
+                <p style="color:rgba(255,255,255,.82);max-width:600px;">{{ __('ui.home.cta_text') }}</p>
+                <div class="row" style="gap:14px;margin-top:26px;flex-wrap:wrap;">
+                    <a href="{{ route('admission') }}" class="btn" style="background:#fff;color:var(--secondary);">
+                        <i class="bi bi-pencil-square"></i> {{ __('ui.admission.submit') }}
+                    </a>
+                    <a href="{{ route('admission.info') }}" class="btn btn-ghost">{{ __('ui.home.learn_admission') }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{{-- ===================== CONTACT PREVIEW ===================== --}}
+<section class="section section-alt">
+    <div class="container">
+        <div class="grid grid-2" style="gap:52px;align-items:center;">
+            <div class="reveal">
+                <span class="eyebrow"><i class="bi bi-chat-dots-fill"></i> {{ __('ui.home.contact_eyebrow') }}</span>
+                <h2 class="section-title">{{ __('ui.home.contact_title') }}</h2>
+                <p class="section-sub" style="margin-bottom:24px;">{{ __('ui.home.contact_sub') }}</p>
+                <a href="{{ route('contact.page') }}" class="btn btn-primary">{{ __('ui.home.contact_us') }}</a>
+            </div>
+
+            <div class="grid" style="gap:16px;">
+                @foreach ([
+                    ['bi-geo-alt-fill', __('ui.contact.address'), $settings['address'] ?? '123 Education Avenue, Springfield'],
+                    ['bi-telephone-fill', __('ui.contact.phone'), $settings['phone'] ?? '+1 (555) 123-4567'],
+                    ['bi-envelope-fill', __('ui.contact.email'), $settings['email'] ?? 'info@myschool.edu'],
+                    ['bi-clock-fill', __('ui.home.office_hours'), $settings['office_hours'] ?? 'Mon - Fri, 8:00 AM - 4:00 PM'],
+                ] as $info)
+                    <div class="card reveal" style="padding:18px 22px;display:flex;gap:14px;align-items:center;">
+                        <div class="icon-box" style="width:44px;height:44px;margin:0;font-size:1.05rem;"><i class="bi {{ $info[0] }}"></i></div>
+                        <div>
+                            <div class="muted" style="font-size:.74rem;text-transform:uppercase;letter-spacing:.07em;font-weight:700;">{{ $info[1] }}</div>
+                            <div style="font-weight:600;font-size:.9rem;">{{ $info[2] }}</div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .masonry { columns: 3; column-gap: 20px; }
+    .masonry-item {
+        position: relative; break-inside: avoid; margin-bottom: 20px;
+        border-radius: var(--radius); overflow: hidden; background: linear-gradient(135deg, #DBEAFE, #BFDBFE);
+        min-height: 220px; display: grid; place-items: center;
+    }
+    .masonry-item img { width: 100%; height: auto; display: block; transition: transform .55s cubic-bezier(.4,0,.2,1); }
+    .masonry-fallback { font-size: 3rem; color: var(--primary); }
+    .masonry-item:hover img { transform: scale(1.08); }
+    .masonry-overlay {
+        position: absolute; inset: auto 0 0 0; padding: 22px 20px;
+        background: linear-gradient(to top, rgba(15,23,42,.88), transparent);
+        color: #fff; display: flex; flex-direction: column; gap: 2px;
+        opacity: 0; transform: translateY(12px); transition: all .35s ease;
+    }
+    .masonry-item:hover .masonry-overlay { opacity: 1; transform: none; }
+    .masonry-overlay small { color: rgba(255,255,255,.7); font-size: .76rem; }
+
+    .cta-panel {
+        position: relative; overflow: hidden; border-radius: var(--radius-lg); padding: 58px 48px;
+        background: linear-gradient(135deg, #1D4ED8, #2563EB 55%, #0EA5E9);
+        box-shadow: 0 30px 70px -30px rgba(37,99,235,.7);
+    }
+    .cta-panel::before {
+        content: ''; position: absolute; width: 420px; height: 420px; border-radius: 50%;
+        background: rgba(255,255,255,.14); filter: blur(70px); top: -160px; right: -100px;
+    }
+
+    @media (max-width: 900px) { .masonry { columns: 2; } }
+    @media (max-width: 600px) { .masonry { columns: 1; } .cta-panel { padding: 42px 26px; } }
+</style>
+
+@endsection
