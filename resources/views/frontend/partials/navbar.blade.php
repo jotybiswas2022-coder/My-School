@@ -20,9 +20,6 @@
             </a>
 
             <div class="nav-links" id="navLinks">
-                <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}">
-                    <i class="bi bi-house-door"></i> {{ __('ui.nav.home') }}
-                </a>
                 <a href="{{ route('about') }}" class="nav-link {{ request()->routeIs('about') ? 'active' : '' }}">
                     {{ __('ui.nav.about') }}
                 </a>
