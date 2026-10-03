@@ -233,56 +233,6 @@
     @endif
 
     <style>
-        .img-field { display: flex; flex-direction: column; gap: 12px; }
-        .img-preview {
-            display: grid; place-items: center; min-height: 148px; padding: 12px;
-            border: 1.5px dashed var(--border); border-radius: var(--radius-sm);
-            background: #F8FAFC; overflow: hidden;
-        }
-        .img-preview-sm { min-height: 92px; }
-        .img-preview img { max-width: 100%; max-height: 220px; border-radius: 8px; object-fit: contain; }
-        .img-preview-sm img { max-height: 72px; }
-        .img-preview.is-empty { color: var(--muted); font-size: 1.7rem; }
-        .img-actions { display: flex; flex-direction: column; gap: 10px; }
-        .img-actions .form-control { padding: 9px 11px; }
-        .img-name { font-size: .76rem; color: var(--muted); font-weight: 600; word-break: break-all; }
-
         @media (max-width: 900px) { .b-grid[style*="340px"] { grid-template-columns: 1fr !important; } }
     </style>
-
-    <script>
-        // ---------- Live image preview ----------
-        document.querySelectorAll('[data-preview]').forEach((field) => {
-            const input = field.querySelector('[data-preview-input]');
-            const box = field.querySelector('[data-preview-box]');
-            if (!input || !box) return;
-
-            const name = document.createElement('div');
-            name.className = 'img-name';
-            name.hidden = true;
-            field.querySelector('.img-actions').prepend(name);
-
-            input.addEventListener('change', () => {
-                const file = input.files && input.files[0];
-                if (!file) return;
-
-                const url = URL.createObjectURL(file);
-                let img = box.querySelector('[data-preview-img]');
-
-                if (!img) {
-                    box.innerHTML = '';
-                    img = document.createElement('img');
-                    img.setAttribute('data-preview-img', '');
-                    img.alt = file.name;
-                    box.appendChild(img);
-                }
-
-                img.src = url;
-                img.alt = file.name;
-                box.classList.remove('is-empty');
-                name.textContent = file.name;
-                name.hidden = false;
-            });
-        });
-    </script>
 @endsection

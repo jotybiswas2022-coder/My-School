@@ -183,6 +183,14 @@ class SchoolSiteTest extends TestCase
         $this->assertDatabaseHas('students', ['student_id' => 'STU-NEW-001']);
     }
 
+    public function test_admin_gallery_album_page_renders(): void
+    {
+        $admin = \App\Models\User::where('is_admin', true)->first();
+        $album = \App\Models\GalleryAlbum::firstOrFail();
+
+        $this->actingAs($admin)->get(route('admin.gallery.show', $album))->assertOk();
+    }
+
     public function test_admin_can_delete_a_settings_image(): void
     {
         Storage::fake('public');

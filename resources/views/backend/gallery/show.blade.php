@@ -36,7 +36,7 @@
                                     <div style="font-size:.74rem;color:var(--muted);margin-bottom:8px;min-height:30px;">{{ $image->caption ?: 'No caption' }}</div>
                                     <form method="POST" action="{{ route('admin.gallery.images.destroy', $image) }}">
                                         @csrf @method('DELETE')
-                                        <button type="button" class="b-btn b-btn-danger b-btn-sm b-btn-block" data-confirm="Delete this image?">Delete</button>
+                                        <button type="button" class="b-btn b-btn-danger b-btn-sm b-btn-block" data-confirm="Delete this image?"><i class="bi bi-trash"></i> Delete</button>
                                     </form>
                                 </div>
                             </div>
@@ -52,9 +52,10 @@
                 <div class="b-card-body">
                     <form method="POST" action="{{ route('admin.gallery.images.store', $album) }}" enctype="multipart/form-data">
                         @csrf
-                        <div class="form-row">
+                        <div class="form-row" data-preview>
                             <label for="images">Select Images <span style="color:var(--danger);">*</span></label>
-                            <input type="file" name="images[]" id="images" class="form-control" accept="image/*" multiple required>
+                            <input type="file" name="images[]" id="images" class="form-control" accept="image/*" multiple required data-preview-input>
+                            <div class="img-previews" data-preview-list hidden></div>
                             <div class="form-hint">You can select multiple images. Max 4MB each.</div>
                             @error('images')<div class="form-error">{{ $message }}</div>@enderror
                             @error('images.*')<div class="form-error">{{ $message }}</div>@enderror
@@ -85,9 +86,24 @@
                             <label for="description">Description</label>
                             <textarea name="description" id="description" class="form-control" style="min-height:90px;">{{ $album->description }}</textarea>
                         </div>
-                        <div class="form-row">
+                        <div class="form-row" data-preview>
                             <label for="cover_image">Replace Cover Image</label>
-                            <input type="file" name="cover_image" id="cover_image" class="form-control" accept="image/*">
+                            <div class="img-field">
+                                <div class="img-preview img-preview-sm{{ $album->cover_image ? '' : ' is-empty' }}" data-preview-box>
+                                    @if ($album->cover_image)
+                                        <img src="{{ asset('storage/' . $album->cover_image) }}" alt="Album cover" data-preview-img>
+                                    @else
+                                        <i class="bi bi-image" data-preview-icon></i>
+                                    @endif
+                                </div>
+                                <div class="img-actions">
+                                    <input type="file" name="cover_image" id="cover_image" class="form-control" accept="image/*" data-preview-input>
+                                    <div class="img-name" data-preview-name hidden></div>
+                                </div>
+                            </div>
+                            @if (! $album->cover_image)
+                                <div class="form-hint">No cover set — the first album image is used instead.</div>
+                            @endif
                         </div>
                         <button class="b-btn b-btn-primary b-btn-block">Update Album</button>
                     </form>
