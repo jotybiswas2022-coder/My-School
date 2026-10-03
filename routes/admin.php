@@ -115,5 +115,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Settings
         Route::get('settings', [SettingController::class, 'edit'])->name('settings.edit');
         Route::put('settings', [SettingController::class, 'update'])->name('settings.update');
+        Route::delete('settings/images/{key}', [SettingController::class, 'destroyImage'])->name('settings.images.destroy');
     });
 });

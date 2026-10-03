@@ -35,6 +35,12 @@ class SettingController extends Controller
         'footer_text_bn',
     ];
 
+    public const IMAGE_KEYS = [
+        'logo',
+        'favicon',
+        'principal_photo',
+    ];
+
     public const TEXT_KEYS = [
         'school_name',
         'tagline',
@@ -114,7 +120,7 @@ class SettingController extends Controller
 
         Setting::put('admission_open', $request->boolean('admission_open') ? '1' : '0');
 
-        foreach (['logo', 'favicon', 'principal_photo'] as $imageKey) {
+        foreach (self::IMAGE_KEYS as $imageKey) {
             if ($path = $this->uploadImage($request->file($imageKey), 'settings')) {
                 $this->deleteImage(Setting::get($imageKey));
                 Setting::put($imageKey, $path);
@@ -122,5 +128,15 @@ class SettingController extends Controller
         }
 
         return back()->with('success', 'Settings updated successfully.');
+    }
+
+    public function destroyImage(string $key)
+    {
+        abort_unless(in_array($key, self::IMAGE_KEYS, true), 404);
+
+        $this->deleteImage(Setting::get($key));
+        Setting::put($key, null);
+
+        return back()->with('success', ucfirst(str_replace('_', ' ', $key)) . ' removed successfully.');
     }
 }

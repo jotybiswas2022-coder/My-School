@@ -4,9 +4,11 @@ namespace Tests\Feature;
 
 use App\Models\Admission;
 use App\Models\Contact;
+use App\Models\Setting;
 use App\Models\Student;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Storage;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
@@ -179,6 +181,32 @@ class SchoolSiteTest extends TestCase
         ])->assertRedirect(route('admin.students.index'));
 
         $this->assertDatabaseHas('students', ['student_id' => 'STU-NEW-001']);
+    }
+
+    public function test_admin_can_delete_a_settings_image(): void
+    {
+        Storage::fake('public');
+        Storage::disk('public')->put('settings/test-logo.png', 'binary');
+
+        Setting::put('logo', 'settings/test-logo.png');
+
+        $admin = \App\Models\User::where('is_admin', true)->first();
+
+        $this->actingAs($admin)
+            ->delete(route('admin.settings.images.destroy', 'logo'))
+            ->assertRedirect();
+
+        $this->assertNull(Setting::getRaw('logo'));
+        Storage::disk('public')->assertMissing('settings/test-logo.png');
+    }
+
+    public function test_unknown_settings_image_key_is_rejected(): void
+    {
+        $admin = \App\Models\User::where('is_admin', true)->first();
+
+        $this->actingAs($admin)
+            ->delete(route('admin.settings.images.destroy', 'school_name'))
+            ->assertNotFound();
     }
 
     public function test_404_page_renders(): void

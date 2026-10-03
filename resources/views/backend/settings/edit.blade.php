@@ -128,33 +128,78 @@
                 <div class="b-card">
                     <div class="b-card-head"><h3>Logo</h3></div>
                     <div class="b-card-body">
-                        @if ($logo)
-                            <img src="{{ asset('storage/' . $logo) }}" alt="Logo" style="width:100%;border-radius:var(--radius-sm);margin-bottom:14px;background:#F8FAFC;padding:10px;">
-                        @endif
-                        <input type="file" name="logo" class="form-control" accept="image/*">
-                        @error('logo')<div class="form-error">{{ $message }}</div>@enderror
+                        <div class="img-field" data-preview>
+                            <div class="img-preview{{ $logo ? '' : ' is-empty' }}" data-preview-box>
+                                @if ($logo)
+                                    <img src="{{ asset('storage/' . $logo) }}" alt="Logo" data-preview-img>
+                                @else
+                                    <i class="bi bi-image" data-preview-icon></i>
+                                @endif
+                            </div>
+                            <div class="img-actions">
+                                <input type="file" name="logo" class="form-control" accept="image/*" data-preview-input>
+                                @error('logo')<div class="form-error">{{ $message }}</div>@enderror
+                                @if ($logo)
+                                    <button type="button" class="b-btn b-btn-danger b-btn-sm b-btn-block"
+                                            data-form="deleteLogoForm" data-confirm="Delete the current logo?">
+                                        <i class="bi bi-trash"></i> Delete Logo
+                                    </button>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-hint">PNG or SVG with a transparent background works best. Max 4MB.</div>
                     </div>
                 </div>
 
                 <div class="b-card">
                     <div class="b-card-head"><h3>Favicon</h3></div>
                     <div class="b-card-body">
-                        @if ($favicon)
-                            <img src="{{ asset('storage/' . $favicon) }}" alt="Favicon" style="width:48px;height:48px;border-radius:10px;margin-bottom:14px;">
-                        @endif
-                        <input type="file" name="favicon" class="form-control" accept="image/*">
-                        @error('favicon')<div class="form-error">{{ $message }}</div>@enderror
+                        <div class="img-field" data-preview>
+                            <div class="img-preview img-preview-sm{{ $favicon ? '' : ' is-empty' }}" data-preview-box>
+                                @if ($favicon)
+                                    <img src="{{ asset('storage/' . $favicon) }}" alt="Favicon" data-preview-img>
+                                @else
+                                    <i class="bi bi-image" data-preview-icon></i>
+                                @endif
+                            </div>
+                            <div class="img-actions">
+                                <input type="file" name="favicon" class="form-control" accept="image/*" data-preview-input>
+                                @error('favicon')<div class="form-error">{{ $message }}</div>@enderror
+                                @if ($favicon)
+                                    <button type="button" class="b-btn b-btn-danger b-btn-sm b-btn-block"
+                                            data-form="deleteFaviconForm" data-confirm="Delete the current favicon?">
+                                        <i class="bi bi-trash"></i> Delete Favicon
+                                    </button>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-hint">Square image, 512x512 or larger. Max 4MB.</div>
                     </div>
                 </div>
 
                 <div class="b-card">
                     <div class="b-card-head"><h3>Principal Photo</h3></div>
                     <div class="b-card-body">
-                        @if ($principalPhoto)
-                            <img src="{{ asset('storage/' . $principalPhoto) }}" alt="Principal" style="width:100%;border-radius:var(--radius-sm);margin-bottom:14px;">
-                        @endif
-                        <input type="file" name="principal_photo" class="form-control" accept="image/*">
-                        @error('principal_photo')<div class="form-error">{{ $message }}</div>@enderror
+                        <div class="img-field" data-preview>
+                            <div class="img-preview{{ $principalPhoto ? '' : ' is-empty' }}" data-preview-box>
+                                @if ($principalPhoto)
+                                    <img src="{{ asset('storage/' . $principalPhoto) }}" alt="Principal" data-preview-img>
+                                @else
+                                    <i class="bi bi-person-badge" data-preview-icon></i>
+                                @endif
+                            </div>
+                            <div class="img-actions">
+                                <input type="file" name="principal_photo" class="form-control" accept="image/*" data-preview-input>
+                                @error('principal_photo')<div class="form-error">{{ $message }}</div>@enderror
+                                @if ($principalPhoto)
+                                    <button type="button" class="b-btn b-btn-danger b-btn-sm b-btn-block"
+                                            data-form="deletePrincipalPhotoForm" data-confirm="Delete the principal photo?">
+                                        <i class="bi bi-trash"></i> Delete Photo
+                                    </button>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-hint">A portrait ratio (3:4) looks best on the principal page. Max 4MB.</div>
                     </div>
                 </div>
 
@@ -170,7 +215,74 @@
         </div>
     </form>
 
+    {{-- Image delete forms live outside the settings form: HTML forbids nesting forms. --}}
+    @if ($logo)
+        <form id="deleteLogoForm" method="POST" action="{{ route('admin.settings.images.destroy', 'logo') }}" hidden>
+            @csrf @method('DELETE')
+        </form>
+    @endif
+    @if ($favicon)
+        <form id="deleteFaviconForm" method="POST" action="{{ route('admin.settings.images.destroy', 'favicon') }}" hidden>
+            @csrf @method('DELETE')
+        </form>
+    @endif
+    @if ($principalPhoto)
+        <form id="deletePrincipalPhotoForm" method="POST" action="{{ route('admin.settings.images.destroy', 'principal_photo') }}" hidden>
+            @csrf @method('DELETE')
+        </form>
+    @endif
+
     <style>
+        .img-field { display: flex; flex-direction: column; gap: 12px; }
+        .img-preview {
+            display: grid; place-items: center; min-height: 148px; padding: 12px;
+            border: 1.5px dashed var(--border); border-radius: var(--radius-sm);
+            background: #F8FAFC; overflow: hidden;
+        }
+        .img-preview-sm { min-height: 92px; }
+        .img-preview img { max-width: 100%; max-height: 220px; border-radius: 8px; object-fit: contain; }
+        .img-preview-sm img { max-height: 72px; }
+        .img-preview.is-empty { color: var(--muted); font-size: 1.7rem; }
+        .img-actions { display: flex; flex-direction: column; gap: 10px; }
+        .img-actions .form-control { padding: 9px 11px; }
+        .img-name { font-size: .76rem; color: var(--muted); font-weight: 600; word-break: break-all; }
+
         @media (max-width: 900px) { .b-grid[style*="340px"] { grid-template-columns: 1fr !important; } }
     </style>
+
+    <script>
+        // ---------- Live image preview ----------
+        document.querySelectorAll('[data-preview]').forEach((field) => {
+            const input = field.querySelector('[data-preview-input]');
+            const box = field.querySelector('[data-preview-box]');
+            if (!input || !box) return;
+
+            const name = document.createElement('div');
+            name.className = 'img-name';
+            name.hidden = true;
+            field.querySelector('.img-actions').prepend(name);
+
+            input.addEventListener('change', () => {
+                const file = input.files && input.files[0];
+                if (!file) return;
+
+                const url = URL.createObjectURL(file);
+                let img = box.querySelector('[data-preview-img]');
+
+                if (!img) {
+                    box.innerHTML = '';
+                    img = document.createElement('img');
+                    img.setAttribute('data-preview-img', '');
+                    img.alt = file.name;
+                    box.appendChild(img);
+                }
+
+                img.src = url;
+                img.alt = file.name;
+                box.classList.remove('is-empty');
+                name.textContent = file.name;
+                name.hidden = false;
+            });
+        });
+    </script>
 @endsection
