@@ -181,6 +181,7 @@ return [
         'faculty_eyebrow' => 'Our Faculty',
         'faculty_title' => 'Meet our expert teachers',
         'faculty_sub' => 'Passionate educators committed to bringing out the best in every student.',
+        'faculty_all' => 'Meet the full faculty',
         'view_profile' => 'View Profile',
         'notices_eyebrow' => 'Notice Board',
         'notices_title' => 'Latest notices & announcements',

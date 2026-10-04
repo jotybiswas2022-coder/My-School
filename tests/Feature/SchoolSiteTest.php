@@ -6,6 +6,7 @@ use App\Models\Admission;
 use App\Models\Contact;
 use App\Models\Setting;
 use App\Models\Student;
+use App\Models\Teacher;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -297,6 +298,40 @@ class SchoolSiteTest extends TestCase
         $mobile = substr($layout, strpos($layout, '@media (max-width: 720px)'));
         $this->assertStringContainsString('.principal { grid-template-columns: 1fr;', $mobile);
         $this->assertStringContainsString('.principal-photo { width: 172px; }', $mobile);
+    }
+
+    public function test_homepage_faculty_is_a_lead_profile_beside_compact_rows(): void
+    {
+        $html = $this->get('/')->assertOk()->getContent();
+
+        // Four identical centred cards with a button each read as a roster, and stacked on
+        // phones they ran to roughly 1300px of height.
+        $this->assertStringNotContainsString('width:88px;height:88px', $html);
+        $this->assertStringNotContainsString('btn-outline btn-sm" style="margin-top:14px', $html);
+
+        $this->assertStringContainsString('class="faculty ', $html);
+        $this->assertStringContainsString('class="faculty-lead reveal"', $html);
+        $this->assertStringContainsString('class="faculty-lead-photo"', $html);
+        $this->assertStringContainsString('class="faculty-dept"', $html);
+        $this->assertStringContainsString('class="faculty-go"', $html);
+        $this->assertStringContainsString('class="faculty-list"', $html);
+        $this->assertStringContainsString('class="faculty-row reveal"', $html);
+        $this->assertStringContainsString('faculty-row-go', $html);
+
+        // Every profile is a single whole-card link, plus one link out to the full faculty.
+        $this->assertSame(
+            $this->featuredTeacherLinks(),
+            substr_count($html, 'class="faculty-lead reveal"') + substr_count($html, 'class="faculty-row reveal"'),
+            'each featured teacher should render exactly one card link',
+        );
+        $this->assertStringContainsString('href="'.route('teachers').'" class="prog-all"', $html);
+        $this->assertStringContainsString(__('ui.home.faculty_all'), $html);
+    }
+
+    /** Mirrors the featured-teacher query the homepage controller uses. */
+    private function featuredTeacherLinks(): int
+    {
+        return Teacher::where('is_featured', true)->where('is_active', true)->take(4)->count();
     }
 
     public function test_principal_page_is_a_profile_column_beside_the_letter(): void

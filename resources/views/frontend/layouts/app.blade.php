@@ -875,6 +875,62 @@
         .principal-values-head { max-width: 640px; margin-bottom: 26px; }
         .principal-values-head h2 { font-size: clamp(1.22rem, 2.2vw, 1.55rem); margin-bottom: 8px; }
 
+        /* ===================== FACULTY (home) ===================== */
+        /* One lead profile beside compact rows: keeps four people from reading as a flat
+           roster, and stays far shorter on phones than four stacked cards. */
+        .faculty { display: grid; grid-template-columns: 1.05fr .95fr; gap: 24px; }
+        .faculty-solo { grid-template-columns: 1fr; max-width: 520px; margin-inline: auto; }
+
+        .faculty-lead {
+            display: flex; flex-direction: column; overflow: hidden;
+            background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            transition: transform .3s cubic-bezier(.4,0,.2,1), box-shadow .3s ease, border-color .3s ease;
+        }
+        .faculty-lead:hover { transform: translateY(-6px); box-shadow: var(--shadow); border-color: rgba(37,99,235,.3); }
+        .faculty-lead-photo {
+            position: relative; aspect-ratio: 4/3; overflow: hidden;
+            background: linear-gradient(135deg, #DBEAFE, #BFDBFE); color: var(--primary);
+            display: grid; place-items: center; font-size: 3rem; font-weight: 800;
+        }
+        .faculty-lead-photo img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s cubic-bezier(.4,0,.2,1); }
+        .faculty-lead:hover .faculty-lead-photo img { transform: scale(1.06); }
+        .faculty-dept {
+            position: absolute; left: 16px; bottom: 16px; max-width: calc(100% - 32px);
+            padding: 6px 13px; border-radius: 999px;
+            background: rgba(15,23,42,.72); color: #fff;
+            font-size: .72rem; font-weight: 700;
+        }
+        .faculty-lead-body { padding: 24px 26px 26px; display: flex; flex-direction: column; flex: 1; }
+        .faculty-lead-body h3 { font-size: 1.18rem; margin-bottom: 5px; }
+        .faculty-role { display: block; color: var(--primary); font-weight: 700; font-size: .88rem; }
+        .faculty-lead-meta { color: var(--muted); font-size: .8rem; margin-top: 8px; }
+        .faculty-go {
+            margin-top: auto; padding-top: 18px;
+            display: inline-flex; align-items: center; gap: 8px;
+            color: var(--primary); font-weight: 700; font-size: .88rem;
+        }
+        .faculty-go i { transition: transform .25s ease; }
+        .faculty-lead:hover .faculty-go i { transform: translateX(5px); }
+
+        .faculty-list { display: flex; flex-direction: column; gap: 14px; }
+        .faculty-row {
+            flex: 1; display: flex; align-items: center; gap: 16px;
+            padding: 16px 20px; background: var(--white);
+            border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm);
+            transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+        }
+        .faculty-row:hover { transform: translateX(6px); box-shadow: var(--shadow); border-color: rgba(37,99,235,.28); }
+        .faculty-row .avatar { width: 54px; height: 54px; font-size: 1.05rem; }
+        .faculty-row-text { min-width: 0; }
+        .faculty-row-text strong { display: block; font-size: .98rem; margin-bottom: 2px; }
+        .faculty-row-text span { display: block; color: var(--muted); font-size: .8rem; }
+        .faculty-row-go {
+            margin-left: auto; flex-shrink: 0; color: var(--primary); opacity: .5;
+            transition: transform .25s ease, opacity .25s ease;
+        }
+        .faculty-row:hover .faculty-row-go { transform: translateX(4px); opacity: 1; }
+
         /* ===================== RESPONSIVE ===================== */
         @media (max-width: 1024px) {
             .hero-grid { grid-template-columns: 1fr; gap: 46px; padding: 70px 0; }
@@ -894,6 +950,11 @@
             .principal-side .principal-media { margin: 0; grid-row: span 2; }
             .principal-side .principal-photo { width: 140px; }
             .principal-mail { margin-top: 14px; }
+            .faculty { grid-template-columns: 1fr; gap: 20px; }
+            /* the lead profile turns on its side, which costs far less height than stacking */
+            .faculty-lead { flex-direction: row; }
+            .faculty-lead-photo { width: 250px; aspect-ratio: auto; flex-shrink: 0; font-size: 2rem; }
+            .faculty-lead-body { padding: 22px 24px; }
             .fac-cta { padding: 32px 28px; }
             .cls-head { padding: 16px 18px; }
             .cls-body { padding: 0 18px 20px; }
@@ -911,6 +972,16 @@
             .principal-letter { padding: 28px 22px 26px; }
             .principal-letter .prose > p:first-child::first-letter { font-size: 2.8rem; }
             .principal-values { margin-top: 28px; }
+            .faculty { gap: 14px; }
+            .faculty-lead-photo { width: 104px; aspect-ratio: 1; font-size: 1.5rem; }
+            .faculty-dept { display: none; }
+            .faculty-lead-body { padding: 18px 18px 20px; }
+            .faculty-lead-body h3 { font-size: 1.02rem; }
+            .faculty-go { padding-top: 14px; font-size: .84rem; }
+            .faculty-list { gap: 10px; }
+            .faculty-row { padding: 12px 15px; gap: 13px; }
+            .faculty-row .avatar { width: 46px; height: 46px; font-size: .95rem; }
+            .faculty-row-text strong { font-size: .92rem; }
             .section { padding: 58px 0; }
             .grid-2, .grid-3, .grid-4, .grid-auto { grid-template-columns: 1fr; }
             .about-pillar { padding: 16px; gap: 13px; }

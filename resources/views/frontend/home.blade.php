@@ -269,33 +269,68 @@
 
 {{-- ===================== TEACHERS ===================== --}}
 @if ($featuredTeachers->isNotEmpty())
+    @php
+        $leadTeacher = $featuredTeachers->first();
+        $otherTeachers = $featuredTeachers->slice(1);
+        $leadMeta = collect([$leadTeacher->department, $leadTeacher->qualification])->filter()->implode(' · ');
+    @endphp
+
     <section class="section">
         <div class="container">
             <div class="section-head reveal">
-                <span class="eyebrow"><i class="bi bi-people-fill"></i> {{ __('ui.home.faculty_eyebrow') }}</span>
+                <span class="eyebrow"><i class="bi bi-people-fill" aria-hidden="true"></i> {{ __('ui.home.faculty_eyebrow') }}</span>
                 <h2 class="section-title">{{ __('ui.home.faculty_title') }}</h2>
                 <p class="section-sub">{{ __('ui.home.faculty_sub') }}</p>
             </div>
 
-            <div class="grid grid-4">
-                @foreach ($featuredTeachers as $teacher)
-                    <div class="card card-hover reveal" style="text-align:center;">
-                        <div class="card-body">
-                            <div class="avatar" style="width:88px;height:88px;margin:0 auto 16px;font-size:1.5rem;">
-                                @if ($teacher->photo)
-                                    <img src="{{ asset('storage/' . $teacher->photo) }}" alt="{{ $teacher->name }}">
-                                @else
-                                    {{ $teacher->initials() }}
-                                @endif
-                            </div>
-                            <h4 style="font-size:1rem;margin-bottom:4px;">{{ $teacher->name }}</h4>
-                            <p style="color:var(--primary);font-weight:600;font-size:.82rem;">{{ $teacher->designation }}</p>
-                            <p class="muted" style="font-size:.78rem;margin-top:6px;">{{ $teacher->department }}</p>
-                            <a href="{{ route('teachers.show', $teacher) }}" class="btn btn-outline btn-sm" style="margin-top:14px;">{{ __('ui.home.view_profile') }}</a>
-                        </div>
+            <div class="faculty {{ $featuredTeachers->count() === 1 ? 'faculty-solo' : '' }}">
+                <a href="{{ route('teachers.show', $leadTeacher) }}" class="faculty-lead reveal">
+                    <span class="faculty-lead-photo">
+                        @if ($leadTeacher->photo)
+                            <img src="{{ asset('storage/' . $leadTeacher->photo) }}" alt="{{ $leadTeacher->name }}">
+                        @else
+                            {{ $leadTeacher->initials() }}
+                        @endif
+                        <span class="faculty-dept">{{ $leadTeacher->department }}</span>
+                    </span>
+
+                    <span class="faculty-lead-body">
+                        <h3>{{ $leadTeacher->name }}</h3>
+                        <span class="faculty-role">{{ $leadTeacher->designation }}</span>
+                        @if ($leadMeta !== '')
+                            <span class="faculty-lead-meta">{{ $leadMeta }}</span>
+                        @endif
+                        <span class="faculty-go">
+                            {{ __('ui.home.view_profile') }} <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                        </span>
+                    </span>
+                </a>
+
+                @if ($otherTeachers->isNotEmpty())
+                    <div class="faculty-list">
+                        @foreach ($otherTeachers as $teacher)
+                            <a href="{{ route('teachers.show', $teacher) }}" class="faculty-row reveal">
+                                <span class="avatar">
+                                    @if ($teacher->photo)
+                                        <img src="{{ asset('storage/' . $teacher->photo) }}" alt="{{ $teacher->name }}">
+                                    @else
+                                        {{ $teacher->initials() }}
+                                    @endif
+                                </span>
+                                <span class="faculty-row-text">
+                                    <strong>{{ $teacher->name }}</strong>
+                                    <span>{{ $teacher->designation }}{{ $teacher->department ? ' · ' . $teacher->department : '' }}</span>
+                                </span>
+                                <i class="bi bi-arrow-right faculty-row-go" aria-hidden="true"></i>
+                            </a>
+                        @endforeach
                     </div>
-                @endforeach
+                @endif
             </div>
+
+            <a href="{{ route('teachers') }}" class="prog-all">
+                {{ __('ui.home.faculty_all') }} <i class="bi bi-arrow-right" aria-hidden="true"></i>
+            </a>
         </div>
     </section>
 @endif
