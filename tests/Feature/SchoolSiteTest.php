@@ -304,6 +304,38 @@ class SchoolSiteTest extends TestCase
         $this->assertStringContainsString('.principal-photo { width: 172px; }', $mobile);
     }
 
+    public function test_homepage_facilities_are_grouped_with_short_descriptions(): void
+    {
+        $html = $this->get('/')->assertOk()->getContent();
+
+        $this->assertStringContainsString('<div class="fac-home">', $html);
+        $this->assertStringContainsString('class="fac-home-title"', $html);
+        $this->assertStringContainsString('class="fac-home-items"', $html);
+        $this->assertStringContainsString('class="fac-home-item"', $html);
+
+        // Same grouping as the facilities page, so the two pages agree.
+        $this->assertSame(2, substr_count($html, 'class="fac-home-title"'));
+        $this->assertStringContainsString(__('ui.facilities.learning_spaces'), $html);
+        $this->assertStringContainsString(__('ui.facilities.campus_life'), $html);
+        $this->assertSame(8, substr_count($html, 'class="fac-home-item"'));
+
+        // The old version was eight centred icon cards that skipped a heading level and
+        // carried inline styles on every tile.
+        $this->assertStringNotContainsString('card card-hover reveal" style="text-align:center', $html);
+        $this->assertStringContainsString('<h4>'.__('ui.facilities.library').'</h4>', $html);
+        $this->assertStringContainsString('<small>'.__('ui.facilities.library_short').'</small>', $html);
+        $this->assertStringContainsString('<h4>'.__('ui.facilities.transport').'</h4>', $html);
+        $this->assertStringContainsString('<small>'.__('ui.facilities.transport_short').'</small>', $html);
+
+        // The short descriptions were already translated but unused until now.
+        foreach ([
+            'smart_classrooms', 'science_lab', 'computer_lab', 'library',
+            'sports_ground', 'transport', 'security', 'cafeteria',
+        ] as $slug) {
+            $this->assertStringContainsString('<small>'.__("ui.facilities.{$slug}_short").'</small>', $html);
+        }
+    }
+
     public function test_homepage_gallery_titles_are_visible_without_hovering(): void
     {
         $html = $this->get('/')->assertOk()->getContent();

@@ -533,33 +533,53 @@
 @endif
 
 {{-- ===================== FACILITIES ===================== --}}
+@php
+    $facilityGroups = [
+        'learning_spaces' => [
+            ['bi-display', __('ui.facilities.smart_classrooms'), __('ui.facilities.smart_classrooms_short')],
+            ['bi-droplet-half', __('ui.facilities.science_lab'), __('ui.facilities.science_lab_short')],
+            ['bi-pc-display', __('ui.facilities.computer_lab'), __('ui.facilities.computer_lab_short')],
+            ['bi-book', __('ui.facilities.library'), __('ui.facilities.library_short')],
+        ],
+        'campus_life' => [
+            ['bi-trophy', __('ui.facilities.sports_ground'), __('ui.facilities.sports_ground_short')],
+            ['bi-bus-front', __('ui.facilities.transport'), __('ui.facilities.transport_short')],
+            ['bi-shield-fill-check', __('ui.facilities.security'), __('ui.facilities.security_short')],
+            ['bi-cup-hot', __('ui.facilities.cafeteria'), __('ui.facilities.cafeteria_short')],
+        ],
+    ];
+@endphp
+
 <section class="section section-alt">
     <div class="container">
-        <div class="section-head reveal">
-            <span class="eyebrow"><i class="bi bi-buildings"></i> {{ __('ui.home.facilities_eyebrow') }}</span>
-            <h2 class="section-title">{{ __('ui.home.facilities_title') }}</h2>
+        <div class="sechead reveal">
+            <div>
+                <span class="eyebrow"><i class="bi bi-buildings" aria-hidden="true"></i> {{ __('ui.home.facilities_eyebrow') }}</span>
+                <h2 class="section-title">{{ __('ui.home.facilities_title') }}</h2>
+            </div>
+            <a href="{{ route('facilities') }}" class="sechead-all">
+                {{ __('ui.home.learn_facilities') }} <i class="bi bi-arrow-right" aria-hidden="true"></i>
+            </a>
         </div>
 
-        <div class="grid grid-4">
-            @foreach ([
-                ['bi-display', __('ui.facilities.smart_classrooms')],
-                ['bi-droplet-half', __('ui.facilities.science_lab')],
-                ['bi-pc-display', __('ui.facilities.computer_lab')],
-                ['bi-book', __('ui.facilities.library')],
-                ['bi-trophy', __('ui.facilities.sports_ground')],
-                ['bi-bus-front', __('ui.facilities.transport')],
-                ['bi-shield-fill-check', __('ui.facilities.security')],
-                ['bi-cup-hot', __('ui.facilities.cafeteria')],
-            ] as $facility)
-                <div class="card card-hover reveal" style="text-align:center;padding:28px 20px;">
-                    <div class="icon-box" style="margin:0 auto 14px;"><i class="bi {{ $facility[0] }}"></i></div>
-                    <h4 style="font-size:.94rem;">{{ $facility[1] }}</h4>
+        <div class="fac-home">
+            @foreach ($facilityGroups as $groupKey => $facilities)
+                <div class="reveal">
+                    <h3 class="fac-home-title">{{ __("ui.facilities.$groupKey") }}</h3>
+
+                    <div class="fac-home-items">
+                        @foreach ($facilities as $facility)
+                            <div class="fac-home-item">
+                                <i class="bi {{ $facility[0] }}" aria-hidden="true"></i>
+                                <span>
+                                    <h4>{{ $facility[1] }}</h4>
+                                    <small>{{ $facility[2] }}</small>
+                                </span>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
             @endforeach
-        </div>
-
-        <div style="text-align:center;margin-top:36px;">
-            <a href="{{ route('facilities') }}" class="btn btn-outline">{{ __('ui.home.learn_facilities') }}</a>
         </div>
     </div>
 </section>
