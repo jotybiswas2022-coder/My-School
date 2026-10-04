@@ -631,7 +631,9 @@
             padding: 44px 42px; box-shadow: var(--shadow-sm);
         }
 
-        .principal-media { position: relative; flex-shrink: 0; }
+        /* justify-self keeps the column shrink-wrapped to the portrait, so the offset
+           frame below stays glued to it when the grid collapses to one column */
+        .principal-media { position: relative; flex-shrink: 0; justify-self: start; }
         /* offset outline sitting behind the portrait */
         .principal-frame {
             position: absolute; inset: 14px -14px -14px 14px;

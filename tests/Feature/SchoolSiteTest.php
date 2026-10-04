@@ -282,6 +282,23 @@ class SchoolSiteTest extends TestCase
         $this->assertStringNotContainsString('<h2 class="section-title">"', $html);
     }
 
+    public function test_principal_portrait_frame_stays_attached_when_the_grid_collapses(): void
+    {
+        $layout = file_get_contents(resource_path('views/frontend/layouts/app.blade.php'));
+
+        // The frame is absolutely positioned inside .principal-media, so the media box has to
+        // shrink-wrap the portrait. Without justify-self it stretches on phones and the
+        // border drifts away from the image.
+        $this->assertMatchesRegularExpression(
+            '/\.principal-media \{[^}]*justify-self: start;[^}]*\}/',
+            $layout,
+        );
+
+        $mobile = substr($layout, strpos($layout, '@media (max-width: 720px)'));
+        $this->assertStringContainsString('.principal { grid-template-columns: 1fr;', $mobile);
+        $this->assertStringContainsString('.principal-photo { width: 172px; }', $mobile);
+    }
+
     public function test_classes_page_uses_a_disclosure_list_with_the_first_class_open(): void
     {
         $html = $this->get('/classes')->assertOk()->getContent();
