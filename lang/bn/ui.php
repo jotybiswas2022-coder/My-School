@@ -40,6 +40,7 @@ return [
         'subjects' => 'বিষয়সমূহ',
         'results' => 'ফলাফল',
         'admission' => 'ভর্তি',
+        'news_updates' => 'সংবাদ ও ঘটনা',
         'student_portal' => 'শিক্ষার্থী পোর্টাল',
         'admin_login' => 'অ্যাডমিন লগইন',
         'all_rights' => 'সর্বস্বত্ব সংরক্ষিত।',

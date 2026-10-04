@@ -41,6 +41,7 @@ return [
         'subjects' => 'Subjects',
         'results' => 'Results',
         'admission' => 'Admission',
+        'news_updates' => 'News & Updates',
         'student_portal' => 'Student Portal',
         'admin_login' => 'Admin Login',
         'all_rights' => 'All rights reserved.',

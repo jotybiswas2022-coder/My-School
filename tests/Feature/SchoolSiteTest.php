@@ -304,6 +304,62 @@ class SchoolSiteTest extends TestCase
         $this->assertStringContainsString('.principal-photo { width: 172px; }', $mobile);
     }
 
+    public function test_navbar_only_keeps_the_essentials(): void
+    {
+        $html = $this->get('/')->assertOk()->getContent();
+
+        $start = strpos($html, '<div class="nav-links" id="navLinks">');
+        $this->assertNotFalse($start, 'the navigation should render');
+        $nav = substr($html, $start, strpos($html, '<button class="nav-toggle"', $start) - $start);
+
+        // Five essential destinations, not ten.
+        $this->assertSame(5, substr_count($nav, 'class="nav-link '));
+        foreach (['about', 'academics', 'notices', 'admission', 'contact.page'] as $name) {
+            $this->assertStringContainsString(e(route($name)), $nav);
+        }
+
+        // The student portal and the language switch stay in the bar.
+        $this->assertStringContainsString('nav-cta', $nav);
+        $this->assertStringContainsString('lang-switch', $nav);
+
+        // Nothing is orphaned: every dropped link is still one click away in the footer.
+        $footer = substr($html, strpos($html, '<footer class="site-footer">'));
+        foreach (['teachers', 'events', 'news', 'gallery', 'results'] as $name) {
+            $this->assertStringNotContainsString(e(route($name)), $nav);
+            $this->assertStringContainsString(e(route($name)), $footer);
+        }
+    }
+
+    public function test_mobile_navbar_toggle_sits_at_the_far_right(): void
+    {
+        $layout = str_replace(["\r\n", "\r"], "\n", file_get_contents(resource_path('views/frontend/layouts/app.blade.php')));
+
+        // .nav-links carried the margin-left:auto that pushed the toggle across, but the
+        // drawer hides it, so the toggle has to be pushed across on its own.
+        $this->assertMatchesRegularExpression(
+            '/@media \(max-width: 1399px\) \{.*?\.nav-toggle \{ display: grid; margin-left: auto; \}/s',
+            $layout,
+        );
+        $this->assertMatchesRegularExpression('/@media \(max-width: 1399px\) \{.*?\.nav-links \{ display: none; \}/s', $layout);
+        $this->assertMatchesRegularExpression('/\.nav-links \{[^}]*margin-left: auto;/', $layout);
+    }
+
+    public function test_footer_has_a_column_for_the_links_dropped_from_the_navbar(): void
+    {
+        $html = $this->get('/')->assertOk()->getContent();
+
+        // e() because the heading is escaped in the markup ("News &amp; Updates").
+        $this->assertStringContainsString(e(__('ui.footer.news_updates')), $html);
+
+        $footer = substr($html, strpos($html, '<footer class="site-footer">'));
+        $this->assertStringContainsString('class="footer-grid"', $footer);
+        $this->assertSame(4, substr_count($footer, '<h4>'), 'four link columns plus the brand block');
+
+        // Five columns have to fit on one row on desktop.
+        $layout = str_replace(["\r\n", "\r"], "\n", file_get_contents(resource_path('views/frontend/layouts/app.blade.php')));
+        $this->assertStringContainsString('grid-template-columns: 1.6fr 1fr 1fr 1fr 1.2fr;', $layout);
+    }
+
     public function test_homepage_admission_cta_matches_the_light_sections_around_it(): void
     {
         $html = $this->get('/')->assertOk()->getContent();

@@ -61,6 +61,16 @@
             </div>
 
             <div>
+                <h4>{{ __('ui.footer.news_updates') }}</h4>
+                <ul class="footer-links">
+                    <li><a href="{{ route('notices') }}">{{ __('ui.nav.notices') }}</a></li>
+                    <li><a href="{{ route('events') }}">{{ __('ui.nav.events') }}</a></li>
+                    <li><a href="{{ route('news') }}">{{ __('ui.nav.news') }}</a></li>
+                    <li><a href="{{ route('gallery') }}">{{ __('ui.nav.gallery') }}</a></li>
+                </ul>
+            </div>
+
+            <div>
                 <h4>{{ __('ui.footer.contact_us') }}</h4>
                 <ul class="footer-contact">
                     @if (! empty($settings['address']))

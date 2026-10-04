@@ -26,23 +26,8 @@
                 <a href="{{ route('academics') }}" class="nav-link {{ request()->routeIs('academics') ? 'active' : '' }}">
                     {{ __('ui.nav.academics') }}
                 </a>
-                <a href="{{ route('teachers') }}" class="nav-link {{ request()->routeIs('teachers*') ? 'active' : '' }}">
-                    {{ __('ui.nav.teachers') }}
-                </a>
                 <a href="{{ route('notices') }}" class="nav-link {{ request()->routeIs('notices*') ? 'active' : '' }}">
                     {{ __('ui.nav.notices') }}
-                </a>
-                <a href="{{ route('events') }}" class="nav-link {{ request()->routeIs('events*') ? 'active' : '' }}">
-                    {{ __('ui.nav.events') }}
-                </a>
-                <a href="{{ route('news') }}" class="nav-link {{ request()->routeIs('news*') ? 'active' : '' }}">
-                    {{ __('ui.nav.news') }}
-                </a>
-                <a href="{{ route('gallery') }}" class="nav-link {{ request()->routeIs('gallery*') ? 'active' : '' }}">
-                    {{ __('ui.nav.gallery') }}
-                </a>
-                <a href="{{ route('results') }}" class="nav-link {{ request()->routeIs('results*') ? 'active' : '' }}">
-                    {{ __('ui.nav.results') }}
                 </a>
                 <a href="{{ route('admission') }}" class="nav-link {{ request()->routeIs('admission*') ? 'active' : '' }}">
                     {{ __('ui.nav.admission') }}

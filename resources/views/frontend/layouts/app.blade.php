@@ -304,7 +304,8 @@
         /* Collapse to the drawer before the menu can overflow the bar */
         @media (max-width: 1399px) {
             .nav-links { display: none; }
-            .nav-toggle { display: grid; }
+            /* the links that used to push the toggle right are hidden, so it needs its own */
+            .nav-toggle { display: grid; margin-left: auto; }
 
             .nav-links.open {
                 display: flex; flex-direction: column; align-items: stretch; gap: 4px;
@@ -768,7 +769,7 @@
 
         /* ===================== FOOTER ===================== */
         .site-footer { background: var(--secondary); color: rgba(255,255,255,.7); padding-top: 68px; margin-top: auto; }
-        .footer-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1.2fr; gap: 40px; padding-bottom: 48px; }
+        .footer-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr 1.2fr; gap: 40px; padding-bottom: 48px; }
         .footer-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; color: #fff; font-weight: 800; font-size: 1.2rem; }
         .site-footer h4 { color: #fff; font-size: .95rem; margin-bottom: 18px; letter-spacing: .02em; }
         .footer-links li { margin-bottom: 11px; }
