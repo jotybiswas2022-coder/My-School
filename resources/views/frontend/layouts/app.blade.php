@@ -709,12 +709,18 @@
             .fac-cta { padding: 26px 20px; }
             .fac-cta-actions { width: 100%; }
             .fac-cta-actions .btn { flex: 1 1 100%; }
-            .glance { padding: 30px 20px; }
-            .glance-head { gap: 18px; }
-            .glance-head-aside { max-width: none; }
-            .glance-stats { grid-template-columns: 1fr; gap: 0; padding-top: 26px; }
-            .glance-stat { padding: 18px 0; border-left: 0; border-top: 1px solid rgba(255,255,255,.12); }
-            .glance-stat:first-child { padding-top: 0; border-top: 0; }
+            .glance { padding: 26px 18px; }
+            .glance-head { gap: 14px; padding-bottom: 22px; }
+            .glance-head-aside { max-width: none; gap: 10px; }
+            .glance-sub { font-size: .88rem; }
+            /* Stay two-up so the band stays roughly half as tall as a stacked list */
+            .glance-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 0; padding-top: 22px; }
+            .glance-stat { padding: 0 16px; border-left: 0; border-top: 0; }
+            .glance-stat:nth-child(odd) { padding-left: 0; }
+            .glance-stat:nth-child(even) { padding-right: 0; }
+            .glance-stat > i { font-size: 1.05rem; margin-bottom: 8px; }
+            .glance-value { font-size: 1.7rem; margin-bottom: 4px; }
+            .glance-label { font-size: .76rem; line-height: 1.35; }
             .footer-grid { grid-template-columns: 1fr; gap: 30px; }
             .float-chip { display: none; }
             .hero-badges { gap: 20px; }
