@@ -300,6 +300,74 @@ class SchoolSiteTest extends TestCase
         $this->assertStringContainsString('.principal-photo { width: 172px; }', $mobile);
     }
 
+    public function test_teacher_profile_uses_a_sticky_card_and_a_definition_list(): void
+    {
+        $teacher = Teacher::where('is_active', true)->firstOrFail();
+
+        $html = $this->get('/teachers/'.$teacher->id)->assertOk()->getContent();
+
+        // The page carried its own <style> block and a 900px breakpoint, and leaned on
+        // !important overrides plus a magic 100px sticky offset.
+        $view = file_get_contents(resource_path('views/frontend/teacher-show.blade.php'));
+        $this->assertStringNotContainsString('<style', $view);
+        $this->assertStringNotContainsString('teacher-grid', $view);
+        $this->assertStringNotContainsString('900px', $view, 'breakpoints belong in the layout');
+        $this->assertStringNotContainsString('width:130px;height:130px', $html);
+        $this->assertStringNotContainsString('position:sticky;top:100px', $html);
+
+        $this->assertStringContainsString('class="tprofile"', $html);
+        $this->assertStringContainsString('class="tprofile-card"', $html);
+        $this->assertStringContainsString('class="tprofile-role"', $html);
+        $this->assertStringContainsString('<dl class="tprofile-meta">', $html);
+        $this->assertStringContainsString('<dt>', $html);
+        $this->assertStringContainsString('<dd>', $html);
+
+        // The page header already prints the name as the <h1>, so it is not repeated as an
+        // <h2> and the sections take <h2> instead of <h3>.
+        $this->assertStringNotContainsString('<h2 style="font-size:1.3rem', $html);
+        $this->assertStringContainsString('<h2>'.__('ui.teachers.about').'</h2>', $html);
+        $this->assertStringContainsString('<h2>'.__('ui.teachers.subjects_taught').'</h2>', $html);
+        $this->assertStringNotContainsString('<h3 style="margin-bottom', $html);
+
+        // Subjects are a list of items, not cards nested inside a card.
+        $this->assertStringContainsString('class="tpanel-head"', $html);
+
+        $withSubjects = Teacher::where('is_active', true)->whereHas('subjects')->firstOrFail();
+        $listed = $this->get('/teachers/'.$withSubjects->id)->assertOk()->getContent();
+        $this->assertStringContainsString('<ul class="tsubjects">', $listed);
+        $this->assertSame(
+            $withSubjects->subjects->count(),
+            substr_count($listed, 'class="tsubject"'),
+            'every subject should render as one item',
+        );
+
+        $withoutSubjects = Teacher::where('is_active', true)->doesntHave('subjects')->first();
+        if ($withoutSubjects) {
+            $this->assertStringContainsString(
+                'empty empty-sm',
+                $this->get('/teachers/'.$withoutSubjects->id)->assertOk()->getContent(),
+            );
+        }
+    }
+
+    public function test_teacher_profile_email_and_phone_are_actionable_links(): void
+    {
+        $teacher = Teacher::where('is_active', true)->whereNotNull('email')->first();
+        $this->assertNotNull($teacher, 'the seeded faculty should include an email address');
+
+        $html = $this->get('/teachers/'.$teacher->id)->assertOk()->getContent();
+
+        $this->assertStringContainsString('class="tprofile-actions"', $html);
+        $this->assertStringContainsString('href="mailto:'.$teacher->email.'"', $html);
+
+        if ($teacher->phone) {
+            $this->assertStringContainsString('href="tel:'.$teacher->phone.'"', $html);
+        }
+
+        // Contact details moved into the action buttons, so they must not be listed twice.
+        $this->assertStringNotContainsString('<dd>'.$teacher->email.'</dd>', $html);
+    }
+
     public function test_teachers_directory_uses_cards_with_a_shared_filter_bar(): void
     {
         $html = $this->get('/teachers')->assertOk()->getContent();

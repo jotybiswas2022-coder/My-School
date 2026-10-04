@@ -974,6 +974,53 @@
         .tcard-go i { transition: transform .25s ease; }
         .tcard:hover .tcard-go i { transform: translateX(5px); }
 
+        /* ===================== TEACHER PROFILE ===================== */
+        /* The page header already prints the name as the <h1>, so the sidebar carries the
+           portrait, the role and the actions instead of repeating it. */
+        .tprofile { display: grid; grid-template-columns: 330px minmax(0,1fr); gap: 44px; align-items: start; }
+        .tprofile-side { position: sticky; top: calc(var(--nav-h) + 26px); }
+        .tprofile-card {
+            background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg);
+            padding: 30px 26px; text-align: center; box-shadow: var(--shadow);
+        }
+        .tprofile-card .principal-media { width: 190px; margin: 0 auto 22px; }
+        .tprofile-card .principal-photo { width: 190px; }
+        .tprofile-role { display: block; color: var(--primary); font-weight: 700; font-size: .9rem; }
+        .tprofile-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+        .tprofile-actions .btn { width: 100%; justify-content: center; }
+        .tprofile-meta {
+            display: flex; flex-direction: column; gap: 15px; text-align: left;
+            margin-top: 24px; padding-top: 22px; border-top: 1px solid var(--border);
+        }
+        .tprofile-meta dt {
+            font-size: .72rem; text-transform: uppercase; letter-spacing: .07em;
+            font-weight: 700; color: var(--muted); margin-bottom: 3px;
+        }
+        .tprofile-meta dd { margin: 0; font-weight: 600; font-size: .88rem; }
+
+        .tpanel {
+            background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg);
+            padding: 32px 34px; box-shadow: var(--shadow-sm);
+        }
+        .tpanel + .tpanel { margin-top: 26px; }
+        .tpanel-head { display: flex; align-items: center; gap: 13px; margin-bottom: 18px; }
+        .tpanel-head h2 { font-size: 1.14rem; }
+        .tpanel-icon {
+            flex-shrink: 0; width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center;
+            background: rgba(37,99,235,.09); color: var(--primary); font-size: 1.05rem;
+        }
+
+        .tsubjects { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
+        .tsubject {
+            display: flex; flex-direction: column; gap: 3px; padding: 15px 18px;
+            background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
+            transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+        }
+        .tsubject:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); border-color: rgba(37,99,235,.28); }
+        .tsubject strong { font-size: .94rem; }
+        .tsubject span { color: var(--muted); font-size: .78rem; }
+        .empty-sm { padding: 30px 20px; }
+
         /* ===================== RESPONSIVE ===================== */
         @media (max-width: 1024px) {
             .hero-grid { grid-template-columns: 1fr; gap: 46px; padding: 70px 0; }
@@ -1000,6 +1047,18 @@
             .faculty-lead-body { padding: 22px 24px; }
             .tbar { grid-template-columns: 1fr 1fr; }
             .tbar-actions { grid-column: 1 / -1; }
+            .tprofile { grid-template-columns: 1fr; gap: 26px; }
+            .tprofile-side { position: static; }
+            /* the card lies on its side, so the portrait does not push the whole page down */
+            .tprofile-card {
+                display: grid; grid-template-columns: auto minmax(0,1fr); gap: 0 26px;
+                text-align: left; align-items: center; padding: 26px 28px;
+            }
+            .tprofile-card .principal-media { grid-row: span 2; width: 150px; margin-bottom: 0; }
+            .tprofile-card .principal-photo { width: 150px; }
+            .tprofile-actions { flex-direction: row; margin-top: 12px; }
+            .tprofile-actions .btn { width: auto; }
+            .tprofile-meta { grid-column: 1 / -1; margin-top: 20px; padding-top: 20px; }
             .fac-cta { padding: 32px 28px; }
             .cls-head { padding: 16px 18px; }
             .cls-body { padding: 0 18px 20px; }
@@ -1036,6 +1095,14 @@
             .tcard-body { padding: 16px 18px; }
             .tcard-body h2 { font-size: .98rem; }
             .tcard-go { padding-top: 12px; font-size: .82rem; }
+            .tprofile-card { grid-template-columns: 1fr; text-align: center; justify-items: center; padding: 24px 22px; }
+            .tprofile-card .principal-media { grid-row: auto; width: 128px; margin: 0 auto 18px; }
+            .tprofile-card .principal-photo { width: 128px; }
+            .tprofile-actions { flex-direction: column; width: 100%; }
+            .tprofile-actions .btn { width: 100%; }
+            .tprofile-meta { width: 100%; }
+            .tpanel { padding: 24px 20px; }
+            .tsubjects { grid-template-columns: 1fr; gap: 10px; }
             .section { padding: 58px 0; }
             .grid-2, .grid-3, .grid-4, .grid-auto { grid-template-columns: 1fr; }
             .about-pillar { padding: 16px; gap: 13px; }
