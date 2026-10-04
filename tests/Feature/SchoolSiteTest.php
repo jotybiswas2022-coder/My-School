@@ -10,6 +10,7 @@ use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
@@ -271,8 +272,55 @@ class SchoolSiteTest extends TestCase
         $this->assertStringContainsString('about-stats', $html);
         $this->assertSame(3, substr_count($html, 'class="about-stat"'));
         $this->assertSame(2, substr_count($html, 'class="about-pillar"'));
-        $this->assertSame(4, substr_count($html, 'class="about-value reveal"'));
+        $this->assertSame(4, substr_count($html, 'class="tile reveal"'));
         $this->assertSame(6, substr_count($html, 'class="about-why-item reveal"'));
+    }
+
+    public function test_facilities_page_groups_the_facilities_into_two_sections(): void
+    {
+        $html = $this->get('/facilities')->assertOk()->getContent();
+
+        $this->assertStringContainsString('Learning Spaces', $html);
+        $this->assertStringContainsString('Campus Life', $html);
+        $this->assertSame(2, substr_count($html, 'class="fac-group-title reveal"'));
+        $this->assertSame(8, substr_count($html, 'class="tile reveal"'));
+        $this->assertStringContainsString('fac-cta', $html);
+
+        $this->assertStringNotContainsString('cta-simple', $html);
+    }
+
+    public function test_every_grid_utility_used_in_a_view_has_a_base_layout_rule(): void
+    {
+        $layout = file_get_contents(resource_path('views/frontend/layouts/app.blade.php'));
+
+        // Strip @media blocks: a class defined only inside a breakpoint is not a base rule.
+        $base = preg_replace('/@media[^{]*\{(?:[^{}]*\{[^{}]*\})*[^{}]*\}/s', '', $layout);
+
+        $used = [];
+        foreach (File::allFiles(resource_path('views/frontend')) as $file) {
+            $relative = str_replace('\\', '/', $file->getRelativePathname());
+
+            if (str_starts_with($relative, 'student/') || str_starts_with($relative, 'layouts/')) {
+                continue;
+            }
+
+            preg_match_all('/class="([^"]*)"/', $file->getContents(), $attributes);
+
+            foreach ($attributes[1] as $classAttribute) {
+                preg_match_all('/\b(grid-[a-z0-9-]+)\b/', $classAttribute, $matches);
+                $used += array_fill_keys($matches[1], true);
+            }
+        }
+
+        $this->assertNotEmpty($used);
+
+        foreach (array_keys($used) as $class) {
+            $this->assertMatchesRegularExpression(
+                '/\.' . preg_quote($class, '/') . '\s*[,{]/',
+                $base,
+                $class.' is used in a view but has no base rule in the frontend layout.',
+            );
+        }
     }
 
     public function test_english_and_bengali_lang_files_expose_the_same_keys(): void

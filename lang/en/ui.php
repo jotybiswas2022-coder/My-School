@@ -347,6 +347,8 @@ return [
         'eyebrow' => 'Our Campus',
         'heading' => 'World-class learning facilities',
         'sub' => 'Every space on our campus is designed to help students learn, play and grow safely.',
+        'learning_spaces' => 'Learning Spaces',
+        'campus_life' => 'Campus Life',
         'tour_title' => 'Want to see our campus in person?',
         'tour_text' => 'Book a campus tour and meet our teachers and students.',
         'book_visit' => 'Book a Visit',

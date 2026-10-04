@@ -68,17 +68,17 @@
                     <h2 class="section-title">{{ __('ui.about.values_title') }}</h2>
                 </div>
 
-                <div class="about-values">
+                <div class="grid-tiles">
                     @foreach ([
                         ['bi-shield-fill-check', __('ui.about.value_integrity'), __('ui.about.value_integrity_text')],
                         ['bi-lightbulb', __('ui.about.value_curiosity'), __('ui.about.value_curiosity_text')],
                         ['bi-heart-fill', __('ui.about.value_respect'), __('ui.about.value_respect_text')],
                         ['bi-star-fill', __('ui.about.value_excellence'), __('ui.about.value_excellence_text')],
                     ] as $i => $value)
-                        <div class="about-value reveal">
-                            <div class="about-value-top">
-                                <span class="about-value-num" aria-hidden="true">{{ str_pad((string) ($i + 1), 2, '0', STR_PAD_LEFT) }}</span>
-                                <i class="bi {{ $value[0] }} about-value-icon" aria-hidden="true"></i>
+                        <div class="tile reveal">
+                            <div class="tile-top">
+                                <span class="tile-num" aria-hidden="true">{{ str_pad((string) ($i + 1), 2, '0', STR_PAD_LEFT) }}</span>
+                                <i class="bi {{ $value[0] }} tile-icon" aria-hidden="true"></i>
                             </div>
                             <h4>{{ $value[1] }}</h4>
                             <p>{{ $value[2] }}</p>
