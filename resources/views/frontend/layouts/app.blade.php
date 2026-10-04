@@ -463,6 +463,60 @@
         .glance-suffix { color: #93C5FD; }
         .glance-label { display: block; color: rgba(255,255,255,.68); font-size: .82rem; font-weight: 600; }
 
+        /* ===================== ACADEMIC PROGRAMS ===================== */
+        .prog {
+            position: relative; overflow: hidden;
+            display: flex; flex-direction: column;
+            background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
+            padding: 26px 24px 22px; box-shadow: var(--shadow-sm);
+            transition: transform .3s cubic-bezier(.4,0,.2,1), box-shadow .3s ease, border-color .3s ease;
+        }
+        .prog::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--primary), #38BDF8);
+            transform: scaleX(0); transform-origin: left; transition: transform .35s cubic-bezier(.4,0,.2,1);
+        }
+        .prog:hover, .prog:focus-visible { transform: translateY(-6px); box-shadow: var(--shadow); border-color: rgba(37,99,235,.3); }
+        .prog:hover::before, .prog:focus-visible::before { transform: scaleX(1); }
+
+        .prog-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+        .prog-initial {
+            width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center;
+            background: var(--gradient); color: #fff; font-size: 1.2rem; font-weight: 800;
+            box-shadow: 0 10px 22px -12px rgba(37,99,235,.9);
+        }
+        .prog-num {
+            font-size: .74rem; font-weight: 800; letter-spacing: .08em; color: var(--primary);
+            background: rgba(37,99,235,.1); border-radius: 8px; padding: 5px 8px;
+            font-variant-numeric: tabular-nums;
+        }
+        .prog h3 { font-size: 1.06rem; margin-bottom: 8px; }
+        .prog p { font-size: .87rem; color: var(--muted); }
+
+        /* margin-top:auto keeps the footer row aligned across cards of unequal text length */
+        .prog-foot {
+            margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+            padding-top: 16px; border-top: 1px solid var(--border);
+        }
+        .prog-meta { display: inline-flex; align-items: center; gap: 8px; font-size: .8rem; font-weight: 600; color: var(--muted); }
+        .prog-go {
+            flex-shrink: 0; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center;
+            background: rgba(37,99,235,.08); color: var(--primary); font-size: .85rem;
+            transition: background .25s ease, color .25s ease, transform .25s ease;
+        }
+        .prog:hover .prog-go { background: var(--primary); color: #fff; transform: translateX(4px); }
+
+        .prog-all {
+            display: flex; align-items: center; justify-content: center; gap: 9px;
+            width: fit-content; margin: 34px auto 0; padding: 13px 26px; border-radius: 999px;
+            background: var(--white); border: 1px solid var(--border); box-shadow: var(--shadow-sm);
+            font-weight: 700; font-size: .9rem;
+            transition: transform .25s ease, border-color .25s ease, color .25s ease, box-shadow .25s ease;
+        }
+        .prog-all:hover { transform: translateY(-3px); border-color: var(--primary); color: var(--primary); box-shadow: var(--shadow); }
+        .prog-all i { transition: transform .25s ease; }
+        .prog-all:hover i { transform: translateX(4px); }
+
 
         .about-panel {
             position: relative; overflow: hidden; border-radius: var(--radius-lg); padding: 32px 28px;
@@ -721,6 +775,8 @@
             .glance-stat > i { font-size: 1.05rem; margin-bottom: 8px; }
             .glance-value { font-size: 1.7rem; margin-bottom: 4px; }
             .glance-label { font-size: .76rem; line-height: 1.35; }
+            .prog { padding: 22px 20px; }
+            .prog-all { margin-top: 26px; }
             .footer-grid { grid-template-columns: 1fr; gap: 30px; }
             .float-chip { display: none; }
             .hero-badges { gap: 20px; }

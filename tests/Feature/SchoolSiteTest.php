@@ -264,6 +264,24 @@ class SchoolSiteTest extends TestCase
         );
     }
 
+    public function test_homepage_program_cards_are_whole_links_with_one_shared_cta(): void
+    {
+        $html = $this->get('/')->assertOk()->getContent();
+
+        // The homepage previews 6 of the 10 seeded classes.
+        $this->assertSame(6, substr_count($html, 'class="prog reveal"'));
+        $this->assertSame(6, substr_count($html, 'class="prog-num" aria-hidden="true">'));
+        $this->assertSame(6, substr_count($html, 'class="prog-meta"'));
+        $this->assertSame(6, substr_count($html, 'class="prog-go"'));
+        $this->assertStringContainsString('balanced curriculum', $html);
+
+        // Six whole-card links plus one shared CTA, all pointing at the classes page.
+        // Scoped by class so the footer link to the same page is not counted.
+        $classesUrl = preg_quote(url('/classes'), '/');
+        $this->assertSame(1, preg_match_all('/<a href="'.$classesUrl.'" class="prog-all reveal">/', $html));
+        $this->assertSame(6, preg_match_all('/<a href="'.$classesUrl.'" class="prog reveal">/', $html));
+    }
+
     public function test_homepage_glance_band_replaces_the_flat_stat_cards(): void
     {
         $html = $this->get('/')->assertOk()->getContent();

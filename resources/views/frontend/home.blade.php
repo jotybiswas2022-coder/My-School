@@ -189,7 +189,7 @@
 <section class="section">
     <div class="container">
         <div class="section-head reveal">
-            <span class="eyebrow"><i class="bi bi-journal-bookmark-fill"></i> {{ __('ui.home.programs_eyebrow') }}</span>
+            <span class="eyebrow"><i class="bi bi-journal-bookmark-fill" aria-hidden="true"></i> {{ __('ui.home.programs_eyebrow') }}</span>
             <h2 class="section-title">{{ __('ui.home.programs_title') }}</h2>
             <p class="section-sub">{{ __('ui.home.programs_sub') }}</p>
         </div>
@@ -203,21 +203,27 @@
         @else
             <div class="grid grid-3">
                 @foreach ($programs as $program)
-                    <div class="card card-hover reveal">
-                        <div class="card-body">
-                            <div class="icon-box">{{ mb_substr($program->name, 0, 1) }}</div>
-                            <h3 style="font-size:1.12rem;margin-bottom:8px;">{{ $program->name }}</h3>
-                            <p class="muted" style="font-size:.88rem;margin-bottom:16px;">
-                                {{ \Illuminate\Support\Str::limit($program->description ?? __('ui.home.program_fallback'), 100) }}
-                            </p>
-                            <div class="row-between">
-                                <span class="badge"><i class="bi bi-people"></i> {{ $program->students_count }} {{ __('ui.home.program_students') }}</span>
-                                <a href="{{ route('classes') }}" class="btn btn-outline btn-sm">{{ __('ui.common.learn_more') }}</a>
-                            </div>
+                    <a href="{{ route('classes') }}" class="prog reveal">
+                        <div class="prog-head">
+                            <span class="prog-initial" aria-hidden="true">{{ mb_substr($program->name, 0, 1) }}</span>
+                            <span class="prog-num" aria-hidden="true">{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
                         </div>
-                    </div>
+                        <h3>{{ $program->name }}</h3>
+                        <p>{{ \Illuminate\Support\Str::limit($program->description ?? __('ui.home.program_fallback'), 100) }}</p>
+                        <div class="prog-foot">
+                            <span class="prog-meta">
+                                <i class="bi bi-people" aria-hidden="true"></i>
+                                {{ $program->students_count }} {{ __('ui.home.program_students') }}
+                            </span>
+                            <span class="prog-go"><i class="bi bi-arrow-right" aria-hidden="true"></i></span>
+                        </div>
+                    </a>
                 @endforeach
             </div>
+
+            <a href="{{ route('classes') }}" class="prog-all reveal">
+                {{ __('ui.home.programs_all') }} <i class="bi bi-arrow-right" aria-hidden="true"></i>
+            </a>
         @endif
     </div>
 </section>
