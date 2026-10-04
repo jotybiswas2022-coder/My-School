@@ -300,6 +300,77 @@ class SchoolSiteTest extends TestCase
         $this->assertStringContainsString('.principal-photo { width: 172px; }', $mobile);
     }
 
+    public function test_teachers_directory_uses_cards_with_a_shared_filter_bar(): void
+    {
+        $html = $this->get('/teachers')->assertOk()->getContent();
+
+        // The old filter form and cards carried their own inline grid and avatar sizes.
+        $this->assertStringNotContainsString('grid-template-columns:2fr 1.4fr auto', $html);
+        $this->assertStringNotContainsString('width:84px;height:84px', $html);
+
+        $this->assertStringContainsString('class="tbar reveal"', $html);
+        $this->assertStringContainsString('class="row tbar-actions"', $html);
+        $this->assertStringContainsString('class="tbar-count"', $html);
+        $this->assertStringContainsString('class="tcard reveal"', $html);
+        $this->assertStringContainsString('class="tcard-media"', $html);
+        $this->assertStringContainsString('class="tcard-go"', $html);
+
+        // Each card is one whole-card link, and the heading no longer skips from h1 to h4.
+        $this->assertStringContainsString('<h2>', $html);
+        $this->assertStringNotContainsString('<h4 style="font-size:1rem', $html);
+        // Walk every page so the assertion holds whatever per-page size the controller uses.
+        $listed = 0;
+        for ($page = 1; $page <= 20; $page++) {
+            $cards = substr_count($this->get('/teachers?page=' . $page)->assertOk()->getContent(), 'class="tcard reveal"');
+
+            if ($cards === 0) {
+                break;
+            }
+
+            $listed += $cards;
+        }
+
+        $this->assertSame(
+            $this->activeTeacherCount(),
+            $listed,
+            'every active teacher should be listed exactly once',
+        );
+    }
+
+    public function test_public_pagination_uses_the_shared_pg_markup(): void
+    {
+        // AppServiceProvider points the paginator at partials.pagination, so all six paginated
+        // public pages share the .pg styling in the layout rather than Laravel's Tailwind view.
+        foreach (range(1, 5) as $i) {
+            Teacher::create([
+                'name' => 'Pagination Teacher ' . $i,
+                'designation' => 'Lecturer',
+                'department' => 'Science',
+                'is_active' => true,
+            ]);
+        }
+
+        $html = $this->get('/teachers')->assertOk()->getContent();
+
+        $this->assertStringContainsString('<nav class="pg" role="navigation"', $html);
+        $this->assertStringContainsString('class="pg-item pg-active" aria-current="page"', $html);
+        $this->assertStringContainsString('rel="next"', $html);
+        // on the first page there is nowhere back to go, so previous is inert rather than a link
+        $this->assertStringContainsString('class="pg-item pg-disabled" aria-disabled="true"', $html);
+        $this->assertStringNotContainsString('rel="prev"', $html);
+
+        $this->assertStringContainsString(
+            'rel="prev"',
+            $this->get('/teachers?page=2')->assertOk()->getContent(),
+        );
+        $this->assertStringNotContainsString('relative inline-flex', $html);
+    }
+
+    private function activeTeacherCount(): int
+    {
+        return Teacher::where('is_active', true)->count();
+    }
+
     public function test_homepage_faculty_is_a_lead_profile_beside_compact_rows(): void
     {
         $html = $this->get('/')->assertOk()->getContent();
@@ -312,7 +383,7 @@ class SchoolSiteTest extends TestCase
         $this->assertStringContainsString('class="faculty ', $html);
         $this->assertStringContainsString('class="faculty-lead reveal"', $html);
         $this->assertStringContainsString('class="faculty-lead-photo"', $html);
-        $this->assertStringContainsString('class="faculty-dept"', $html);
+        $this->assertStringContainsString('class="dept-chip"', $html);
         $this->assertStringContainsString('class="faculty-go"', $html);
         $this->assertStringContainsString('class="faculty-list"', $html);
         $this->assertStringContainsString('class="faculty-row reveal"', $html);

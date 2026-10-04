@@ -291,7 +291,7 @@
                         @else
                             {{ $leadTeacher->initials() }}
                         @endif
-                        <span class="faculty-dept">{{ $leadTeacher->department }}</span>
+                        <span class="dept-chip">{{ $leadTeacher->department }}</span>
                     </span>
 
                     <span class="faculty-lead-body">

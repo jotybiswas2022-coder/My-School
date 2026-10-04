@@ -895,7 +895,8 @@
         }
         .faculty-lead-photo img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s cubic-bezier(.4,0,.2,1); }
         .faculty-lead:hover .faculty-lead-photo img { transform: scale(1.06); }
-        .faculty-dept {
+        /* shared department badge, sits over a portrait on the homepage and in the directory */
+        .dept-chip {
             position: absolute; left: 16px; bottom: 16px; max-width: calc(100% - 32px);
             padding: 6px 13px; border-radius: 999px;
             background: rgba(15,23,42,.72); color: #fff;
@@ -931,6 +932,48 @@
         }
         .faculty-row:hover .faculty-row-go { transform: translateX(4px); opacity: 1; }
 
+        /* ===================== TEACHERS PAGE ===================== */
+        /* Directory view, so a real card grid stays right here; only the card itself changes. */
+        .tbar {
+            display: grid; grid-template-columns: 2fr 1.4fr auto; gap: 14px; align-items: end;
+            padding: 20px 22px; margin-bottom: 30px;
+            background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+        }
+        .tbar-count {
+            grid-column: 1 / -1;
+            display: flex; align-items: center; gap: 9px;
+            margin-top: 2px; padding-top: 14px; border-top: 1px solid var(--border);
+            color: var(--muted); font-size: .84rem; font-weight: 600; margin-bottom: 0;
+        }
+        .tbar-count strong { color: var(--secondary); }
+
+        .tcard {
+            display: flex; flex-direction: column; height: 100%; overflow: hidden;
+            background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            transition: transform .3s cubic-bezier(.4,0,.2,1), box-shadow .3s ease, border-color .3s ease;
+        }
+        .tcard:hover { transform: translateY(-6px); box-shadow: var(--shadow); border-color: rgba(37,99,235,.3); }
+        .tcard-media {
+            position: relative; aspect-ratio: 16/10; overflow: hidden;
+            background: linear-gradient(135deg, #DBEAFE, #BFDBFE); color: var(--primary);
+            display: grid; place-items: center; font-size: 2.4rem; font-weight: 800;
+        }
+        .tcard-media img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s cubic-bezier(.4,0,.2,1); }
+        .tcard:hover .tcard-media img { transform: scale(1.06); }
+        .tcard-body { padding: 20px 22px 22px; display: flex; flex-direction: column; flex: 1; }
+        .tcard-body h2 { font-size: 1.06rem; margin-bottom: 5px; }
+        .tcard-role { display: block; color: var(--primary); font-weight: 700; font-size: .85rem; }
+        .tcard-qual { color: var(--muted); font-size: .79rem; margin-top: 9px; }
+        .tcard-go {
+            margin-top: auto; padding-top: 16px;
+            display: inline-flex; align-items: center; gap: 8px;
+            color: var(--primary); font-weight: 700; font-size: .85rem;
+        }
+        .tcard-go i { transition: transform .25s ease; }
+        .tcard:hover .tcard-go i { transform: translateX(5px); }
+
         /* ===================== RESPONSIVE ===================== */
         @media (max-width: 1024px) {
             .hero-grid { grid-template-columns: 1fr; gap: 46px; padding: 70px 0; }
@@ -955,6 +998,8 @@
             .faculty-lead { flex-direction: row; }
             .faculty-lead-photo { width: 250px; aspect-ratio: auto; flex-shrink: 0; font-size: 2rem; }
             .faculty-lead-body { padding: 22px 24px; }
+            .tbar { grid-template-columns: 1fr 1fr; }
+            .tbar-actions { grid-column: 1 / -1; }
             .fac-cta { padding: 32px 28px; }
             .cls-head { padding: 16px 18px; }
             .cls-body { padding: 0 18px 20px; }
@@ -982,6 +1027,15 @@
             .faculty-row { padding: 12px 15px; gap: 13px; }
             .faculty-row .avatar { width: 46px; height: 46px; font-size: .95rem; }
             .faculty-row-text strong { font-size: .92rem; }
+            .dept-chip { display: none; }
+            .tbar { grid-template-columns: 1fr; padding: 18px 20px; margin-bottom: 24px; }
+            .tbar-actions .btn { flex: 1 1 100%; }
+            /* a directory of a dozen photos gets tall fast, so each card lies on its side */
+            .tcard { flex-direction: row; }
+            .tcard-media { width: 112px; aspect-ratio: 1; font-size: 1.7rem; }
+            .tcard-body { padding: 16px 18px; }
+            .tcard-body h2 { font-size: .98rem; }
+            .tcard-go { padding-top: 12px; font-size: .82rem; }
             .section { padding: 58px 0; }
             .grid-2, .grid-3, .grid-4, .grid-auto { grid-template-columns: 1fr; }
             .about-pillar { padding: 16px; gap: 13px; }

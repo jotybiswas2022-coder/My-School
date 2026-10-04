@@ -268,6 +268,7 @@ return [
         'subtitle' => 'Meet the dedicated educators who make our school extraordinary.',
         'search_label' => 'Search teachers',
         'search_placeholder' => 'Search by name, designation or qualification',
+        'found' => ':count teachers found',
         'department' => 'Department',
         'all_departments' => 'All departments',
         'empty_title' => 'No teachers found',
