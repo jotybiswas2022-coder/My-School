@@ -1194,17 +1194,18 @@
 
         /* ===================== FACILITIES (home) ===================== */
         /* Same grouping as the facilities page, but as a scannable index: an eight-card
-           wall gave a bus the same visual weight as the library. */
-        .fac-home { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 30px; }
+           wall gave a bus the same visual weight as the library. The group headings span
+           the grid so all eight boxes share one row height and stay on the same level. */
+        .fac-home { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
         .fac-home-title {
-            display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+            grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; margin: 16px 0 2px;
             font-size: .8rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--primary);
         }
+        .fac-home-title:first-child { margin-top: 0; }
         html[lang="bn"] .fac-home-title { letter-spacing: 0; }
         .fac-home-title::before { content: ""; flex-shrink: 0; width: 22px; height: 2px; border-radius: 2px; background: var(--primary); opacity: .5; }
-        .fac-home-items { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
         .fac-home-item {
-            display: flex; align-items: flex-start; gap: 12px; padding: 14px 15px;
+            display: flex; align-items: center; gap: 12px; min-height: 100px; padding: 14px 15px;
             background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
             transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
         }
@@ -1213,7 +1214,12 @@
             flex-shrink: 0; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 11px;
             font-size: 1.05rem; color: var(--primary); background: rgba(37,99,235,.09);
         }
-        .fac-home-item h4 { font-size: .9rem; line-height: 1.3; margin-bottom: 4px; }
+        .fac-home-item > span { min-width: 0; }
+        /* both blocks are clamped, so every box ends up the same height */
+        .fac-home-item h4 {
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+            font-size: .9rem; line-height: 1.3; margin-bottom: 4px;
+        }
         .fac-home-item small {
             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
             font-size: .78rem; line-height: 1.45; color: var(--muted);
@@ -1263,7 +1269,8 @@
             .nwslead-body { padding: 26px; }
             .gal { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .cta-panel { padding: 46px 32px; }
-            .fac-home { grid-template-columns: 1fr; gap: 22px; }
+            .fac-home { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+            .fac-home-title { margin: 14px 0 2px; }
             .fac-cta { padding: 32px 28px; }
             .cls-head { padding: 16px 18px; }
             .cls-body { padding: 0 18px 20px; }
@@ -1335,8 +1342,7 @@
             .gal-cap-title { font-size: .9rem; }
             .gal-count { top: 8px; right: 8px; padding: 3px 8px; font-size: .68rem; }
             .cta-panel { padding: 40px 24px; }
-            .fac-home-items { gap: 10px; }
-            .fac-home-item { padding: 12px; gap: 10px; }
+            .fac-home-item { min-height: 96px; padding: 12px; gap: 10px; }
             .fac-home-item > i { width: 32px; height: 32px; font-size: .95rem; border-radius: 10px; }
             .fac-home-item h4 { font-size: .84rem; }
             .fac-home-item small { font-size: .74rem; }

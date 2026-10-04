@@ -564,21 +564,17 @@
 
         <div class="fac-home">
             @foreach ($facilityGroups as $groupKey => $facilities)
-                <div class="reveal">
-                    <h3 class="fac-home-title">{{ __("ui.facilities.$groupKey") }}</h3>
+                <h3 class="fac-home-title">{{ __("ui.facilities.$groupKey") }}</h3>
 
-                    <div class="fac-home-items">
-                        @foreach ($facilities as $facility)
-                            <div class="fac-home-item">
-                                <i class="bi {{ $facility[0] }}" aria-hidden="true"></i>
-                                <span>
-                                    <h4>{{ $facility[1] }}</h4>
-                                    <small>{{ $facility[2] }}</small>
-                                </span>
-                            </div>
-                        @endforeach
+                @foreach ($facilities as $facility)
+                    <div class="fac-home-item">
+                        <i class="bi {{ $facility[0] }}" aria-hidden="true"></i>
+                        <span>
+                            <h4>{{ $facility[1] }}</h4>
+                            <small>{{ $facility[2] }}</small>
+                        </span>
                     </div>
-                </div>
+                @endforeach
             @endforeach
         </div>
     </div>

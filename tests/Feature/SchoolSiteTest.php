@@ -310,7 +310,6 @@ class SchoolSiteTest extends TestCase
 
         $this->assertStringContainsString('<div class="fac-home">', $html);
         $this->assertStringContainsString('class="fac-home-title"', $html);
-        $this->assertStringContainsString('class="fac-home-items"', $html);
         $this->assertStringContainsString('class="fac-home-item"', $html);
 
         // Same grouping as the facilities page, so the two pages agree.
@@ -334,6 +333,35 @@ class SchoolSiteTest extends TestCase
         ] as $slug) {
             $this->assertStringContainsString('<small>'.__("ui.facilities.{$slug}_short").'</small>', $html);
         }
+
+        // All eight boxes share one grid, so a heading splits the rows instead of the two
+        // groups drifting out of step with each other.
+        $start = strpos($html, '<div class="fac-home">');
+        $grid = substr($html, $start, strpos($html, '</section>', $start) - $start);
+        $this->assertSame(2, substr_count($grid, '<h3 class="fac-home-title">'));
+        $this->assertSame(8, substr_count($grid, '<div class="fac-home-item">'));
+        $this->assertLessThan(strpos($grid, '<div class="fac-home-item">'), strpos($grid, '<h3 class="fac-home-title">'));
+        $this->assertLessThan(
+            strpos($grid, '<h4>'.__('ui.facilities.cafeteria').'</h4>'),
+            strpos($grid, '<h3 class="fac-home-title">', strpos($grid, '<h3 class="fac-home-title">') + 1),
+        );
+    }
+
+    public function test_homepage_facility_boxes_share_one_row_height(): void
+    {
+        $layout = file_get_contents(resource_path('views/frontend/layouts/app.blade.php'));
+
+        // One grid for the whole section: the group headings span the columns and every
+        // box gets the same minimum height, so nothing sits lower than its neighbour.
+        $this->assertStringContainsString('.fac-home { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));', $layout);
+        $this->assertStringContainsString('.fac-home-title {' . "\n" . '            grid-column: 1 / -1;', $layout);
+        $this->assertMatchesRegularExpression('/\.fac-home-item \{[^}]*min-height: 100px;/', $layout);
+        $this->assertMatchesRegularExpression('/\.fac-home-item h4 \{[^}]*-webkit-line-clamp: 2;/', $layout);
+        $this->assertMatchesRegularExpression('/\.fac-home-item small \{[^}]*-webkit-line-clamp: 2;/', $layout);
+
+        // Two columns on smaller screens, but the boxes stay identical there too.
+        $this->assertStringContainsString('.fac-home { grid-template-columns: repeat(2, minmax(0, 1fr));', $layout);
+        $this->assertMatchesRegularExpression('/@media \(max-width: 720px\).*\.fac-home-item \{ min-height: 96px;/s', $layout);
     }
 
     public function test_homepage_gallery_titles_are_visible_without_hovering(): void
