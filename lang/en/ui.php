@@ -136,6 +136,7 @@ return [
         'stat_years' => 'Years of Excellence',
         'campus_card_title' => 'A Campus Built for Curiosity',
         'campus_card_text' => 'Smart classrooms, modern laboratories and a vibrant co-curricular programme.',
+        'hero_image_alt' => 'Our campus',
         'top_ranked' => 'Top ranked',
         'top_ranked_sub' => 'Academic excellence',
         'admissions_open' => 'Admissions open',

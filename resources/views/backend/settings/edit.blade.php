@@ -204,6 +204,32 @@
                 </div>
 
                 <div class="b-card">
+                    <div class="b-card-head"><h3>Hero Image</h3></div>
+                    <div class="b-card-body">
+                        <div class="img-field" data-preview>
+                            <div class="img-preview{{ $heroImage ? '' : ' is-empty' }}" data-preview-box>
+                                @if ($heroImage)
+                                    <img src="{{ asset('storage/' . $heroImage) }}" alt="Hero Image" data-preview-img>
+                                @else
+                                    <i class="bi bi-card-image" data-preview-icon></i>
+                                @endif
+                            </div>
+                            <div class="img-actions">
+                                <input type="file" name="hero_image" class="form-control" accept="image/*" data-preview-input>
+                                @error('hero_image')<div class="form-error">{{ $message }}</div>@enderror
+                                @if ($heroImage)
+                                    <button type="button" class="b-btn b-btn-danger b-btn-sm b-btn-block"
+                                            data-form="deleteHeroImageForm" data-confirm="Delete the hero image?">
+                                        <i class="bi bi-trash"></i> Delete Image
+                                    </button>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-hint">Shown inside the homepage hero box. A landscape ratio (4:3) fits best. Max 4MB.</div>
+                    </div>
+                </div>
+
+                <div class="b-card">
                     <div class="b-card-body">
                         <label class="checkbox-row" style="margin-bottom:16px;">
                             <input type="checkbox" name="admission_open" value="1" @checked($admissionOpen)> Admissions open
@@ -228,6 +254,11 @@
     @endif
     @if ($principalPhoto)
         <form id="deletePrincipalPhotoForm" method="POST" action="{{ route('admin.settings.images.destroy', 'principal_photo') }}" hidden>
+            @csrf @method('DELETE')
+        </form>
+    @endif
+    @if ($heroImage)
+        <form id="deleteHeroImageForm" method="POST" action="{{ route('admin.settings.images.destroy', 'hero_image') }}" hidden>
             @csrf @method('DELETE')
         </form>
     @endif

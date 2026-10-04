@@ -43,7 +43,13 @@
 
             <div class="hero-visual reveal">
                 <div class="hero-card">
-                    <div class="hero-card-image"><i class="bi bi-mortarboard-fill"></i></div>
+                    <div class="hero-card-image">
+                        @if (! empty($settings['hero_image']))
+                            <img src="{{ asset('storage/' . $settings['hero_image']) }}" alt="{{ __('ui.home.hero_image_alt') }}">
+                        @else
+                            <i class="bi bi-mortarboard-fill"></i>
+                        @endif
+                    </div>
                     <h3 style="color:#fff;font-size:1.1rem;margin-bottom:6px;">{{ __('ui.home.campus_card_title') }}</h3>
                     <p style="font-size:.88rem;color:rgba(255,255,255,.72);">{{ __('ui.home.campus_card_text') }}</p>
                 </div>

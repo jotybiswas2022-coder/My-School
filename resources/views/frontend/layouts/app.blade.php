@@ -332,12 +332,13 @@
             backdrop-filter: blur(14px); border-radius: var(--radius-lg); padding: 26px; color: #fff;
         }
         .hero-card-image {
-            aspect-ratio: 4/3; border-radius: var(--radius); margin-bottom: 18px;
+            aspect-ratio: 4/3; border-radius: var(--radius); margin-bottom: 18px; overflow: hidden;
             background:
                 radial-gradient(circle at 30% 25%, rgba(255,255,255,.28), transparent 55%),
                 linear-gradient(135deg, #2563EB, #0EA5E9 55%, #22D3EE);
             display: grid; place-items: center; font-size: 3.4rem;
         }
+        .hero-card-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .float-chip {
             position: absolute; background: #fff; color: var(--secondary); border-radius: 14px; padding: 12px 16px;
             box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 10px; font-size: .82rem; font-weight: 700;

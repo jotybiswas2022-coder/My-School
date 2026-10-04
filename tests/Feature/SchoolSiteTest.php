@@ -8,6 +8,7 @@ use App\Models\Setting;
 use App\Models\Student;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
@@ -215,6 +216,39 @@ class SchoolSiteTest extends TestCase
         $this->actingAs($admin)
             ->delete(route('admin.settings.images.destroy', 'school_name'))
             ->assertNotFound();
+    }
+
+    public function test_admin_can_upload_the_hero_image_and_it_renders_on_the_homepage(): void
+    {
+        Storage::fake('public');
+
+        $admin = \App\Models\User::where('is_admin', true)->first();
+
+        $this->actingAs($admin)
+            ->put(route('admin.settings.update'), [
+                'school_name' => 'My School',
+                'hero_image' => UploadedFile::fake()->createWithContent(
+                    'hero.png',
+                    base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==')
+                ),
+            ])
+            ->assertRedirect();
+
+        $path = Setting::getRaw('hero_image');
+        $this->assertNotNull($path);
+        Storage::disk('public')->assertExists($path);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertSee(asset('storage/' . $path))
+            ->assertSee('hero-card-image', escape: false);
+    }
+
+    public function test_homepage_falls_back_to_the_icon_when_no_hero_image_is_set(): void
+    {
+        $this->assertNull(Setting::getRaw('hero_image'));
+
+        $this->get('/')->assertOk()->assertSee('bi-mortarboard-fill', escape: false);
     }
 
     public function test_404_page_renders(): void

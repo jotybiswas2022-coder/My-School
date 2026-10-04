@@ -39,6 +39,7 @@ class SettingController extends Controller
         'logo',
         'favicon',
         'principal_photo',
+        'hero_image',
     ];
 
     public const TEXT_KEYS = [
@@ -73,6 +74,7 @@ class SettingController extends Controller
             'logo' => Setting::get('logo'),
             'favicon' => Setting::get('favicon'),
             'principalPhoto' => Setting::get('principal_photo'),
+            'heroImage' => Setting::get('hero_image'),
         ]);
     }
 
@@ -101,6 +103,7 @@ class SettingController extends Controller
             'logo' => $this->imageRules(),
             'favicon' => $this->imageRules(),
             'principal_photo' => $this->imageRules(),
+            'hero_image' => $this->imageRules(),
             'school_name_bn' => ['nullable', 'string', 'max:120'],
             'tagline_bn' => ['nullable', 'string', 'max:180'],
             'address_bn' => ['nullable', 'string', 'max:255'],
