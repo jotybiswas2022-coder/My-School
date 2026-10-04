@@ -489,35 +489,44 @@
     </section>
 @endif
 
-{{-- ===================== GALLERY PREVIEW (masonry) ===================== --}}
+{{-- ===================== GALLERY PREVIEW ===================== --}}
 @if ($albums->isNotEmpty())
+    @php $galleryWide = $albums->count() % 3 !== 0; @endphp
+
     <section class="section">
         <div class="container">
-            <div class="section-head reveal">
-                <span class="eyebrow"><i class="bi bi-images"></i> {{ __('ui.home.gallery_eyebrow') }}</span>
-                <h2 class="section-title">{{ __('ui.home.gallery_title') }}</h2>
+            <div class="sechead reveal">
+                <div>
+                    <span class="eyebrow"><i class="bi bi-images" aria-hidden="true"></i> {{ __('ui.home.gallery_eyebrow') }}</span>
+                    <h2 class="section-title">{{ __('ui.home.gallery_title') }}</h2>
+                </div>
+                <a href="{{ route('gallery') }}" class="sechead-all">
+                    {{ __('ui.common.view_all') }} <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                </a>
             </div>
 
-            <div class="masonry reveal">
+            <div class="gal">
                 @foreach ($albums as $album)
-                    <a href="{{ route('gallery.show', $album) }}" class="masonry-item">
-                        @if ($album->cover_image || $album->images->first())
-                            <img src="{{ asset('storage/' . ($album->cover_image ?? $album->images->first()->image)) }}" alt="{{ $album->title }}">
-                        @else
-                            <span class="masonry-fallback"><i class="bi bi-image"></i></span>
-                        @endif
-                        <span class="masonry-overlay">
-                            <strong>{{ $album->title }}</strong>
-                            <small>{{ __('ui.categories.' . $album->category) }} · {{ $album->images->count() }} {{ __('ui.home.photos') }}</small>
+                    <a href="{{ route('gallery.show', $album) }}"
+                       class="gal-item reveal{{ $galleryWide && $loop->last ? ' is-wide' : '' }}">
+                        <span class="gal-media">
+                            @if ($album->cover_image || $album->images->first())
+                                <img src="{{ asset('storage/' . ($album->cover_image ?? $album->images->first()->image)) }}" alt="{{ $album->title }}">
+                            @else
+                                <span class="gal-fallback"><i class="bi bi-image" aria-hidden="true"></i></span>
+                            @endif
+                        </span>
+
+                        <span class="gal-count">
+                            <i class="bi bi-images" aria-hidden="true"></i> {{ $album->images->count() }}
+                        </span>
+
+                        <span class="gal-cap">
+                            <h3 class="gal-cap-title">{{ $album->title }}</h3>
+                            <span class="gal-cap-meta">{{ __('ui.categories.' . $album->category) }} &middot; {{ __('ui.home.photos') }}</span>
                         </span>
                     </a>
                 @endforeach
-            </div>
-
-            <div style="text-align:center;margin-top:36px;">
-                <a href="{{ route('gallery') }}" class="btn btn-primary">
-                    <i class="bi bi-images"></i> {{ __('ui.common.view_all') }}
-                </a>
             </div>
         </div>
     </section>
@@ -607,38 +616,5 @@
         </div>
     </div>
 </section>
-
-<style>
-    .masonry { columns: 3; column-gap: 20px; }
-    .masonry-item {
-        position: relative; break-inside: avoid; margin-bottom: 20px;
-        border-radius: var(--radius); overflow: hidden; background: linear-gradient(135deg, #DBEAFE, #BFDBFE);
-        min-height: 220px; display: grid; place-items: center;
-    }
-    .masonry-item img { width: 100%; height: auto; display: block; transition: transform .55s cubic-bezier(.4,0,.2,1); }
-    .masonry-fallback { font-size: 3rem; color: var(--primary); }
-    .masonry-item:hover img { transform: scale(1.08); }
-    .masonry-overlay {
-        position: absolute; inset: auto 0 0 0; padding: 22px 20px;
-        background: linear-gradient(to top, rgba(15,23,42,.88), transparent);
-        color: #fff; display: flex; flex-direction: column; gap: 2px;
-        opacity: 0; transform: translateY(12px); transition: all .35s ease;
-    }
-    .masonry-item:hover .masonry-overlay { opacity: 1; transform: none; }
-    .masonry-overlay small { color: rgba(255,255,255,.7); font-size: .76rem; }
-
-    .cta-panel {
-        position: relative; overflow: hidden; border-radius: var(--radius-lg); padding: 58px 48px;
-        background: linear-gradient(135deg, #1D4ED8, #2563EB 55%, #0EA5E9);
-        box-shadow: 0 30px 70px -30px rgba(37,99,235,.7);
-    }
-    .cta-panel::before {
-        content: ''; position: absolute; width: 420px; height: 420px; border-radius: 50%;
-        background: rgba(255,255,255,.14); filter: blur(70px); top: -160px; right: -100px;
-    }
-
-    @media (max-width: 900px) { .masonry { columns: 2; } }
-    @media (max-width: 600px) { .masonry { columns: 1; } .cta-panel { padding: 42px 26px; } }
-</style>
 
 @endsection

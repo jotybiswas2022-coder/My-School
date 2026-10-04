@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Admission;
 use App\Models\Contact;
 use App\Models\Event;
+use App\Models\GalleryAlbum;
 use App\Models\News;
 use App\Models\Notice;
 use App\Models\Setting;
@@ -301,6 +302,53 @@ class SchoolSiteTest extends TestCase
         $mobile = substr($layout, strpos($layout, '@media (max-width: 720px)'));
         $this->assertStringContainsString('.principal { grid-template-columns: 1fr;', $mobile);
         $this->assertStringContainsString('.principal-photo { width: 172px; }', $mobile);
+    }
+
+    public function test_homepage_gallery_titles_are_visible_without_hovering(): void
+    {
+        $html = $this->get('/')->assertOk()->getContent();
+
+        $this->assertStringContainsString('<div class="gal">', $html);
+        $this->assertStringContainsString('class="gal-item reveal', $html);
+        $this->assertStringContainsString('class="gal-media"', $html);
+        $this->assertStringContainsString('class="gal-count"', $html);
+        $this->assertStringContainsString('class="gal-cap"', $html);
+        $this->assertStringContainsString('class="gal-cap-title"', $html);
+
+        // The old masonry hid every album title and photo count behind a hover, and drove
+        // the layout with CSS columns plus 900px/600px breakpoints in a page-local block.
+        $this->assertStringNotContainsString('class="masonry', $html);
+        $this->assertStringNotContainsString('masonry-item', $html);
+        $this->assertStringNotContainsString('masonry-overlay', $html);
+        // Only the shared layout block should remain; the page-local one is gone.
+        $this->assertSame(1, substr_count($html, '<style>'));
+        $this->assertStringNotContainsString('@media (max-width: 900px)', $html);
+        $this->assertStringNotContainsString('@media (max-width: 600px)', $html);
+
+        $albums = GalleryAlbum::with('images')->latest()->take(5)->get();
+        $this->assertSame($albums->count(), substr_count($html, 'class="gal-item reveal'));
+
+        // Every album is one whole-tile link, so no nested buttons remain inside a tile.
+        $this->assertSame(
+            $albums->count(),
+            preg_match_all('/<a href="[^"]*\/gallery\/\d+"\s+class="gal-item reveal[^"]*">/', $html),
+        );
+
+        // The photo count is rendered on the tile, not hidden behind the hover overlay.
+        preg_match_all('/<a href="[^"]*\/gallery\/\d+"\s+class="gal-item reveal.*?<\/a>/s', $html, $matches);
+        $tiles = implode('', $matches[0]);
+        $this->assertStringNotContainsString('<button', $tiles);
+        foreach ($albums as $album) {
+            $this->assertStringContainsString(
+                '<i class="bi bi-images" aria-hidden="true"></i> '.$album->images->count(),
+                $tiles,
+            );
+        }
+
+        // A half row is closed by stretching the last tile instead of leaving a hole.
+        if ($albums->count() % 3 !== 0) {
+            $this->assertStringContainsString('is-wide', $html);
+        }
     }
 
     public function test_homepage_news_leads_with_one_feature_and_thumbnail_rows(): void

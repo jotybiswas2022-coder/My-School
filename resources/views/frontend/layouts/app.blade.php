@@ -1151,6 +1151,47 @@
         /* clamp so one long headline cannot stretch its card past the other */
         .nwsmini-title { font-size: .95rem; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 
+        /* ===================== GALLERY + CTA (home) ===================== */
+        /* An explicit grid replaces the old CSS-columns masonry: the tiles stay aligned and
+           the caption is always readable, not hover-only, so touch users see the titles. */
+        .gal { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+        .gal-item {
+            position: relative; display: block; overflow: hidden; aspect-ratio: 4 / 3;
+            border-radius: var(--radius); box-shadow: var(--shadow-sm);
+            background: linear-gradient(135deg, #DBEAFE, #BFDBFE);
+            transition: transform .25s ease, box-shadow .25s ease;
+        }
+        .gal-item:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+        /* when the album count leaves a half row, the last tile stretches to close it */
+        .gal-item.is-wide { grid-column: span 2; aspect-ratio: 8 / 3; }
+        .gal-media { position: absolute; inset: 0; }
+        .gal-media img { width: 100%; height: 100%; object-fit: cover; transition: transform .55s cubic-bezier(.4,0,.2,1); }
+        .gal-item:hover .gal-media img { transform: scale(1.07); }
+        .gal-fallback { display: grid; place-items: center; height: 100%; font-size: 2.6rem; color: var(--primary); }
+        .gal-cap {
+            position: absolute; inset: auto 0 0 0; padding: 44px 18px 16px; color: #fff;
+            display: flex; flex-direction: column; gap: 3px;
+            background: linear-gradient(to top, rgba(15,23,42,.9), rgba(15,23,42,.42) 58%, transparent);
+        }
+        .gal-cap-title { font-size: .98rem; line-height: 1.35; }
+        .gal-cap-meta { display: flex; align-items: center; gap: 6px; font-size: .74rem; color: rgba(255,255,255,.78); }
+        /* the photo count sits on the tile itself, so it is readable without hovering */
+        .gal-count {
+            position: absolute; top: 12px; right: 12px; display: inline-flex; align-items: center; gap: 5px;
+            padding: 4px 10px; border-radius: 999px; background: rgba(15,23,42,.58); color: #fff;
+            font-size: .72rem; font-weight: 700;
+        }
+
+        .cta-panel {
+            position: relative; overflow: hidden; border-radius: var(--radius-lg); padding: 58px 48px;
+            background: linear-gradient(135deg, #1D4ED8, #2563EB 55%, #0EA5E9);
+            box-shadow: 0 30px 70px -30px rgba(37,99,235,.7);
+        }
+        .cta-panel::before {
+            content: ''; position: absolute; width: 420px; height: 420px; border-radius: 50%;
+            background: rgba(255,255,255,.14); filter: blur(70px); top: -160px; right: -100px;
+        }
+
         /* ===================== RESPONSIVE ===================== */
         @media (max-width: 1024px) {
             .hero-grid { grid-template-columns: 1fr; gap: 46px; padding: 70px 0; }
@@ -1193,6 +1234,8 @@
             .erow { gap: 18px; padding: 16px 18px; }
             .nwslead-media { min-height: 240px; }
             .nwslead-body { padding: 26px; }
+            .gal { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .cta-panel { padding: 46px 32px; }
             .fac-cta { padding: 32px 28px; }
             .cls-head { padding: 16px 18px; }
             .cls-body { padding: 0 18px 20px; }
@@ -1259,6 +1302,11 @@
             .nwslead-desc { -webkit-line-clamp: 2; margin-bottom: 14px; }
             .nwsgrid { grid-template-columns: 1fr; gap: 10px; margin-top: 12px; }
             .nwsmini { grid-template-columns: 84px minmax(0, 1fr); padding: 10px; }
+            .gal { gap: 10px; }
+            .gal-cap { padding: 34px 14px 12px; }
+            .gal-cap-title { font-size: .9rem; }
+            .gal-count { top: 8px; right: 8px; padding: 3px 8px; font-size: .68rem; }
+            .cta-panel { padding: 40px 24px; }
             .section { padding: 58px 0; }
             .grid-2, .grid-3, .grid-4, .grid-auto { grid-template-columns: 1fr; }
             .about-pillar { padding: 16px; gap: 13px; }
