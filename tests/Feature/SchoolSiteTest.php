@@ -282,6 +282,21 @@ class SchoolSiteTest extends TestCase
         $this->assertSame(6, preg_match_all('/<a href="'.$classesUrl.'" class="prog reveal">/', $html));
     }
 
+    public function test_homepage_program_grid_is_a_keyboard_reachable_scroller_on_phones(): void
+    {
+        $html = $this->get('/')->assertOk()->getContent();
+
+        // tabindex keeps the horizontal region scrollable without a pointer.
+        $this->assertStringContainsString('class="grid grid-3 prog-grid" tabindex="0" role="group"', $html);
+
+        $layout = file_get_contents(resource_path('views/frontend/layouts/app.blade.php'));
+        $mobile = substr($layout, strpos($layout, '@media (max-width: 720px)'));
+
+        $this->assertStringContainsString('scroll-snap-type: x mandatory;', $mobile);
+        $this->assertStringContainsString('overflow-x: auto;', $mobile);
+        $this->assertStringContainsString('.prog { flex: 0 0 78%; scroll-snap-align: start; }', $mobile);
+    }
+
     public function test_homepage_glance_band_replaces_the_flat_stat_cards(): void
     {
         $html = $this->get('/')->assertOk()->getContent();

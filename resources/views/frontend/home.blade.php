@@ -201,7 +201,7 @@
                 <p>{{ __('ui.home.programs_empty_text') }}</p>
             </div>
         @else
-            <div class="grid grid-3">
+            <div class="grid grid-3 prog-grid" tabindex="0" role="group" aria-label="{{ __('ui.home.programs_title') }}">
                 @foreach ($programs as $program)
                     <a href="{{ route('classes') }}" class="prog reveal">
                         <div class="prog-head">

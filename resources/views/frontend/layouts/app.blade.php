@@ -777,6 +777,20 @@
             .glance-label { font-size: .76rem; line-height: 1.35; }
             .prog { padding: 22px 20px; }
             .prog-all { margin-top: 26px; }
+            /* Six stacked cards made this section ~1200px tall, so on phones the row
+               scrolls sideways instead. No JS: the next card peeking is the affordance. */
+            .prog-grid {
+                display: flex; gap: 14px;
+                overflow-x: auto; overscroll-behavior-x: contain;
+                scroll-snap-type: x mandatory;
+                /* bleed past the container padding so the next card peeks at the screen edge */
+                margin-inline: -20px; padding: 4px 20px;
+                scrollbar-width: none;
+            }
+            .prog-grid::-webkit-scrollbar { display: none; }
+            .prog { flex: 0 0 78%; scroll-snap-align: start; }
+            /* clamp the copy so one long description cannot stretch the card */
+            .prog p { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
             .footer-grid { grid-template-columns: 1fr; gap: 30px; }
             .float-chip { display: none; }
             .hero-badges { gap: 20px; }
