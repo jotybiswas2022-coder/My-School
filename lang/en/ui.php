@@ -176,6 +176,7 @@ return [
         'program_students' => 'Students',
         'programs_all' => 'View all classes & pathways',
         'principal_eyebrow' => "Principal's Message",
+        'principal_title' => 'A message from our principal',
         'principal_quote' => 'Education is the most powerful tool we can use to change the world.',
         'faculty_eyebrow' => 'Our Faculty',
         'faculty_title' => 'Meet our expert teachers',

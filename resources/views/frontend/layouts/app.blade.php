@@ -623,6 +623,56 @@
         .about-quote-avatar img { width: 100%; height: 100%; object-fit: cover; }
         .about-quote-person .muted { font-size: .84rem; margin: 0; }
 
+        /* ===================== PRINCIPAL MESSAGE ===================== */
+        .principal {
+            display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 48px; align-items: center;
+            background: linear-gradient(150deg, rgba(37,99,235,.07), rgba(37,99,235,.02));
+            border: 1px solid rgba(37,99,235,.18); border-radius: var(--radius-lg);
+            padding: 44px 42px; box-shadow: var(--shadow-sm);
+        }
+
+        .principal-media { position: relative; flex-shrink: 0; }
+        /* offset outline sitting behind the portrait */
+        .principal-frame {
+            position: absolute; inset: 14px -14px -14px 14px;
+            border: 2px solid rgba(37,99,235,.28); border-radius: 20px;
+        }
+        .principal-photo {
+            position: relative; width: 268px; max-width: 100%; aspect-ratio: 1/1; overflow: hidden;
+            border-radius: 20px; background: var(--gradient); color: #fff; font-size: 3.4rem;
+            display: grid; place-items: center; box-shadow: var(--shadow-lg);
+        }
+        .principal-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+        .principal-body { min-width: 0; }
+        .principal-title { font-size: clamp(1.5rem, 2.6vw, 2rem); margin-bottom: 16px; }
+
+        .principal-figure { margin: 0; }
+        .principal-quote {
+            position: relative; font-style: italic; font-weight: 700;
+            font-size: 1.06rem; line-height: 1.55; color: var(--secondary);
+            padding-left: 36px; margin-bottom: 16px;
+        }
+        .principal-quote::before {
+            content: '\201C'; position: absolute; left: 0; top: -16px;
+            font-size: 2.8rem; line-height: 1; font-style: normal; color: var(--primary); opacity: .32;
+        }
+        .principal-text { font-size: .92rem; color: var(--muted); margin-bottom: 24px; }
+
+        .principal-sign {
+            display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap;
+            padding-top: 20px; border-top: 1px solid rgba(37,99,235,.16);
+        }
+        .principal-sign strong { display: block; color: var(--secondary); font-size: .98rem; }
+        .principal-sign span { color: var(--muted); font-size: .84rem; font-weight: 600; }
+        .principal-link {
+            display: inline-flex; align-items: center; gap: 8px;
+            color: var(--primary); font-weight: 700; font-size: .88rem; transition: color .2s ease;
+        }
+        .principal-link i { transition: transform .25s ease; }
+        .principal-link:hover { color: var(--primary-dark); }
+        .principal-link:hover i { transform: translateX(5px); }
+
         /* ===================== CLASSES PAGE ===================== */
         .cls-hint {
             display: inline-flex; align-items: center; gap: 9px; margin-bottom: 22px;
@@ -801,6 +851,8 @@
             .fac-cta { padding: 32px 28px; }
             .cls-head { padding: 16px 18px; }
             .cls-body { padding: 0 18px 20px; }
+            .principal { gap: 36px; padding: 34px 30px; }
+            .principal-photo { width: 216px; }
             .glance { padding: 38px 28px; }
             .glance-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 0; }
             .glance-stat:nth-child(odd) { padding-left: 0; border-left: 0; }
@@ -829,6 +881,11 @@
             .cls-title h3 { font-size: .98rem; }
             /* Long class names push the code chip and caret onto their own row */
             .cls-code { margin-left: 52px; }
+            .principal { grid-template-columns: 1fr; gap: 28px; padding: 28px 22px; }
+            .principal-photo { width: 172px; }
+            .principal-frame { inset: 10px -10px -10px 10px; border-radius: 16px; }
+            .principal-quote { padding-left: 28px; font-size: 1rem; }
+            .principal-sign { flex-direction: column; align-items: flex-start; gap: 14px; }
             .about-quote { padding: 26px 20px; }
             .about-quote .btn { width: 100%; }
             .fac-group + .fac-group { margin-top: 34px; }

@@ -231,32 +231,37 @@
 {{-- ===================== PRINCIPAL MESSAGE ===================== --}}
 <section class="section section-alt">
     <div class="container">
-        <div class="grid grid-2" style="align-items:center;gap:56px;">
-            <div class="reveal" style="max-width:380px;">
-                <div class="card" style="padding:14px;">
-                    <div class="thumb" style="aspect-ratio:1/1;border-radius:18px;font-size:4rem;">
-                        @if (! empty($principal['photo']))
-                            <img src="{{ asset('storage/' . $principal['photo']) }}" alt="{{ $principal['name'] }}">
-                        @else
-                            <i class="bi bi-person-badge"></i>
-                        @endif
-                    </div>
+        <div class="principal reveal">
+            <div class="principal-media">
+                <span class="principal-frame" aria-hidden="true"></span>
+                <div class="principal-photo">
+                    @if (! empty($principal['photo']))
+                        <img src="{{ asset('storage/' . $principal['photo']) }}" alt="{{ $principal['name'] }}">
+                    @else
+                        <i class="bi bi-person-badge" aria-hidden="true"></i>
+                    @endif
                 </div>
             </div>
 
-            <div class="reveal">
-                <span class="eyebrow"><i class="bi bi-chat-quote-fill"></i> {{ __('ui.home.principal_eyebrow') }}</span>
-                <h2 class="section-title">"{{ __('ui.home.principal_quote') }}"</h2>
-                <p class="section-sub" style="margin-bottom:20px;">
-                    {{ \Illuminate\Support\Str::limit($principal['message'], 300) }}
-                </p>
-                <div class="row-between" style="justify-content:flex-start;gap:20px;">
-                    <div>
-                        <strong style="display:block;color:var(--secondary);">{{ $principal['name'] }}</strong>
-                        <span class="muted" style="font-size:.84rem;">{{ $principal['designation'] }}</span>
-                    </div>
-                    <a href="{{ route('principal') }}" class="btn btn-primary btn-sm">{{ __('ui.common.read_more') }}</a>
-                </div>
+            <div class="principal-body">
+                <span class="eyebrow"><i class="bi bi-chat-quote-fill" aria-hidden="true"></i> {{ __('ui.home.principal_eyebrow') }}</span>
+                <h2 class="principal-title">{{ __('ui.home.principal_title') }}</h2>
+
+                <figure class="principal-figure">
+                    <blockquote class="principal-quote">{{ __('ui.home.principal_quote') }}</blockquote>
+
+                    <p class="principal-text">{{ \Illuminate\Support\Str::limit($principal['message'], 300) }}</p>
+
+                    <figcaption class="principal-sign">
+                        <div>
+                            <strong>{{ $principal['name'] }}</strong>
+                            <span>{{ $principal['designation'] }}</span>
+                        </div>
+                        <a href="{{ route('principal') }}" class="principal-link">
+                            {{ __('ui.common.read_more') }} <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                        </a>
+                    </figcaption>
+                </figure>
             </div>
         </div>
     </div>

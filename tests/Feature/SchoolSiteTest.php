@@ -264,6 +264,24 @@ class SchoolSiteTest extends TestCase
         );
     }
 
+    public function test_homepage_principal_message_is_a_properly_labelled_quote_panel(): void
+    {
+        $html = $this->get('/')->assertOk()->getContent();
+
+        // The quote used to be the section heading, which left the section with no heading at all.
+        $this->assertStringContainsString('<h2 class="principal-title">A message from our principal</h2>', $html);
+        $this->assertStringContainsString('<figure class="principal-figure">', $html);
+        $this->assertStringContainsString('<blockquote class="principal-quote">', $html);
+        $this->assertStringContainsString('<figcaption class="principal-sign">', $html);
+        $this->assertStringContainsString('principal-frame', $html);
+        $this->assertStringContainsString('principal-photo', $html);
+        $this->assertStringContainsString(url('/principal'), $html);
+
+        // The old two-column card grid and inline styles are gone.
+        $this->assertStringNotContainsString('align-items:center;gap:56px;', $html);
+        $this->assertStringNotContainsString('<h2 class="section-title">"', $html);
+    }
+
     public function test_classes_page_uses_a_disclosure_list_with_the_first_class_open(): void
     {
         $html = $this->get('/classes')->assertOk()->getContent();
