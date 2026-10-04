@@ -425,38 +425,66 @@
 
 {{-- ===================== LATEST NEWS ===================== --}}
 @if ($latestNews->isNotEmpty())
+    @php
+        $leadArticle = $latestNews->first();
+        $moreArticles = $latestNews->slice(1);
+    @endphp
+
     <section class="section section-alt">
         <div class="container">
-            <div class="row-between reveal" style="margin-bottom:40px;align-items:flex-end;">
+            <div class="sechead reveal">
                 <div>
-                    <span class="eyebrow"><i class="bi bi-newspaper"></i> {{ __('ui.home.news_eyebrow') }}</span>
-                    <h2 class="section-title" style="margin-bottom:0;">{{ __('ui.home.news_title') }}</h2>
+                    <span class="eyebrow"><i class="bi bi-newspaper" aria-hidden="true"></i> {{ __('ui.home.news_eyebrow') }}</span>
+                    <h2 class="section-title">{{ __('ui.home.news_title') }}</h2>
                 </div>
-                <a href="{{ route('news') }}" class="btn btn-outline btn-sm">{{ __('ui.common.view_all') }}</a>
+                <a href="{{ route('news') }}" class="sechead-all">
+                    {{ __('ui.common.view_all') }} <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                </a>
             </div>
 
-            <div class="grid grid-3">
-                @foreach ($latestNews as $article)
-                    <div class="card card-hover reveal">
-                        <div class="thumb">
-                            @if ($article->featured_image)
-                                <img src="{{ asset('storage/' . $article->featured_image) }}" alt="{{ $article->title }}">
-                            @else
-                                <i class="bi bi-newspaper"></i>
-                            @endif
-                        </div>
-                        <div class="card-body">
-                            <div class="row-between" style="margin-bottom:10px;">
-                                <span class="badge">{{ __('ui.categories.' . $article->category) }}</span>
-                                <span class="muted" style="font-size:.76rem;font-weight:600;">{{ optional($article->published_at)->format('d M Y') }}</span>
-                            </div>
-                            <h3 style="font-size:1.02rem;margin-bottom:8px;">{{ $article->title }}</h3>
-                            <p class="muted" style="font-size:.85rem;margin-bottom:14px;">{{ \Illuminate\Support\Str::limit(strip_tags($article->description), 90) }}</p>
-                            <a href="{{ route('news.show', $article) }}" class="btn btn-outline btn-sm">{{ __('ui.common.read_more') }}</a>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
+            <a href="{{ route('news.show', $leadArticle) }}" class="nwslead reveal">
+                <span class="nwslead-media">
+                    @if ($leadArticle->featured_image)
+                        <img src="{{ asset('storage/' . $leadArticle->featured_image) }}" alt="{{ $leadArticle->title }}">
+                    @else
+                        <i class="bi bi-newspaper" aria-hidden="true"></i>
+                    @endif
+                    <span class="badge nwslead-badge">{{ __('ui.categories.' . $leadArticle->category) }}</span>
+                </span>
+                <span class="nwslead-body">
+                    @if ($leadArticle->published_at)
+                        <time class="nwslead-date" datetime="{{ $leadArticle->published_at->toDateString() }}">{{ $leadArticle->published_at->format('d M Y') }}</time>
+                    @endif
+                    <h3 class="nwslead-title">{{ $leadArticle->title }}</h3>
+                    <span class="nwslead-desc">{{ \Illuminate\Support\Str::limit(strip_tags($leadArticle->description), 180) }}</span>
+                    <span class="nwslead-go">{{ __('ui.common.read_more') }} <i class="bi bi-arrow-right" aria-hidden="true"></i></span>
+                </span>
+            </a>
+
+            @if ($moreArticles->isNotEmpty())
+                <div class="nwsgrid">
+                    @foreach ($moreArticles as $article)
+                        <a href="{{ route('news.show', $article) }}" class="nwsmini reveal">
+                            <span class="nwsmini-media">
+                                @if ($article->featured_image)
+                                    <img src="{{ asset('storage/' . $article->featured_image) }}" alt="{{ $article->title }}">
+                                @else
+                                    <i class="bi bi-newspaper" aria-hidden="true"></i>
+                                @endif
+                            </span>
+                            <span class="nwsmini-body">
+                                <span class="nwsmini-top">
+                                    <span class="badge">{{ __('ui.categories.' . $article->category) }}</span>
+                                    @if ($article->published_at)
+                                        <time datetime="{{ $article->published_at->toDateString() }}">{{ $article->published_at->format('d M Y') }}</time>
+                                    @endif
+                                </span>
+                                <h3 class="nwsmini-title">{{ $article->title }}</h3>
+                            </span>
+                        </a>
+                    @endforeach
+                </div>
+            @endif
         </div>
     </section>
 @endif

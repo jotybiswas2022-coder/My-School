@@ -1105,6 +1105,52 @@
         .erow-go { flex-shrink: 0; color: var(--primary); opacity: .5; transition: transform .25s ease, opacity .25s ease; }
         .erow:hover .erow-go { transform: translateX(4px); opacity: 1; }
 
+        /* ===================== NEWS (home) ===================== */
+        /* Articles do have cover images, so the newest one leads as a wide feature and the
+           rest shrink to thumbnails instead of three identical cards. */
+        .nwslead {
+            display: grid; grid-template-columns: 1.15fr 1fr; overflow: hidden; background: var(--white);
+            border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);
+            transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+        }
+        .nwslead:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: rgba(37,99,235,.28); }
+        .nwslead-media {
+            position: relative; min-height: 260px; display: grid; place-items: center;
+            font-size: 3rem; color: var(--primary); background: linear-gradient(135deg, #DBEAFE, #BFDBFE);
+        }
+        .nwslead-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+        .nwslead-badge { position: absolute; top: 16px; left: 16px; z-index: 1; background: rgba(255,255,255,.92); }
+        .nwslead-body { display: flex; flex-direction: column; justify-content: center; padding: 30px 32px; }
+        .nwslead-date { display: block; font-size: .78rem; font-weight: 700; color: var(--primary); margin-bottom: 10px; }
+        .nwslead-title { font-size: clamp(1.18rem, 1.9vw, 1.5rem); margin-bottom: 12px; text-wrap: balance; }
+        .nwslead-desc {
+            display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+            color: var(--muted); font-size: .9rem; margin-bottom: 18px;
+        }
+        .nwslead-go { display: inline-flex; align-items: center; gap: 8px; color: var(--primary); font-weight: 700; font-size: .88rem; }
+        .nwslead-go i { transition: transform .25s ease; }
+        .nwslead:hover .nwslead-go i { transform: translateX(5px); }
+
+        .nwsgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 16px; }
+        .nwsmini {
+            display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 14px; align-items: center;
+            padding: 12px; background: var(--white); border: 1px solid var(--border);
+            border-radius: var(--radius); box-shadow: var(--shadow-sm);
+            transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+        }
+        .nwsmini:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: rgba(37,99,235,.28); }
+        .nwsmini-media {
+            position: relative; aspect-ratio: 1; overflow: hidden; border-radius: var(--radius-sm);
+            display: grid; place-items: center; font-size: 1.4rem; color: var(--primary);
+            background: linear-gradient(135deg, #DBEAFE, #BFDBFE);
+        }
+        .nwsmini-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+        .nwsmini-body { min-width: 0; }
+        .nwsmini-top { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+        .nwsmini-top time { font-size: .74rem; font-weight: 700; color: var(--muted); white-space: nowrap; }
+        /* clamp so one long headline cannot stretch its card past the other */
+        .nwsmini-title { font-size: .95rem; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
         /* ===================== RESPONSIVE ===================== */
         @media (max-width: 1024px) {
             .hero-grid { grid-template-columns: 1fr; gap: 46px; padding: 70px 0; }
@@ -1145,6 +1191,8 @@
             .tprofile-meta { grid-column: 1 / -1; margin-top: 20px; padding-top: 20px; }
             .sechead { margin-bottom: 26px; }
             .erow { gap: 18px; padding: 16px 18px; }
+            .nwslead-media { min-height: 240px; }
+            .nwslead-body { padding: 26px; }
             .fac-cta { padding: 32px 28px; }
             .cls-head { padding: 16px 18px; }
             .cls-body { padding: 0 18px 20px; }
@@ -1205,6 +1253,12 @@
             .erow-title { font-size: .95rem; margin-bottom: 7px; }
             .echip { font-size: .72rem; padding: 3px 9px; }
             .erow-go { font-size: .8rem; }
+            .nwslead { grid-template-columns: 1fr; }
+            .nwslead-media { min-height: 180px; font-size: 2.2rem; }
+            .nwslead-body { padding: 20px; }
+            .nwslead-desc { -webkit-line-clamp: 2; margin-bottom: 14px; }
+            .nwsgrid { grid-template-columns: 1fr; gap: 10px; margin-top: 12px; }
+            .nwsmini { grid-template-columns: 84px minmax(0, 1fr); padding: 10px; }
             .section { padding: 58px 0; }
             .grid-2, .grid-3, .grid-4, .grid-auto { grid-template-columns: 1fr; }
             .about-pillar { padding: 16px; gap: 13px; }

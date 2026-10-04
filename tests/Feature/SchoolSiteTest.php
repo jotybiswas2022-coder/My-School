@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Admission;
 use App\Models\Contact;
 use App\Models\Event;
+use App\Models\News;
 use App\Models\Notice;
 use App\Models\Setting;
 use App\Models\Student;
@@ -300,6 +301,43 @@ class SchoolSiteTest extends TestCase
         $mobile = substr($layout, strpos($layout, '@media (max-width: 720px)'));
         $this->assertStringContainsString('.principal { grid-template-columns: 1fr;', $mobile);
         $this->assertStringContainsString('.principal-photo { width: 172px; }', $mobile);
+    }
+
+    public function test_homepage_news_leads_with_one_feature_and_thumbnail_rows(): void
+    {
+        $html = $this->get('/')->assertOk()->getContent();
+
+        $this->assertStringContainsString('class="nwslead reveal"', $html);
+        $this->assertStringContainsString('class="nwslead-media"', $html);
+        $this->assertStringContainsString('nwslead-badge', $html);
+        $this->assertStringContainsString('class="nwslead-date" datetime="', $html);
+        $this->assertStringContainsString('class="nwslead-title"', $html);
+        $this->assertStringContainsString('class="nwslead-desc"', $html);
+        $this->assertStringContainsString('class="nwslead-go"', $html);
+        $this->assertStringContainsString('class="nwsgrid"', $html);
+        $this->assertStringContainsString('class="nwsmini reveal"', $html);
+        $this->assertStringContainsString('class="nwsmini-media"', $html);
+        $this->assertStringContainsString('class="nwsmini-title"', $html);
+
+        // The old version was three identical cards, each with its own "Read more" button.
+        $this->assertStringNotContainsString('style="margin-bottom:40px;align-items:flex-end;"', $html);
+        $this->assertSame(3, substr_count($html, '<h3 class="nwslead-title">') + substr_count($html, '<h3 class="nwsmini-title">'));
+
+        $articles = News::published()->take(3)->get();
+        $lead = $articles->first();
+
+        // The lead is the newest article and there is exactly one of it.
+        $this->assertStringContainsString(route('news.show', $lead), $html);
+        $this->assertSame(1, substr_count($html, 'class="nwslead reveal"'));
+        $this->assertSame($articles->count() - 1, substr_count($html, 'class="nwsmini reveal"'));
+
+        // Every item is a whole-card link, so no nested buttons are left behind. None of
+        // these anchors wrap another link, so the first </a> closes each one.
+        preg_match_all('/<a href="[^"]*\/news\/\d+" class="nws(?:lead|mini) reveal">.*?<\/a>/s', $html, $matches);
+        $this->assertSame($articles->count(), count($matches[0]));
+        $news = implode('', $matches[0]);
+        $this->assertStringNotContainsString('<button', $news);
+        $this->assertStringNotContainsString('btn btn-outline', $news);
     }
 
     public function test_homepage_events_are_a_schedule_rail_with_logistics_chips(): void
