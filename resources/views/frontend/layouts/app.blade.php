@@ -837,6 +837,44 @@
         .prose p { margin-bottom: 18px; }
         .prose h2, .prose h3 { margin: 28px 0 14px; }
 
+        /* ===================== PRINCIPAL PAGE ===================== */
+        /* Profile column stays put while the letter scrolls on desktop. */
+        .principal-page { display: grid; grid-template-columns: 300px minmax(0,1fr); gap: 52px; align-items: start; }
+        .principal-side { position: sticky; top: calc(var(--nav-h) + 26px); }
+        .principal-side-inner {
+            background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg);
+            padding: 34px 28px 30px; text-align: center; box-shadow: var(--shadow);
+        }
+        .principal-side .principal-media { margin: 0 auto 24px; }
+        .principal-side .principal-photo { width: 168px; }
+        .principal-name { font-size: 1.24rem; margin-bottom: 6px; }
+        .principal-role { display: block; color: var(--primary); font-weight: 700; font-size: .88rem; }
+        .principal-mail {
+            display: inline-flex; align-items: center; gap: 9px; margin-top: 20px;
+            padding: 11px 20px; border-radius: 999px; background: rgba(37,99,235,.09);
+            color: var(--primary-dark); font-weight: 700; font-size: .84rem; word-break: break-all;
+            transition: background .2s, color .2s, transform .2s;
+        }
+        .principal-mail:hover { background: var(--primary); color: var(--white); transform: translateY(-2px); }
+
+        /* The letter is the point of the page, so it gets the reading measure and a drop cap. */
+        .principal-letter {
+            background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg);
+            padding: 40px 40px 36px; box-shadow: var(--shadow-sm);
+        }
+        .principal-letter-title { font-size: clamp(1.32rem, 2.4vw, 1.75rem); margin-bottom: 20px; }
+        .principal-letter .prose { max-width: 68ch; }
+        .principal-letter .prose > p:first-child::first-letter {
+            float: left; font-size: 3.3rem; line-height: .84; font-weight: 800;
+            padding: 6px 12px 0 0; color: var(--primary);
+        }
+        .principal-signoff { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border); }
+        .principal-signoff strong { display: block; font-size: 1.02rem; color: var(--secondary); }
+        .principal-signoff span { font-size: .84rem; color: var(--muted); }
+        .principal-values { margin-top: 34px; }
+        .principal-values-head { max-width: 640px; margin-bottom: 26px; }
+        .principal-values-head h2 { font-size: clamp(1.22rem, 2.2vw, 1.55rem); margin-bottom: 8px; }
+
         /* ===================== RESPONSIVE ===================== */
         @media (max-width: 1024px) {
             .hero-grid { grid-template-columns: 1fr; gap: 46px; padding: 70px 0; }
@@ -850,6 +888,12 @@
             .grid-tiles { grid-template-columns: repeat(2, minmax(0,1fr)); }
             .about-quote { grid-template-columns: 1fr; gap: 30px; padding: 32px 28px; }
             .about-quote-person { order: -1; }
+            .principal-page { grid-template-columns: 1fr; gap: 30px; }
+            .principal-side { position: static; }
+            .principal-side-inner { display: grid; grid-template-columns: auto minmax(0,1fr); gap: 0 28px; text-align: left; align-items: center; padding: 28px 30px; }
+            .principal-side .principal-media { margin: 0; grid-row: span 2; }
+            .principal-side .principal-photo { width: 140px; }
+            .principal-mail { margin-top: 14px; }
             .fac-cta { padding: 32px 28px; }
             .cls-head { padding: 16px 18px; }
             .cls-body { padding: 0 18px 20px; }
@@ -861,6 +905,12 @@
             .footer-grid { grid-template-columns: repeat(2, 1fr); }
         }
         @media (max-width: 720px) {
+            .principal-side-inner { grid-template-columns: 1fr; text-align: center; padding: 26px 22px; justify-items: center; }
+            .principal-side .principal-media { grid-row: auto; margin: 0 auto 20px; }
+            .principal-side .principal-photo { width: 128px; }
+            .principal-letter { padding: 28px 22px 26px; }
+            .principal-letter .prose > p:first-child::first-letter { font-size: 2.8rem; }
+            .principal-values { margin-top: 28px; }
             .section { padding: 58px 0; }
             .grid-2, .grid-3, .grid-4, .grid-auto { grid-template-columns: 1fr; }
             .about-pillar { padding: 16px; gap: 13px; }

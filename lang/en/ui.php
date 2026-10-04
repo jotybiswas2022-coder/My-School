@@ -253,6 +253,7 @@ return [
         'subtitle' => 'A warm welcome from the leadership of our school.',
         'message' => 'Message',
         'about_school' => 'About School',
+        'values_title' => 'What guides our school',
         'value_excellence' => 'Academic Excellence',
         'value_excellence_text' => 'High expectations paired with genuine support.',
         'value_character' => 'Character First',

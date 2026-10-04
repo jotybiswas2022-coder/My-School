@@ -10,27 +10,40 @@
     ])
 
     <section class="section">
-        <div class="container" style="max-width:980px;">
-            <div class="card reveal principal-card" style="padding:0;overflow:hidden;">
-                <div style="background:var(--gradient-soft);padding:40px 30px;text-align:center;">
-                    <div class="avatar" style="width:150px;height:150px;font-size:2.6rem;margin:0 auto 20px;">
-                        @if (! empty($principal['photo']))
-                            <img src="{{ asset('storage/' . $principal['photo']) }}" alt="{{ $principal['name'] }}">
-                        @else
-                            <i class="bi bi-person-badge"></i>
-                        @endif
-                    </div>
-                    <h3 style="font-size:1.15rem;margin-bottom:4px;">{{ $principal['name'] }}</h3>
-                    <p style="color:var(--primary);font-weight:600;font-size:.88rem;">{{ $principal['designation'] }}</p>
-                    @if (! empty($principal['email']))
-                        <p class="muted" style="font-size:.82rem;margin-top:8px;">
-                            <i class="bi bi-envelope"></i> {{ $principal['email'] }}
-                        </p>
-                    @endif
-                </div>
+        <div class="container">
+            <div class="principal-page">
+                {{-- Profile column: portrait, name, role and a real mailto link --}}
+                <aside class="principal-side reveal">
+                    <div class="principal-side-inner">
+                        <div class="principal-media">
+                            <span class="principal-frame" aria-hidden="true"></span>
+                            <div class="principal-photo">
+                                @if (! empty($principal['photo']))
+                                    <img src="{{ asset('storage/' . $principal['photo']) }}" alt="{{ $principal['name'] }}">
+                                @else
+                                    <i class="bi bi-person-badge" aria-hidden="true"></i>
+                                @endif
+                            </div>
+                        </div>
 
-                <div class="card-body" style="padding:44px;">
-                    <span class="eyebrow"><i class="bi bi-chat-quote-fill"></i> {{ __('ui.principal.message') }}</span>
+                        <div>
+                            <h2 class="principal-name">{{ $principal['name'] }}</h2>
+                            <span class="principal-role">{{ $principal['designation'] }}</span>
+
+                            @if (! empty($principal['email']))
+                                <a href="mailto:{{ $principal['email'] }}" class="principal-mail">
+                                    <i class="bi bi-envelope" aria-hidden="true"></i> {{ $principal['email'] }}
+                                </a>
+                            @endif
+                        </div>
+                    </div>
+                </aside>
+
+                {{-- The letter itself, with a drop cap and a signed sign-off --}}
+                <div class="principal-letter reveal">
+                    <span class="eyebrow"><i class="bi bi-chat-quote-fill" aria-hidden="true"></i> {{ __('ui.principal.message') }}</span>
+                    <h2 class="principal-letter-title">{{ __('ui.principal.title') }}</h2>
+
                     <div class="prose">
                         @foreach (preg_split('/\r\n|\n|\r/', $principal['message']) as $paragraph)
                             @if (trim($paragraph) !== '')
@@ -38,27 +51,34 @@
                             @endif
                         @endforeach
                     </div>
+
+                    <div class="principal-signoff">
+                        <strong>{{ $principal['name'] }}</strong>
+                        <span>{{ $principal['designation'] }}</span>
+                    </div>
                 </div>
             </div>
 
-            <div class="grid grid-3" style="margin-top:32px;">
-                @foreach ([
-                    ['bi-award-fill', __('ui.principal.value_excellence'), __('ui.principal.value_excellence_text')],
-                    ['bi-shield-fill-check', __('ui.principal.value_character'), __('ui.principal.value_character_text')],
-                    ['bi-people-fill', __('ui.principal.value_partnership'), __('ui.principal.value_partnership_text')],
-                ] as $v)
-                    <div class="card reveal" style="padding:26px;">
-                        <div class="icon-box" style="width:46px;height:46px;font-size:1.1rem;"><i class="bi {{ $v[0] }}"></i></div>
-                        <h4 style="font-size:.98rem;margin-bottom:6px;">{{ $v[1] }}</h4>
-                        <p class="muted" style="font-size:.84rem;">{{ $v[2] }}</p>
-                    </div>
-                @endforeach
+            <div class="principal-values">
+                <div class="principal-values-head reveal">
+                    <span class="eyebrow"><i class="bi bi-compass-fill" aria-hidden="true"></i> {{ __('ui.principal.about_school') }}</span>
+                    <h2>{{ __('ui.principal.values_title') }}</h2>
+                </div>
+
+                <div class="grid grid-3">
+                    @foreach ([
+                        ['bi-award-fill', __('ui.principal.value_excellence'), __('ui.principal.value_excellence_text')],
+                        ['bi-shield-fill-check', __('ui.principal.value_character'), __('ui.principal.value_character_text')],
+                        ['bi-people-fill', __('ui.principal.value_partnership'), __('ui.principal.value_partnership_text')],
+                    ] as $v)
+                        <div class="tile reveal">
+                            <i class="bi {{ $v[0] }} tile-icon tile-icon-lead" aria-hidden="true"></i>
+                            <h3>{{ $v[1] }}</h3>
+                            <p>{{ $v[2] }}</p>
+                        </div>
+                    @endforeach
+                </div>
             </div>
         </div>
     </section>
-
-    <style>
-        .principal-card { display: grid; grid-template-columns: 320px 1fr; }
-        @media (max-width: 780px) { .principal-card { grid-template-columns: 1fr; } }
-    </style>
 @endsection

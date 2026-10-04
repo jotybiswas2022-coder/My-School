@@ -299,6 +299,36 @@ class SchoolSiteTest extends TestCase
         $this->assertStringContainsString('.principal-photo { width: 172px; }', $mobile);
     }
 
+    public function test_principal_page_is_a_profile_column_beside_the_letter(): void
+    {
+        $html = $this->get('/principal')->assertOk()->getContent();
+
+        // The old centred profile card stacked a full-width gradient banner over the letter,
+        // and the page carried its own <style> block instead of using the shared layout.
+        $view = file_get_contents(resource_path('views/frontend/principal.blade.php'));
+        $this->assertStringNotContainsString('principal-card', $view);
+        $this->assertStringNotContainsString('<style', $view);
+        $this->assertStringNotContainsString('780px', $view, 'breakpoints belong in the layout');
+
+        $this->assertStringContainsString('class="principal-page"', $html);
+        $this->assertStringContainsString('class="principal-side-inner"', $html);
+        $this->assertStringContainsString('class="principal-letter reveal"', $html);
+        $this->assertStringContainsString('class="principal-signoff"', $html);
+
+        // page-head already prints the <h1>, so the profile must not skip to an <h3>.
+        $this->assertStringContainsString('<h2 class="principal-name">', $html);
+        $this->assertStringNotContainsString('<h3 style="font-size:1.15rem', $html);
+
+        // Email is a real mailto link, and the value cards got their own heading.
+        $this->assertStringContainsString('href="mailto:', $html);
+        $this->assertStringContainsString('What guides our school', $html);
+        $this->assertSame(
+            3,
+            substr_count($html, 'class="tile reveal"'),
+            'the three value cards should render as tiles',
+        );
+    }
+
     public function test_classes_page_uses_a_disclosure_list_with_the_first_class_open(): void
     {
         $html = $this->get('/classes')->assertOk()->getContent();
