@@ -87,48 +87,60 @@
 {{-- ===================== ABOUT PREVIEW ===================== --}}
 <section class="section">
     <div class="container">
-        <div class="grid grid-2" style="align-items:center;gap:56px;">
-            <div class="reveal">
-                <span class="eyebrow"><i class="bi bi-building"></i> {{ __('ui.home.about_eyebrow') }}</span>
+        <div class="about-grid">
+            <div class="about-main reveal">
+                <span class="eyebrow"><i class="bi bi-building" aria-hidden="true"></i> {{ __('ui.home.about_eyebrow') }}</span>
                 <h2 class="section-title">{{ __('ui.home.about_title') }}</h2>
-                <p class="section-sub" style="margin-bottom:22px;">
+                <p class="section-sub">
                     {{ $settings['about_description'] ?? __('ui.home.about_fallback') }}
                 </p>
 
-                <div class="grid" style="grid-template-columns:1fr 1fr;gap:16px;margin-bottom:26px;">
-                    <div class="card" style="padding:20px;">
-                        <div class="icon-box" style="width:44px;height:44px;font-size:1.1rem;margin-bottom:12px;"><i class="bi bi-bullseye"></i></div>
-                        <h4 style="font-size:.98rem;margin-bottom:6px;">{{ __('ui.home.mission') }}</h4>
-                        <p class="muted" style="font-size:.85rem;">{{ \Illuminate\Support\Str::limit($settings['mission'] ?? __('ui.home.mission_fallback'), 110) }}</p>
-                    </div>
-                    <div class="card" style="padding:20px;">
-                        <div class="icon-box" style="width:44px;height:44px;font-size:1.1rem;margin-bottom:12px;"><i class="bi bi-eye"></i></div>
-                        <h4 style="font-size:.98rem;margin-bottom:6px;">{{ __('ui.home.vision') }}</h4>
-                        <p class="muted" style="font-size:.85rem;">{{ \Illuminate\Support\Str::limit($settings['vision'] ?? __('ui.home.vision_fallback'), 110) }}</p>
-                    </div>
-                </div>
+                <ul class="about-pillars">
+                    @foreach ([
+                        ['bi-bullseye', __('ui.home.mission'), $settings['mission'] ?? __('ui.home.mission_fallback')],
+                        ['bi-eye', __('ui.home.vision'), $settings['vision'] ?? __('ui.home.vision_fallback')],
+                    ] as $pillar)
+                        <li class="about-pillar">
+                            <span class="about-pillar-icon"><i class="bi {{ $pillar[0] }}" aria-hidden="true"></i></span>
+                            <div>
+                                <h3>{{ $pillar[1] }}</h3>
+                                <p>{{ \Illuminate\Support\Str::limit($pillar[2], 120) }}</p>
+                            </div>
+                        </li>
+                    @endforeach
+                </ul>
 
-                <a href="{{ route('about') }}" class="btn btn-primary">
-                    <i class="bi bi-arrow-right"></i> {{ __('ui.home.read_more_about') }}
-                </a>
+                <div class="about-actions">
+                    <a href="{{ route('about') }}" class="btn btn-primary">
+                        <i class="bi bi-arrow-right" aria-hidden="true"></i> {{ __('ui.home.read_more_about') }}
+                    </a>
+                    <a href="{{ route('facilities') }}" class="btn btn-outline">{{ __('ui.home.learn_facilities') }}</a>
+                </div>
             </div>
 
-            <div class="reveal">
-                <div class="grid" style="grid-template-columns:1fr 1fr;gap:18px;">
-                    @foreach ([
-                        ['bi-display', __('ui.home.feature_smart'), __('ui.home.feature_smart_desc')],
-                        ['bi-person-workspace', __('ui.home.feature_faculty'), __('ui.home.feature_faculty_desc')],
-                        ['bi-trophy', __('ui.home.feature_growth'), __('ui.home.feature_growth_desc')],
-                        ['bi-shield-fill-check', __('ui.home.feature_safe'), __('ui.home.feature_safe_desc')],
-                    ] as $i => $item)
-                        <div class="card card-hover" style="padding:24px;">
-                            <div class="icon-box" style="width:46px;height:46px;font-size:1.15rem;">
-                                <i class="bi {{ $item[0] }}"></i>
-                            </div>
-                            <h4 style="font-size:.95rem;margin-bottom:5px;">{{ $item[1] }}</h4>
-                            <p class="muted" style="font-size:.8rem;">{{ $item[2] }}</p>
-                        </div>
-                    @endforeach
+            <div class="about-side reveal">
+                <div class="about-panel">
+                    <div class="about-panel-head">
+                        <h3>{{ __('ui.home.about_features_title') }}</h3>
+                    </div>
+
+                    <ul class="about-feats">
+                        @foreach ([
+                            ['bi-display', __('ui.home.feature_smart'), __('ui.home.feature_smart_desc')],
+                            ['bi-person-workspace', __('ui.home.feature_faculty'), __('ui.home.feature_faculty_desc')],
+                            ['bi-trophy', __('ui.home.feature_growth'), __('ui.home.feature_growth_desc')],
+                            ['bi-shield-fill-check', __('ui.home.feature_safe'), __('ui.home.feature_safe_desc')],
+                        ] as $i => $item)
+                            <li class="about-feat">
+                                <span class="about-feat-num" aria-hidden="true">{{ str_pad((string) ($i + 1), 2, '0', STR_PAD_LEFT) }}</span>
+                                <i class="bi {{ $item[0] }} about-feat-icon" aria-hidden="true"></i>
+                                <div>
+                                    <h4>{{ $item[1] }}</h4>
+                                    <p>{{ $item[2] }}</p>
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
                 </div>
             </div>
         </div>

@@ -9,6 +9,7 @@ use App\Models\Student;
 use Database\Seeders\DatabaseSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
@@ -260,6 +261,15 @@ class SchoolSiteTest extends TestCase
             '/ticker-viewport">\s*<div class="ticker-track">/',
             $html,
         );
+    }
+
+    public function test_english_and_bengali_lang_files_expose_the_same_keys(): void
+    {
+        $en = array_keys(Arr::dot(require lang_path('en/ui.php')));
+        $bn = array_keys(Arr::dot(require lang_path('bn/ui.php')));
+
+        $this->assertSame([], array_diff($en, $bn), 'Missing from bn/ui.php: '.implode(', ', array_diff($en, $bn)));
+        $this->assertSame([], array_diff($bn, $en), 'Missing from en/ui.php: '.implode(', ', array_diff($bn, $en)));
     }
 
     public function test_404_page_renders(): void

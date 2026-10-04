@@ -151,6 +151,7 @@ return [
         'mission_fallback' => 'To provide an inspiring, future-ready education that develops confident, responsible global citizens.',
         'vision_fallback' => 'To be a leading school recognised for academic innovation and character formation.',
         'read_more_about' => 'Read More About Us',
+        'about_features_title' => 'What sets us apart',
         'feature_smart' => 'Smart Learning',
         'feature_smart_desc' => 'Technology-enabled classrooms',
         'feature_faculty' => 'Expert Faculty',

@@ -370,6 +370,65 @@
         .ticker-item::before { content: '•'; color: #60A5FA; }
         @keyframes scrollX { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
+        /* ===================== ABOUT PREVIEW ===================== */
+        .about-grid { display: grid; grid-template-columns: 1.02fr .98fr; gap: 64px; align-items: center; }
+        .about-main .section-sub { margin-bottom: 30px; }
+
+        .about-pillars { display: flex; flex-direction: column; gap: 14px; margin-bottom: 30px; }
+        .about-pillar {
+            display: flex; align-items: flex-start; gap: 16px;
+            background: var(--white); border: 1px solid var(--border); border-left: 3px solid var(--primary);
+            border-radius: var(--radius-sm); padding: 18px 20px; box-shadow: var(--shadow-sm);
+            transition: transform .3s cubic-bezier(.4,0,.2,1), box-shadow .3s ease, border-color .3s ease;
+        }
+        .about-pillar:hover { transform: translateX(5px); box-shadow: var(--shadow); }
+        .about-pillar-icon {
+            flex-shrink: 0; width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center;
+            background: var(--gradient-soft); color: var(--primary); font-size: 1.15rem;
+        }
+        .about-pillar h3 { font-size: .95rem; margin-bottom: 4px; }
+        .about-pillar p { font-size: .85rem; color: var(--muted); }
+
+        .about-actions { display: flex; flex-wrap: wrap; gap: 14px; }
+
+        .about-panel {
+            position: relative; overflow: hidden; border-radius: var(--radius-lg); padding: 32px 28px;
+            background: linear-gradient(150deg, var(--secondary) 0%, #1E3A8A 100%);
+            color: #fff; box-shadow: var(--shadow-lg);
+        }
+        .about-panel::before {
+            content: ''; position: absolute; width: 300px; height: 300px; border-radius: 50%;
+            background: rgba(59,130,246,.35); filter: blur(80px); top: -140px; right: -90px;
+        }
+        .about-panel::after {
+            content: ''; position: absolute; width: 220px; height: 220px; border-radius: 50%;
+            background: rgba(34,211,238,.22); filter: blur(80px); bottom: -120px; left: -80px;
+        }
+        .about-panel > * { position: relative; z-index: 1; }
+        .about-panel-head { margin-bottom: 20px; }
+        .about-panel-head h3 { color: #fff; font-size: 1.06rem; }
+        .about-panel-head::after {
+            content: ''; display: block; width: 54px; height: 3px; border-radius: 999px; margin-top: 12px;
+            background: linear-gradient(90deg, #93C5FD, #67E8F9);
+        }
+
+        .about-feats { display: flex; flex-direction: column; }
+        .about-feat {
+            display: flex; align-items: flex-start; gap: 14px;
+            padding: 15px 0; border-top: 1px solid rgba(255,255,255,.12);
+            transition: transform .25s ease;
+        }
+        .about-feat:last-child { border-bottom: 1px solid rgba(255,255,255,.12); }
+        .about-feat:hover { transform: translateX(4px); }
+        .about-feat-num {
+            flex-shrink: 0; font-size: .72rem; font-weight: 800; letter-spacing: .08em; color: #BFDBFE;
+            background: rgba(255,255,255,.08); border-radius: 8px; padding: 5px 8px;
+            font-variant-numeric: tabular-nums;
+        }
+        .about-feat-icon { flex-shrink: 0; color: #67E8F9; font-size: 1.05rem; margin-top: 6px; }
+        .about-feat h4 { color: #fff; font-size: .93rem; margin-bottom: 3px; }
+        .about-feat p { font-size: .8rem; color: rgba(255,255,255,.7); }
+
         /* ===================== FOOTER ===================== */
         .site-footer { background: var(--secondary); color: rgba(255,255,255,.7); padding-top: 68px; margin-top: auto; }
         .footer-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1.2fr; gap: 40px; padding-bottom: 48px; }
@@ -447,11 +506,17 @@
             .hero-visual { max-width: 520px; }
             .grid-4 { grid-template-columns: repeat(2, minmax(0,1fr)); }
             .grid-3 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+            .about-grid { grid-template-columns: 1fr; gap: 44px; }
+            .about-side { max-width: 560px; }
             .footer-grid { grid-template-columns: repeat(2, 1fr); }
         }
         @media (max-width: 720px) {
             .section { padding: 58px 0; }
             .grid-2, .grid-3, .grid-4, .grid-auto { grid-template-columns: 1fr; }
+            .about-pillar { padding: 16px; gap: 13px; }
+            .about-actions .btn { width: 100%; }
+            .about-panel { padding: 26px 20px; }
+            .about-feat { gap: 11px; }
             .footer-grid { grid-template-columns: 1fr; gap: 30px; }
             .float-chip { display: none; }
             .hero-badges { gap: 20px; }
