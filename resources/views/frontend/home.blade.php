@@ -339,31 +339,40 @@
 @if ($notices->isNotEmpty())
     <section class="section section-alt">
         <div class="container">
-            <div class="row-between reveal" style="margin-bottom:40px;align-items:flex-end;">
+            <div class="nhead reveal">
                 <div>
-                    <span class="eyebrow"><i class="bi bi-megaphone-fill"></i> {{ __('ui.home.notices_eyebrow') }}</span>
-                    <h2 class="section-title" style="margin-bottom:0;">{{ __('ui.home.notices_title') }}</h2>
+                    <span class="eyebrow"><i class="bi bi-megaphone-fill" aria-hidden="true"></i> {{ __('ui.home.notices_eyebrow') }}</span>
+                    <h2 class="section-title">{{ __('ui.home.notices_title') }}</h2>
                 </div>
-                <a href="{{ route('notices') }}" class="btn btn-outline btn-sm">{{ __('ui.common.view_all') }}</a>
+                <a href="{{ route('notices') }}" class="nhead-all">
+                    {{ __('ui.common.view_all') }} <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                </a>
             </div>
 
-            <div class="grid grid-2">
+            <ul class="nlist">
                 @foreach ($notices as $notice)
-                    <div class="card card-hover reveal">
-                        <div class="card-body">
-                            <div class="row-between" style="margin-bottom:12px;">
-                                <span class="badge">{{ __('ui.categories.' . $notice->category) }}</span>
-                                <span class="muted" style="font-size:.78rem;font-weight:600;">
-                                    <i class="bi bi-calendar3"></i> {{ optional($notice->published_at)->format('d M Y') }}
+                    <li>
+                        <a href="{{ route('notices.show', $notice) }}" class="nrow reveal">
+                            @if ($notice->published_at)
+                                <time class="ndate" datetime="{{ $notice->published_at->toDateString() }}">
+                                    <span class="ndate-day">{{ $notice->published_at->format('d') }}</span>
+                                    <span class="ndate-mon">{{ $notice->published_at->format('M') }}</span>
+                                </time>
+                            @endif
+
+                            <span class="nrow-main">
+                                <span class="nrow-top">
+                                    <span class="badge">{{ __('ui.categories.' . $notice->category) }}</span>
                                 </span>
-                            </div>
-                            <h3 style="font-size:1.04rem;margin-bottom:8px;">{{ $notice->title }}</h3>
-                            <p class="muted" style="font-size:.86rem;margin-bottom:14px;">{{ \Illuminate\Support\Str::limit(strip_tags($notice->description), 120) }}</p>
-                            <a href="{{ route('notices.show', $notice) }}" class="btn btn-outline btn-sm">{{ __('ui.common.view_details') }}</a>
-                        </div>
-                    </div>
+                                <h3 class="nrow-title">{{ $notice->title }}</h3>
+                                <span class="nrow-desc">{{ \Illuminate\Support\Str::limit(strip_tags($notice->description), 110) }}</span>
+                            </span>
+
+                            <i class="bi bi-arrow-right nrow-go" aria-hidden="true"></i>
+                        </a>
+                    </li>
                 @endforeach
-            </div>
+            </ul>
         </div>
     </section>
 @endif

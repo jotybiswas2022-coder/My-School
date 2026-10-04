@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Admission;
 use App\Models\Contact;
+use App\Models\Notice;
 use App\Models\Setting;
 use App\Models\Student;
 use App\Models\Teacher;
@@ -298,6 +299,41 @@ class SchoolSiteTest extends TestCase
         $mobile = substr($layout, strpos($layout, '@media (max-width: 720px)'));
         $this->assertStringContainsString('.principal { grid-template-columns: 1fr;', $mobile);
         $this->assertStringContainsString('.principal-photo { width: 172px; }', $mobile);
+    }
+
+    public function test_homepage_notices_are_a_dated_list_not_cards_with_buttons(): void
+    {
+        $html = $this->get('/')->assertOk()->getContent();
+
+        $this->assertStringContainsString('class="nhead reveal"', $html);
+        $this->assertStringContainsString('class="nhead-all"', $html);
+        $this->assertStringContainsString('<ul class="nlist">', $html);
+        $this->assertStringContainsString('class="nrow reveal"', $html);
+        $this->assertStringContainsString('class="ndate" datetime="', $html);
+        $this->assertStringContainsString('class="ndate-day"', $html);
+        $this->assertStringContainsString('class="nrow-title"', $html);
+        $this->assertStringContainsString('class="nrow-desc"', $html);
+        $this->assertStringContainsString('nrow-go', $html);
+
+        // Scope the rest to the list itself: the events and news sections below it keep
+        // their own cards, so page-wide string checks would match the wrong markup.
+        preg_match('/<ul class="nlist">.*?<\/ul>/s', $html, $matches);
+        $list = $matches[0] ?? '';
+        $this->assertNotSame('', $list, 'the notices list should render');
+
+        $rows = Notice::published()->take(4)->get()->count();
+        $this->assertSame($rows, substr_count($list, 'class="nrow reveal"'));
+        $this->assertSame($rows, substr_count($list, '<li>'), 'each notice should be one list item');
+
+        // Rows are whole-row links, so the old per-card "View Details" buttons are gone.
+        $this->assertStringNotContainsString('<button', $list);
+        $this->assertStringNotContainsString('btn btn-outline', $list);
+        $this->assertSame($rows, preg_match_all('/<a href="[^"]+" class="nrow reveal">/', $list));
+
+        // The dates are real <time> elements, so assistive tech reads the full date.
+        $notice = Notice::published()->take(4)->first();
+        $this->assertStringContainsString('datetime="'.$notice->published_at->toDateString().'"', $list);
+        $this->assertStringContainsString('>'.$notice->published_at->format('d').'</span>', $list);
     }
 
     public function test_teacher_profile_uses_a_sticky_card_and_a_definition_list(): void

@@ -1021,6 +1021,47 @@
         .tsubject span { color: var(--muted); font-size: .78rem; }
         .empty-sm { padding: 30px 20px; }
 
+        /* ===================== NOTICES (home) ===================== */
+        /* Notices are dated documents, so a calendar block per row beats a card grid and
+           keeps the section short on phones. */
+        .nhead { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 30px; }
+        .nhead h2 { margin-bottom: 0; }
+        .nhead-all {
+            flex-shrink: 0; display: inline-flex; align-items: center; gap: 8px;
+            color: var(--primary); font-weight: 700; font-size: .9rem; transition: color .2s ease;
+        }
+        .nhead-all i { transition: transform .25s ease; }
+        .nhead-all:hover { color: var(--primary-dark); }
+        .nhead-all:hover i { transform: translateX(5px); }
+
+        .nlist { display: flex; flex-direction: column; gap: 12px; }
+        .nrow {
+            display: flex; align-items: center; gap: 22px; padding: 18px 22px;
+            background: var(--white); border: 1px solid var(--border);
+            border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);
+            transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+        }
+        .nrow:hover { transform: translateX(6px); box-shadow: var(--shadow); border-color: rgba(37,99,235,.28); }
+
+        .ndate {
+            flex-shrink: 0; width: 62px; height: 62px; border-radius: 16px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            background: var(--gradient-soft); border: 1px solid rgba(37,99,235,.18);
+        }
+        .ndate-day { font-size: 1.28rem; font-weight: 800; line-height: 1; color: var(--secondary); font-variant-numeric: tabular-nums; }
+        .ndate-mon { font-size: .68rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--primary); }
+
+        .nrow-main { flex: 1; min-width: 0; }
+        .nrow-top { display: flex; align-items: center; gap: 12px; margin-bottom: 7px; }
+        .nrow-title { font-size: 1.02rem; margin-bottom: 5px; text-wrap: balance; }
+        /* clamp so one long notice cannot stretch its row past the others */
+        .nrow-desc {
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+            color: var(--muted); font-size: .85rem;
+        }
+        .nrow-go { flex-shrink: 0; color: var(--primary); opacity: .5; transition: transform .25s ease, opacity .25s ease; }
+        .nrow:hover .nrow-go { transform: translateX(4px); opacity: 1; }
+
         /* ===================== RESPONSIVE ===================== */
         @media (max-width: 1024px) {
             .hero-grid { grid-template-columns: 1fr; gap: 46px; padding: 70px 0; }
@@ -1059,6 +1100,7 @@
             .tprofile-actions { flex-direction: row; margin-top: 12px; }
             .tprofile-actions .btn { width: auto; }
             .tprofile-meta { grid-column: 1 / -1; margin-top: 20px; padding-top: 20px; }
+            .nhead { margin-bottom: 26px; }
             .fac-cta { padding: 32px 28px; }
             .cls-head { padding: 16px 18px; }
             .cls-body { padding: 0 18px 20px; }
@@ -1103,6 +1145,14 @@
             .tprofile-meta { width: 100%; }
             .tpanel { padding: 24px 20px; }
             .tsubjects { grid-template-columns: 1fr; gap: 10px; }
+            .nhead { margin-bottom: 22px; }
+            .nlist { gap: 10px; }
+            .nrow { gap: 14px; padding: 14px 16px; }
+            .ndate { width: 52px; height: 52px; border-radius: 14px; }
+            .ndate-day { font-size: 1.1rem; }
+            .nrow-top { margin-bottom: 5px; }
+            .nrow-title { font-size: .94rem; }
+            .nrow-go { font-size: .8rem; }
             .section { padding: 58px 0; }
             .grid-2, .grid-3, .grid-4, .grid-auto { grid-template-columns: 1fr; }
             .about-pillar { padding: 16px; gap: 13px; }
