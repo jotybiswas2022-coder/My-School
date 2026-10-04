@@ -356,15 +356,17 @@
             padding: 12px 0; overflow: hidden;
         }
         .ticker-label {
-            flex-shrink: 0; background: var(--danger); color: #fff; font-size: .72rem; font-weight: 800;
+            flex-shrink: 0; position: relative; z-index: 1; background: var(--danger); color: #fff; font-size: .72rem; font-weight: 800;
             text-transform: uppercase; letter-spacing: .1em; padding: 7px 16px; border-radius: 999px; margin-left: 20px;
             display: inline-flex; align-items: center; gap: 7px;
         }
         .ticker-label .pulse { width: 7px; height: 7px; border-radius: 50%; background: #fff; animation: pulse 1.6s infinite; }
         @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
-        .ticker-track { display: flex; gap: 46px; white-space: nowrap; animation: scrollX 34s linear infinite; }
+        .ticker-viewport { flex: 1; min-width: 0; overflow: hidden; }
+        .ticker-track { display: flex; width: max-content; white-space: nowrap; animation: scrollX 34s linear infinite; }
         .ticker:hover .ticker-track { animation-play-state: paused; }
-        .ticker-item { font-size: .86rem; font-weight: 500; color: rgba(255,255,255,.88); display: inline-flex; align-items: center; gap: 9px; }
+        /* margin (not gap) keeps -50% exactly one loop long, so the wrap has no jump */
+        .ticker-item { font-size: .86rem; font-weight: 500; color: rgba(255,255,255,.88); display: inline-flex; align-items: center; gap: 9px; margin-right: 46px; }
         .ticker-item::before { content: '•'; color: #60A5FA; }
         @keyframes scrollX { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 

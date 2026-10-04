@@ -71,13 +71,15 @@
 @if ($ticker->isNotEmpty())
     <div class="ticker">
         <span class="ticker-label"><span class="pulse"></span> {{ __('ui.home.latest') }}</span>
-        <div class="ticker-track">
-            @foreach ($ticker as $notice)
-                <a href="{{ route('notices.show', $notice) }}" class="ticker-item">{{ $notice->title }}</a>
-            @endforeach
-            @foreach ($ticker as $notice)
-                <a href="{{ route('notices.show', $notice) }}" class="ticker-item" aria-hidden="true">{{ $notice->title }}</a>
-            @endforeach
+        <div class="ticker-viewport">
+            <div class="ticker-track">
+                @foreach ($ticker as $notice)
+                    <a href="{{ route('notices.show', $notice) }}" class="ticker-item">{{ $notice->title }}</a>
+                @endforeach
+                @foreach ($ticker as $notice)
+                    <a href="{{ route('notices.show', $notice) }}" class="ticker-item" aria-hidden="true">{{ $notice->title }}</a>
+                @endforeach
+            </div>
         </div>
     </div>
 @endif

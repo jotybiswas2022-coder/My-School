@@ -251,6 +251,17 @@ class SchoolSiteTest extends TestCase
         $this->get('/')->assertOk()->assertSee('bi-mortarboard-fill', escape: false);
     }
 
+    public function test_notice_ticker_track_is_wrapped_in_a_clipped_viewport(): void
+    {
+        $html = $this->get('/')->assertOk()->getContent();
+
+        $this->assertStringContainsString('ticker-viewport', $html);
+        $this->assertMatchesRegularExpression(
+            '/ticker-viewport">\s*<div class="ticker-track">/',
+            $html,
+        );
+    }
+
     public function test_404_page_renders(): void
     {
         $this->get('/this-page-does-not-exist')->assertNotFound();
