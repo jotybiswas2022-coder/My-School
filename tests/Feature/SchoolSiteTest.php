@@ -263,6 +263,18 @@ class SchoolSiteTest extends TestCase
         );
     }
 
+    public function test_about_page_uses_the_upgraded_section_layout(): void
+    {
+        $html = $this->get('/about')->assertOk()->getContent();
+
+        $this->assertStringContainsString('about-story', $html);
+        $this->assertStringContainsString('about-stats', $html);
+        $this->assertSame(3, substr_count($html, 'class="about-stat"'));
+        $this->assertSame(2, substr_count($html, 'class="about-pillar"'));
+        $this->assertSame(4, substr_count($html, 'class="about-value reveal"'));
+        $this->assertSame(6, substr_count($html, 'class="about-why-item reveal"'));
+    }
+
     public function test_english_and_bengali_lang_files_expose_the_same_keys(): void
     {
         $en = array_keys(Arr::dot(require lang_path('en/ui.php')));
