@@ -339,12 +339,12 @@
 @if ($notices->isNotEmpty())
     <section class="section section-alt">
         <div class="container">
-            <div class="nhead reveal">
+            <div class="sechead reveal">
                 <div>
                     <span class="eyebrow"><i class="bi bi-megaphone-fill" aria-hidden="true"></i> {{ __('ui.home.notices_eyebrow') }}</span>
                     <h2 class="section-title">{{ __('ui.home.notices_title') }}</h2>
                 </div>
-                <a href="{{ route('notices') }}" class="nhead-all">
+                <a href="{{ route('notices') }}" class="sechead-all">
                     {{ __('ui.common.view_all') }} <i class="bi bi-arrow-right" aria-hidden="true"></i>
                 </a>
             </div>
@@ -381,39 +381,44 @@
 @if ($events->isNotEmpty())
     <section class="section">
         <div class="container">
-            <div class="row-between reveal" style="margin-bottom:40px;align-items:flex-end;">
+            <div class="sechead reveal">
                 <div>
-                    <span class="eyebrow"><i class="bi bi-calendar-event-fill"></i> {{ __('ui.home.events_eyebrow') }}</span>
-                    <h2 class="section-title" style="margin-bottom:0;">{{ __('ui.home.events_title') }}</h2>
+                    <span class="eyebrow"><i class="bi bi-calendar-event-fill" aria-hidden="true"></i> {{ __('ui.home.events_eyebrow') }}</span>
+                    <h2 class="section-title">{{ __('ui.home.events_title') }}</h2>
                 </div>
-                <a href="{{ route('events') }}" class="btn btn-outline btn-sm">{{ __('ui.common.view_all') }}</a>
+                <a href="{{ route('events') }}" class="sechead-all">
+                    {{ __('ui.common.view_all') }} <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                </a>
             </div>
 
-            <div class="grid grid-3">
+            <ol class="elist">
                 @foreach ($events as $event)
-                    <div class="card card-hover reveal">
-                        <div class="thumb">
-                            @if ($event->image)
-                                <img src="{{ asset('storage/' . $event->image) }}" alt="{{ $event->title }}">
-                            @else
-                                <i class="bi bi-calendar-event"></i>
-                            @endif
-                        </div>
-                        <div class="card-body">
-                            <div class="badge badge-success" style="margin-bottom:10px;">
-                                <i class="bi bi-calendar3"></i> {{ $event->event_date->format('d M Y') }}
-                            </div>
-                            <h3 style="font-size:1.02rem;margin-bottom:8px;">{{ $event->title }}</h3>
-                            <div class="meta" style="margin-bottom:12px;">
-                                @if ($event->event_time)<span><i class="bi bi-clock"></i> {{ \Illuminate\Support\Str::substr($event->event_time, 0, 5) }}</span>@endif
-                                @if ($event->location)<span><i class="bi bi-geo-alt"></i> {{ $event->location }}</span>@endif
-                            </div>
-                            <p class="muted" style="font-size:.85rem;margin-bottom:14px;">{{ \Illuminate\Support\Str::limit(strip_tags($event->description), 90) }}</p>
-                            <a href="{{ route('events.show', $event) }}" class="btn btn-outline btn-sm">{{ __('ui.common.view_details') }}</a>
-                        </div>
-                    </div>
+                    <li>
+                        <a href="{{ route('events.show', $event) }}" class="erow reveal">
+                            <time class="edate" datetime="{{ $event->event_date->toDateString() }}">
+                                <span class="edate-week">{{ $event->event_date->format('D') }}</span>
+                                <span class="edate-day">{{ $event->event_date->format('d') }}</span>
+                                <span class="edate-mon">{{ $event->event_date->format('M') }}</span>
+                            </time>
+
+                            <span class="erow-main">
+                                <span class="echips">
+                                    @if ($event->event_time)
+                                        <span class="echip"><i class="bi bi-clock" aria-hidden="true"></i> {{ \Illuminate\Support\Str::substr($event->event_time, 0, 5) }}</span>
+                                    @endif
+                                    @if ($event->location)
+                                        <span class="echip"><i class="bi bi-geo-alt" aria-hidden="true"></i> {{ $event->location }}</span>
+                                    @endif
+                                </span>
+                                <h3 class="erow-title">{{ $event->title }}</h3>
+                                <span class="erow-desc">{{ \Illuminate\Support\Str::limit(strip_tags($event->description), 100) }}</span>
+                            </span>
+
+                            <i class="bi bi-arrow-right erow-go" aria-hidden="true"></i>
+                        </a>
+                    </li>
                 @endforeach
-            </div>
+            </ol>
         </div>
     </section>
 @endif

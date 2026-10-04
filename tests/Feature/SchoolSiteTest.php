@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Admission;
 use App\Models\Contact;
+use App\Models\Event;
 use App\Models\Notice;
 use App\Models\Setting;
 use App\Models\Student;
@@ -301,12 +302,51 @@ class SchoolSiteTest extends TestCase
         $this->assertStringContainsString('.principal-photo { width: 172px; }', $mobile);
     }
 
+    public function test_homepage_events_are_a_schedule_rail_with_logistics_chips(): void
+    {
+        $html = $this->get('/')->assertOk()->getContent();
+
+        $this->assertStringContainsString('<ol class="elist">', $html);
+        $this->assertStringContainsString('class="erow reveal"', $html);
+        $this->assertStringContainsString('class="edate" datetime="', $html);
+        $this->assertStringContainsString('class="edate-week"', $html);
+        $this->assertStringContainsString('class="edate-day"', $html);
+        $this->assertStringContainsString('class="edate-mon"', $html);
+        $this->assertStringContainsString('class="echips"', $html);
+        $this->assertStringContainsString('class="echip"', $html);
+        $this->assertStringContainsString('class="erow-title"', $html);
+        $this->assertStringContainsString('class="erow-desc"', $html);
+        $this->assertStringContainsString('erow-go', $html);
+
+        // The date used to sit in a small green pill below a large decorative thumbnail,
+        // and every card carried its own "View Details" button.
+        $this->assertStringNotContainsString('bi bi-calendar3', $html);
+
+        preg_match('/<ol class="elist">.*?<\/ol>/s', $html, $matches);
+        $list = $matches[0] ?? '';
+        $this->assertNotSame('', $list, 'the events list should render');
+
+        $rows = Event::published()->upcoming()->take(3)->get()->count();
+        $this->assertSame($rows, substr_count($list, '<li>'), 'each event should be one list item');
+        $this->assertSame($rows, preg_match_all('/<a href="[^"]+" class="erow reveal">/', $list));
+        $this->assertStringNotContainsString('<button', $list);
+        $this->assertStringNotContainsString('btn btn-outline', $list);
+
+        // The decorative thumbnails are gone, so no empty grey box stands in for a photo.
+        $this->assertStringNotContainsString('class="thumb"', $list);
+
+        // Dates stay chronological (soonest first) and render as real <time> elements.
+        $event = Event::published()->upcoming()->take(3)->first();
+        $this->assertStringContainsString('datetime="'.$event->event_date->toDateString().'"', $list);
+        $this->assertStringContainsString('>'.$event->event_date->format('d').'</span>', $list);
+    }
+
     public function test_homepage_notices_are_a_dated_list_not_cards_with_buttons(): void
     {
         $html = $this->get('/')->assertOk()->getContent();
 
-        $this->assertStringContainsString('class="nhead reveal"', $html);
-        $this->assertStringContainsString('class="nhead-all"', $html);
+        $this->assertStringContainsString('class="sechead reveal"', $html);
+        $this->assertStringContainsString('class="sechead-all"', $html);
         $this->assertStringContainsString('<ul class="nlist">', $html);
         $this->assertStringContainsString('class="nrow reveal"', $html);
         $this->assertStringContainsString('class="ndate" datetime="', $html);

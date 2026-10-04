@@ -1024,15 +1024,15 @@
         /* ===================== NOTICES (home) ===================== */
         /* Notices are dated documents, so a calendar block per row beats a card grid and
            keeps the section short on phones. */
-        .nhead { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 30px; }
-        .nhead h2 { margin-bottom: 0; }
-        .nhead-all {
+        .sechead { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 30px; }
+        .sechead h2 { margin-bottom: 0; }
+        .sechead-all {
             flex-shrink: 0; display: inline-flex; align-items: center; gap: 8px;
             color: var(--primary); font-weight: 700; font-size: .9rem; transition: color .2s ease;
         }
-        .nhead-all i { transition: transform .25s ease; }
-        .nhead-all:hover { color: var(--primary-dark); }
-        .nhead-all:hover i { transform: translateX(5px); }
+        .sechead-all i { transition: transform .25s ease; }
+        .sechead-all:hover { color: var(--primary-dark); }
+        .sechead-all:hover i { transform: translateX(5px); }
 
         .nlist { display: flex; flex-direction: column; gap: 12px; }
         .nrow {
@@ -1061,6 +1061,49 @@
         }
         .nrow-go { flex-shrink: 0; color: var(--primary); opacity: .5; transition: transform .25s ease, opacity .25s ease; }
         .nrow:hover .nrow-go { transform: translateX(4px); opacity: 1; }
+
+        /* ===================== EVENTS (home) ===================== */
+        /* Upcoming events read as a schedule, not a card grid: a date rail runs down the
+           left and the logistics that actually matter (time, place) become chips. */
+        .elist { position: relative; display: flex; flex-direction: column; gap: 14px; }
+        /* the rail only shows through the gaps, so the blocks read as points on a timeline */
+        .elist::before {
+            content: ""; position: absolute; left: 31px; top: 16px; bottom: 16px; width: 2px;
+            border-radius: 2px; background: linear-gradient(180deg, rgba(37,99,235,.3), rgba(37,99,235,.05));
+        }
+
+        .erow {
+            position: relative; display: flex; align-items: center; gap: 22px; padding: 18px 22px;
+            background: var(--white); border: 1px solid var(--border);
+            border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);
+            transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+        }
+        .erow:hover { transform: translateX(6px); box-shadow: var(--shadow); border-color: rgba(37,99,235,.28); }
+
+        .edate {
+            flex-shrink: 0; width: 64px; padding: 9px 0; border-radius: 16px;
+            display: flex; flex-direction: column; align-items: center; gap: 1px;
+            background: var(--gradient-soft); border: 1px solid rgba(37,99,235,.18);
+        }
+        .edate-week { font-size: .6rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--primary); }
+        .edate-day { font-size: 1.3rem; font-weight: 800; line-height: 1.05; color: var(--secondary); font-variant-numeric: tabular-nums; }
+        .edate-mon { font-size: .62rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+        .erow-main { flex: 1; min-width: 0; }
+        .erow-title { font-size: 1.04rem; margin-bottom: 9px; text-wrap: balance; }
+        .echips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+        .echip {
+            display: inline-flex; align-items: center; gap: 6px; padding: 4px 11px; border-radius: 999px;
+            background: rgba(37,99,235,.07); color: var(--secondary); font-size: .76rem; font-weight: 700;
+        }
+        .echip i { font-size: .74rem; color: var(--primary); }
+        /* clamp so one wordy event cannot stretch its row past the others */
+        .erow-desc {
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+            color: var(--muted); font-size: .85rem;
+        }
+        .erow-go { flex-shrink: 0; color: var(--primary); opacity: .5; transition: transform .25s ease, opacity .25s ease; }
+        .erow:hover .erow-go { transform: translateX(4px); opacity: 1; }
 
         /* ===================== RESPONSIVE ===================== */
         @media (max-width: 1024px) {
@@ -1100,7 +1143,8 @@
             .tprofile-actions { flex-direction: row; margin-top: 12px; }
             .tprofile-actions .btn { width: auto; }
             .tprofile-meta { grid-column: 1 / -1; margin-top: 20px; padding-top: 20px; }
-            .nhead { margin-bottom: 26px; }
+            .sechead { margin-bottom: 26px; }
+            .erow { gap: 18px; padding: 16px 18px; }
             .fac-cta { padding: 32px 28px; }
             .cls-head { padding: 16px 18px; }
             .cls-body { padding: 0 18px 20px; }
@@ -1145,7 +1189,7 @@
             .tprofile-meta { width: 100%; }
             .tpanel { padding: 24px 20px; }
             .tsubjects { grid-template-columns: 1fr; gap: 10px; }
-            .nhead { margin-bottom: 22px; }
+            .sechead { margin-bottom: 22px; }
             .nlist { gap: 10px; }
             .nrow { gap: 14px; padding: 14px 16px; }
             .ndate { width: 52px; height: 52px; border-radius: 14px; }
@@ -1153,6 +1197,14 @@
             .nrow-top { margin-bottom: 5px; }
             .nrow-title { font-size: .94rem; }
             .nrow-go { font-size: .8rem; }
+            .elist { gap: 10px; }
+            .elist::before { left: 27px; }
+            .erow { gap: 14px; padding: 14px 16px; }
+            .edate { width: 54px; padding: 7px 0; border-radius: 14px; }
+            .edate-day { font-size: 1.12rem; }
+            .erow-title { font-size: .95rem; margin-bottom: 7px; }
+            .echip { font-size: .72rem; padding: 3px 9px; }
+            .erow-go { font-size: .8rem; }
             .section { padding: 58px 0; }
             .grid-2, .grid-3, .grid-4, .grid-auto { grid-template-columns: 1fr; }
             .about-pillar { padding: 16px; gap: 13px; }
