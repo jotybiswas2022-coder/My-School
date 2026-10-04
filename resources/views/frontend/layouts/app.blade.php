@@ -1182,15 +1182,38 @@
             font-size: .72rem; font-weight: 700;
         }
 
-        .cta-panel {
-            position: relative; overflow: hidden; border-radius: var(--radius-lg); padding: 58px 48px;
-            background: linear-gradient(135deg, #1D4ED8, #2563EB 55%, #0EA5E9);
-            box-shadow: 0 30px 70px -30px rgba(37,99,235,.7);
+        /* ===================== ADMISSION CTA (home) ===================== */
+        /* This panel sits between two light sections, so it uses the same white card,
+           border and primary accents as the boxes above it rather than the single
+           saturated gradient block the page used to have. */
+        .cta {
+            display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 34px; align-items: center;
+            padding: 40px; background: var(--white); border: 1px solid var(--border);
+            border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);
+            transition: box-shadow .25s ease, border-color .25s ease;
         }
-        .cta-panel::before {
-            content: ''; position: absolute; width: 420px; height: 420px; border-radius: 50%;
-            background: rgba(255,255,255,.14); filter: blur(70px); top: -160px; right: -100px;
+        .cta:hover { box-shadow: var(--shadow); border-color: rgba(37,99,235,.28); }
+        .cta-title { font-size: clamp(1.4rem, 2.8vw, 2.1rem); margin-bottom: 12px; text-wrap: balance; }
+        .cta-text { color: var(--muted); max-width: 520px; margin-bottom: 24px; }
+        .cta-actions { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+        .cta-link { display: inline-flex; align-items: center; gap: 8px; color: var(--primary); font-weight: 700; font-size: .9rem; transition: color .2s ease; }
+        .cta-link i { transition: transform .25s ease; }
+        .cta-link:hover { color: var(--primary-dark); }
+        .cta-link:hover i { transform: translateX(5px); }
+
+        .cta-side-title { font-size: .95rem; margin-bottom: 12px; }
+        .cta-steps {
+            display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;
+            padding: 20px; border-radius: var(--radius);
+            background: var(--gradient-soft); border: 1px solid rgba(37,99,235,.16);
         }
+        /* a fixed minimum keeps all four steps exactly the same size */
+        .cta-step { display: flex; align-items: center; gap: 10px; min-height: 54px; }
+        .cta-step-num {
+            flex-shrink: 0; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%;
+            background: var(--primary); color: #fff; font-size: .74rem; font-weight: 800;
+        }
+        .cta-step-label { font-size: .82rem; font-weight: 600; line-height: 1.35; }
 
         /* ===================== FACILITIES (home) ===================== */
         /* Same grouping as the facilities page, but as a scannable index: an eight-card
@@ -1268,7 +1291,7 @@
             .nwslead-media { min-height: 240px; }
             .nwslead-body { padding: 26px; }
             .gal { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-            .cta-panel { padding: 46px 32px; }
+            .cta { grid-template-columns: 1fr; gap: 26px; padding: 34px 30px; }
             .fac-home { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
             .fac-home-title { margin: 14px 0 2px; }
             .fac-cta { padding: 32px 28px; }
@@ -1341,7 +1364,12 @@
             .gal-cap { padding: 34px 14px 12px; }
             .gal-cap-title { font-size: .9rem; }
             .gal-count { top: 8px; right: 8px; padding: 3px 8px; font-size: .68rem; }
-            .cta-panel { padding: 40px 24px; }
+            .cta { padding: 26px 20px; }
+            .cta-actions { flex-direction: column; align-items: stretch; gap: 14px; }
+            .cta-actions .btn { width: 100%; }
+            .cta-steps { padding: 14px; gap: 8px; }
+            .cta-step { min-height: 48px; }
+            .cta-step-label { font-size: .78rem; }
             .fac-home-item { min-height: 96px; padding: 12px; gap: 10px; }
             .fac-home-item > i { width: 32px; height: 32px; font-size: .95rem; border-radius: 10px; }
             .fac-home-item h4 { font-size: .84rem; }

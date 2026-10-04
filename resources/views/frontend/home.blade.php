@@ -583,20 +583,35 @@
 {{-- ===================== ADMISSION CTA ===================== --}}
 <section class="section">
     <div class="container">
-        <div class="cta-panel reveal">
-            <div style="position:relative;z-index:1;">
-                <span class="eyebrow" style="background:rgba(255,255,255,.16);color:#BFDBFE;">
-                    <i class="bi bi-journal-text"></i>
+        <div class="cta reveal">
+            <div>
+                <span class="eyebrow">
+                    <i class="bi bi-journal-text" aria-hidden="true"></i>
                     {{ __('ui.admission.status_heading', ['status' => ($settings['admission_open'] ?? '1') === '1' ? __('ui.admission.status_open') : __('ui.admission.status_closed')]) }}
                 </span>
-                <h2 style="color:#fff;font-size:clamp(1.6rem,3.4vw,2.4rem);margin-bottom:12px;">{{ __('ui.home.cta_title') }}</h2>
-                <p style="color:rgba(255,255,255,.82);max-width:600px;">{{ __('ui.home.cta_text') }}</p>
-                <div class="row" style="gap:14px;margin-top:26px;flex-wrap:wrap;">
-                    <a href="{{ route('admission') }}" class="btn" style="background:#fff;color:var(--secondary);">
-                        <i class="bi bi-pencil-square"></i> {{ __('ui.admission.submit') }}
+                <h2 class="cta-title">{{ __('ui.home.cta_title') }}</h2>
+                <p class="cta-text">{{ __('ui.home.cta_text') }}</p>
+
+                <div class="cta-actions">
+                    <a href="{{ route('admission') }}" class="btn btn-primary">
+                        <i class="bi bi-pencil-square" aria-hidden="true"></i> {{ __('ui.admission.submit') }}
                     </a>
-                    <a href="{{ route('admission.info') }}" class="btn btn-ghost">{{ __('ui.home.learn_admission') }}</a>
+                    <a href="{{ route('admission.info') }}" class="cta-link">
+                        {{ __('ui.home.learn_admission') }} <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                    </a>
                 </div>
+            </div>
+
+            <div>
+                <h3 class="cta-side-title">{{ __('ui.admission.process_title') }}</h3>
+                <ul class="cta-steps">
+                    @foreach (['process_1', 'process_2', 'process_3', 'process_4'] as $index => $step)
+                        <li class="cta-step">
+                            <span class="cta-step-num" aria-hidden="true">{{ $index + 1 }}</span>
+                            <span class="cta-step-label">{{ __("ui.admission.$step") }}</span>
+                        </li>
+                    @endforeach
+                </ul>
             </div>
         </div>
     </div>

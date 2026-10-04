@@ -304,6 +304,44 @@ class SchoolSiteTest extends TestCase
         $this->assertStringContainsString('.principal-photo { width: 172px; }', $mobile);
     }
 
+    public function test_homepage_admission_cta_matches_the_light_sections_around_it(): void
+    {
+        $html = $this->get('/')->assertOk()->getContent();
+
+        $start = strpos($html, '<div class="cta reveal">');
+        $this->assertNotFalse($start, 'the admission CTA should render');
+        $cta = substr($html, $start, strpos($html, '</section>', $start) - $start);
+
+        $this->assertStringContainsString('class="cta-title">'.__('ui.home.cta_title'), $cta);
+        $this->assertStringContainsString('class="cta-text"', $cta);
+        $this->assertStringContainsString('class="cta-actions"', $cta);
+        $this->assertStringContainsString('btn btn-primary', $cta);
+        $this->assertStringContainsString('class="cta-link"', $cta);
+
+        // The old panel was the page's only saturated gradient block, and everything in it
+        // was white-on-blue with inline styles, so it clashed with the light sections.
+        $this->assertStringNotContainsString('cta-panel', $html);
+        $this->assertStringNotContainsString('style=', $cta);
+        $this->assertStringNotContainsString('color:#fff', $cta);
+        $this->assertStringNotContainsString('#BFDBFE', $cta);
+
+        // The right-hand panel now answers "how do I apply" instead of leaving a blank half.
+        $this->assertStringContainsString('class="cta-side-title">'.__('ui.admission.process_title'), $cta);
+        $this->assertStringContainsString('<ul class="cta-steps">', $cta);
+        $this->assertSame(4, substr_count($cta, 'class="cta-step"'));
+        foreach (['process_1', 'process_2', 'process_3', 'process_4'] as $index => $step) {
+            // e() because the labels are escaped in the markup ("Decision &amp; enrolment").
+            $this->assertStringContainsString('<span class="cta-step-label">'.e(__("ui.admission.$step")).'</span>', $cta);
+            $this->assertStringContainsString('aria-hidden="true">'.($index + 1).'</span>', $cta);
+        }
+
+        $layout = file_get_contents(resource_path('views/frontend/layouts/app.blade.php'));
+        $this->assertStringNotContainsString('.cta-panel', $layout);
+        $this->assertMatchesRegularExpression('/\.cta \{[^}]*background: var\(--white\);[^}]*border: 1px solid var\(--border\);/s', $layout);
+        $this->assertMatchesRegularExpression('/\.cta-steps \{[^}]*background: var\(--gradient-soft\);/s', $layout);
+        $this->assertMatchesRegularExpression('/\.cta-step \{[^}]*min-height: 54px;/', $layout);
+    }
+
     public function test_homepage_facilities_are_grouped_with_short_descriptions(): void
     {
         $html = $this->get('/')->assertOk()->getContent();
@@ -349,7 +387,7 @@ class SchoolSiteTest extends TestCase
 
     public function test_homepage_facility_boxes_share_one_row_height(): void
     {
-        $layout = file_get_contents(resource_path('views/frontend/layouts/app.blade.php'));
+        $layout = str_replace(["\r\n", "\r"], "\n", file_get_contents(resource_path('views/frontend/layouts/app.blade.php')));
 
         // One grid for the whole section: the group headings span the columns and every
         // box gets the same minimum height, so nothing sits lower than its neighbour.
