@@ -328,6 +328,8 @@ return [
         'empty_title' => 'No classes available',
         'empty_text' => 'Class information will appear here once the school publishes it.',
         'students_enrolled' => ':count students enrolled',
+        'counts' => ':sections sections · :subjects subjects',
+        'hint' => 'Open a class to see its sections and subjects.',
         'sections' => 'Sections',
         'subjects' => 'Subjects',
         'class_fallback' => 'A supportive learning environment with a balanced curriculum.',

@@ -623,6 +623,70 @@
         .about-quote-avatar img { width: 100%; height: 100%; object-fit: cover; }
         .about-quote-person .muted { font-size: .84rem; margin: 0; }
 
+        /* ===================== CLASSES PAGE ===================== */
+        .cls-hint {
+            display: inline-flex; align-items: center; gap: 9px; margin-bottom: 22px;
+            padding: 10px 16px; border-radius: 999px;
+            background: rgba(37,99,235,.07); border: 1px solid rgba(37,99,235,.16);
+            color: var(--primary-dark); font-size: .86rem; font-weight: 600;
+        }
+        .cls-hint i { font-size: .8rem; }
+
+        .cls-list { display: flex; flex-direction: column; gap: 12px; }
+        .cls {
+            background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
+            box-shadow: var(--shadow-sm); overflow: hidden;
+            transition: box-shadow .3s ease, border-color .3s ease;
+        }
+        .cls[open] { box-shadow: var(--shadow); border-color: rgba(37,99,235,.28); }
+        .cls:hover { border-color: rgba(37,99,235,.25); }
+
+        .cls-head {
+            display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+            padding: 18px 22px; cursor: pointer; list-style: none;
+            transition: background .2s ease;
+        }
+        .cls-head::-webkit-details-marker { display: none; }
+        .cls-head:hover { background: rgba(37,99,235,.03); }
+        .cls-head:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
+
+        .cls-initial {
+            flex-shrink: 0; width: 46px; height: 46px; border-radius: 13px; display: grid; place-items: center;
+            background: var(--gradient); color: #fff; font-size: 1.15rem; font-weight: 800;
+            box-shadow: 0 10px 22px -12px rgba(37,99,235,.9);
+        }
+        .cls-title { min-width: 0; }
+        .cls-title h3 { font-size: 1.04rem; margin-bottom: 3px; }
+        .cls-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; color: var(--muted); font-size: .8rem; font-weight: 600; }
+        .cls-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
+
+        .cls-code {
+            margin-left: auto; flex-shrink: 0; padding: 6px 12px; border-radius: 10px;
+            background: var(--gradient-soft); border: 1px solid rgba(37,99,235,.18);
+            color: var(--primary-dark); font-size: .74rem; font-weight: 800; letter-spacing: .06em;
+        }
+        .cls-caret {
+            flex-shrink: 0; color: var(--muted); font-size: .95rem;
+            transition: transform .3s cubic-bezier(.4,0,.2,1), color .2s ease;
+        }
+        .cls[open] .cls-caret { transform: rotate(180deg); color: var(--primary); }
+
+        .cls-body { padding: 0 22px 22px; border-top: 1px solid var(--border); }
+        .cls-desc { font-size: .89rem; color: var(--muted); padding-top: 18px; margin-bottom: 20px; }
+
+        .cls-group + .cls-group { margin-top: 20px; }
+        .cls-label {
+            display: block; margin-bottom: 10px;
+            font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: var(--muted);
+        }
+        .cls-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+        .cls-chip {
+            display: inline-flex; align-items: center; padding: 6px 13px; border-radius: 999px;
+            background: rgba(37,99,235,.08); color: var(--primary-dark); font-size: .78rem; font-weight: 700;
+        }
+        .cls-chip-subject { background: rgba(22,163,74,.1); color: #15803D; }
+        .cls-empty { font-size: .84rem; }
+
         /* ===================== FACILITIES PAGE ===================== */
         .fac-group + .fac-group { margin-top: 46px; }
         .fac-group-title { display: flex; align-items: center; gap: 12px; font-size: 1.05rem; margin-bottom: 20px; }
@@ -735,6 +799,8 @@
             .about-quote { grid-template-columns: 1fr; gap: 30px; padding: 32px 28px; }
             .about-quote-person { order: -1; }
             .fac-cta { padding: 32px 28px; }
+            .cls-head { padding: 16px 18px; }
+            .cls-body { padding: 0 18px 20px; }
             .glance { padding: 38px 28px; }
             .glance-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 0; }
             .glance-stat:nth-child(odd) { padding-left: 0; border-left: 0; }
@@ -757,6 +823,12 @@
             .about-why { grid-template-columns: 1fr; gap: 0; }
             .tile { padding: 20px 18px; }
             .about-why-item { padding: 16px 0; }
+            .cls-head { padding: 15px 16px; gap: 12px; }
+            .cls-body { padding: 0 16px 18px; }
+            .cls-initial { width: 40px; height: 40px; font-size: 1rem; border-radius: 11px; }
+            .cls-title h3 { font-size: .98rem; }
+            /* Long class names push the code chip and caret onto their own row */
+            .cls-code { margin-left: 52px; }
             .about-quote { padding: 26px 20px; }
             .about-quote .btn { width: 100%; }
             .fac-group + .fac-group { margin-top: 34px; }

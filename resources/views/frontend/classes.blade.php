@@ -18,48 +18,60 @@
                     <p>{{ __('ui.classes.empty_text') }}</p>
                 </div>
             @else
-                <div class="grid grid-2">
+                <p class="cls-hint">
+                    <i class="bi bi-chevron-down" aria-hidden="true"></i>
+                    {{ __('ui.classes.hint') }}
+                </p>
+
+                <div class="cls-list">
                     @foreach ($classes as $class)
-                        <div class="card card-hover reveal" style="padding:32px;">
-                            <div class="row-between" style="margin-bottom:18px;">
-                                <div class="row">
-                                    <div class="icon-box" style="width:50px;height:50px;margin:0;font-size:1.2rem;">{{ mb_substr($class->name, 0, 1) }}</div>
-                                    <div>
-                                        <h3 style="font-size:1.15rem;">{{ $class->name }}</h3>
-                                        <span class="muted" style="font-size:.82rem;">{{ __('ui.classes.students_enrolled', ['count' => $class->students_count]) }}</span>
+                        {{-- Native disclosure: no JS, keyboard operable, first class open by default --}}
+                        <details class="cls reveal"{{ $loop->first ? ' open' : '' }}>
+                            <summary class="cls-head">
+                                <span class="cls-initial" aria-hidden="true">{{ mb_substr($class->name, 0, 1) }}</span>
+
+                                <div class="cls-title">
+                                    <h3>{{ $class->name }}</h3>
+                                    <span class="cls-meta">
+                                        {{ __('ui.classes.students_enrolled', ['count' => $class->students_count]) }}
+                                        <span class="cls-dot" aria-hidden="true"></span>
+                                        {{ __('ui.classes.counts', ['sections' => $class->sections->count(), 'subjects' => $class->subjects->count()]) }}
+                                    </span>
+                                </div>
+
+                                @if ($class->code)
+                                    <span class="cls-code">{{ $class->code }}</span>
+                                @endif
+
+                                <i class="bi bi-chevron-down cls-caret" aria-hidden="true"></i>
+                            </summary>
+
+                            <div class="cls-body">
+                                <p class="cls-desc">{{ $class->description ?? __('ui.classes.class_fallback') }}</p>
+
+                                <div class="cls-group">
+                                    <span class="cls-label">{{ __('ui.classes.sections') }}</span>
+                                    <div class="cls-chips">
+                                        @forelse ($class->sections as $section)
+                                            <span class="cls-chip">{{ __('ui.classes.section_label', ['name' => $section->name]) }}</span>
+                                        @empty
+                                            <span class="muted cls-empty">{{ __('ui.academics.no_sections') }}</span>
+                                        @endforelse
                                     </div>
                                 </div>
-                                @if ($class->code)
-                                    <span class="badge">{{ $class->code }}</span>
-                                @endif
-                            </div>
 
-                            <p class="muted" style="font-size:.88rem;margin-bottom:18px;">
-                                {{ $class->description ?? __('ui.classes.class_fallback') }}
-                            </p>
-
-                            <div style="margin-bottom:16px;">
-                                <div class="muted" style="font-size:.74rem;text-transform:uppercase;letter-spacing:.07em;font-weight:700;margin-bottom:8px;">{{ __('ui.classes.sections') }}</div>
-                                <div class="row" style="flex-wrap:wrap;gap:8px;">
-                                    @forelse ($class->sections as $section)
-                                        <span class="badge">{{ __('ui.classes.section_label', ['name' => $section->name]) }}</span>
-                                    @empty
-                                        <span class="muted" style="font-size:.84rem;">{{ __('ui.academics.no_sections') }}</span>
-                                    @endforelse
+                                <div class="cls-group">
+                                    <span class="cls-label">{{ __('ui.classes.subjects') }}</span>
+                                    <div class="cls-chips">
+                                        @forelse ($class->subjects as $subject)
+                                            <span class="cls-chip cls-chip-subject">{{ $subject->name }}</span>
+                                        @empty
+                                            <span class="muted cls-empty">{{ __('ui.classes.subjects_to_be_assigned') }}</span>
+                                        @endforelse
+                                    </div>
                                 </div>
                             </div>
-
-                            <div>
-                                <div class="muted" style="font-size:.74rem;text-transform:uppercase;letter-spacing:.07em;font-weight:700;margin-bottom:8px;">{{ __('ui.classes.subjects') }}</div>
-                                <div class="row" style="flex-wrap:wrap;gap:8px;">
-                                    @forelse ($class->subjects as $subject)
-                                        <span class="badge badge-success">{{ $subject->name }}</span>
-                                    @empty
-                                        <span class="muted" style="font-size:.84rem;">{{ __('ui.classes.subjects_to_be_assigned') }}</span>
-                                    @endforelse
-                                </div>
-                            </div>
-                        </div>
+                        </details>
                     @endforeach
                 </div>
             @endif

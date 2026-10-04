@@ -264,6 +264,26 @@ class SchoolSiteTest extends TestCase
         );
     }
 
+    public function test_classes_page_uses_a_disclosure_list_with_the_first_class_open(): void
+    {
+        $html = $this->get('/classes')->assertOk()->getContent();
+
+        // Ten seeded classes, each a native <details> so the page needs no JS.
+        $this->assertSame(10, substr_count($html, '<details class="cls reveal"'));
+        $this->assertSame(10, substr_count($html, 'class="cls-head"'));
+        $this->assertSame(10, substr_count($html, 'class="cls-initial"'));
+        $this->assertSame(10, substr_count($html, 'bi-chevron-down cls-caret"'));
+
+        // Only the first class starts expanded.
+        $this->assertSame(1, substr_count($html, '<details class="cls reveal" open>'));
+
+        // Counts replace the old always-visible badge walls.
+        $this->assertSame(10, substr_count($html, '2 sections · 8 subjects'));
+
+        $this->assertStringContainsString('cls-hint', $html);
+        $this->assertStringContainsString('cls-chip-subject', $html);
+    }
+
     public function test_homepage_program_cards_are_whole_links_with_one_shared_cta(): void
     {
         $html = $this->get('/')->assertOk()->getContent();
