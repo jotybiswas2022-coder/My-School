@@ -419,6 +419,51 @@
 
         .about-actions { display: flex; flex-wrap: wrap; gap: 14px; }
 
+        /* ===================== HOME GLANCE BAND ===================== */
+        .glance {
+            position: relative; overflow: hidden;
+            background: linear-gradient(140deg, var(--secondary) 0%, #1E3A8A 100%);
+            border-radius: var(--radius-lg); padding: 46px 40px; box-shadow: var(--shadow-lg);
+        }
+        .glance::before {
+            content: ''; position: absolute; width: 380px; height: 380px; border-radius: 50%;
+            background: rgba(59,130,246,.35); filter: blur(80px); top: -190px; right: -110px;
+        }
+        .glance::after {
+            content: ''; position: absolute; width: 280px; height: 280px; border-radius: 50%;
+            background: rgba(34,211,238,.2); filter: blur(80px); bottom: -170px; left: -90px;
+        }
+        .glance > * { position: relative; z-index: 1; }
+
+        .glance-head {
+            display: flex; align-items: flex-end; justify-content: space-between; gap: 34px; flex-wrap: wrap;
+            padding-bottom: 28px; border-bottom: 1px solid rgba(255,255,255,.12);
+        }
+        .glance .eyebrow { background: rgba(255,255,255,.1); color: #BFDBFE; }
+        .glance .section-title { color: #fff; margin-bottom: 0; }
+        .glance-head-aside { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; max-width: 430px; }
+        .glance-sub { color: rgba(255,255,255,.72); font-size: .95rem; }
+        .glance-link {
+            display: inline-flex; align-items: center; gap: 8px;
+            color: #93C5FD; font-weight: 700; font-size: .88rem; transition: color .2s ease;
+        }
+        .glance-link i { transition: transform .25s ease; }
+        .glance-link:hover { color: #fff; }
+        .glance-link:hover i { transform: translateX(5px); }
+
+        .glance-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding-top: 32px; }
+        .glance-stat { padding: 4px 26px; border-left: 1px solid rgba(255,255,255,.12); }
+        .glance-stat:first-child { padding-left: 0; border-left: 0; }
+        .glance-stat:last-child { padding-right: 0; }
+        .glance-stat > i { display: block; color: #67E8F9; font-size: 1.3rem; margin-bottom: 16px; }
+        .glance-value {
+            font-size: clamp(2.1rem, 3.4vw, 2.7rem); font-weight: 800; color: #fff; line-height: 1;
+            letter-spacing: -.03em; font-variant-numeric: tabular-nums; margin-bottom: 8px;
+        }
+        .glance-suffix { color: #93C5FD; }
+        .glance-label { display: block; color: rgba(255,255,255,.68); font-size: .82rem; font-weight: 600; }
+
+
         .about-panel {
             position: relative; overflow: hidden; border-radius: var(--radius-lg); padding: 32px 28px;
             background: linear-gradient(150deg, var(--secondary) 0%, #1E3A8A 100%);
@@ -636,6 +681,9 @@
             .about-quote { grid-template-columns: 1fr; gap: 30px; padding: 32px 28px; }
             .about-quote-person { order: -1; }
             .fac-cta { padding: 32px 28px; }
+            .glance { padding: 38px 28px; }
+            .glance-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 0; }
+            .glance-stat:nth-child(odd) { padding-left: 0; border-left: 0; }
             .footer-grid { grid-template-columns: repeat(2, 1fr); }
         }
         @media (max-width: 720px) {
@@ -661,6 +709,12 @@
             .fac-cta { padding: 26px 20px; }
             .fac-cta-actions { width: 100%; }
             .fac-cta-actions .btn { flex: 1 1 100%; }
+            .glance { padding: 30px 20px; }
+            .glance-head { gap: 18px; }
+            .glance-head-aside { max-width: none; }
+            .glance-stats { grid-template-columns: 1fr; gap: 0; padding-top: 26px; }
+            .glance-stat { padding: 18px 0; border-left: 0; border-top: 1px solid rgba(255,255,255,.12); }
+            .glance-stat:first-child { padding-top: 0; border-top: 0; }
             .footer-grid { grid-template-columns: 1fr; gap: 30px; }
             .float-chip { display: none; }
             .hero-badges { gap: 20px; }

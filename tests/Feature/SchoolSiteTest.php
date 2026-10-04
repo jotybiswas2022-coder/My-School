@@ -264,6 +264,24 @@ class SchoolSiteTest extends TestCase
         );
     }
 
+    public function test_homepage_glance_band_replaces_the_flat_stat_cards(): void
+    {
+        $html = $this->get('/')->assertOk()->getContent();
+
+        $this->assertStringContainsString('class="glance reveal"', $html);
+        $this->assertStringContainsString('glance-stats', $html);
+        $this->assertSame(4, substr_count($html, 'class="glance-stat"'));
+        $this->assertSame(4, substr_count($html, 'class="glance-value"'));
+        $this->assertSame(3, substr_count($html, 'class="glance-suffix">+</span>'));
+
+        // A link into the about page gives the band a purpose beyond the numbers.
+        $this->assertStringContainsString('glance-link', $html);
+        $this->assertStringContainsString(url('/about'), $html);
+
+        // The old markup used inline styles on four separate cards.
+        $this->assertStringNotContainsString('text-align:center;padding:34px 22px;', $html);
+    }
+
     public function test_about_page_uses_the_upgraded_section_layout(): void
     {
         $html = $this->get('/about')->assertOk()->getContent();

@@ -162,6 +162,8 @@ return [
         'feature_safe_desc' => 'Secure, monitored environment',
         'by_numbers' => 'By the Numbers',
         'at_a_glance' => 'Our school at a glance',
+        'glance_sub' => 'A quick look at the numbers behind our community, our classrooms and our results.',
+        'glance_link' => 'More about our school',
         'students_enrolled' => 'Students Enrolled',
         'expert_teachers' => 'Expert Teachers',
         'active_classes' => 'Active Classes',

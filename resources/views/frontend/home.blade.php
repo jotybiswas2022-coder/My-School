@@ -150,26 +150,37 @@
 {{-- ===================== STATISTICS ===================== --}}
 <section class="section section-alt">
     <div class="container">
-        <div class="section-head reveal">
-            <span class="eyebrow"><i class="bi bi-bar-chart-fill"></i> {{ __('ui.home.by_numbers') }}</span>
-            <h2 class="section-title">{{ __('ui.home.at_a_glance') }}</h2>
-        </div>
-
-        <div class="grid grid-4">
-            @foreach ([
-                ['bi-people-fill', __('ui.home.students_enrolled'), $stats['students'], '+'],
-                ['bi-person-badge-fill', __('ui.home.expert_teachers'), $stats['teachers'], '+'],
-                ['bi-easel-fill', __('ui.home.active_classes'), $stats['classes'], ''],
-                ['bi-award-fill', __('ui.home.years_excellence'), $stats['years'], '+'],
-            ] as $stat)
-                <div class="card card-hover reveal" style="text-align:center;padding:34px 22px;">
-                    <div class="icon-box" style="margin:0 auto 16px;"><i class="bi {{ $stat[0] }}"></i></div>
-                    <div style="font-size:2.4rem;font-weight:800;color:var(--primary);letter-spacing:-.03em;">
-                        <span data-count="{{ $stat[2] }}" data-suffix="">0</span>{{ $stat[3] }}
-                    </div>
-                    <p class="muted" style="font-weight:600;font-size:.86rem;margin-top:6px;">{{ $stat[1] }}</p>
+        <div class="glance reveal">
+            <div class="glance-head">
+                <div>
+                    <span class="eyebrow"><i class="bi bi-bar-chart-fill" aria-hidden="true"></i> {{ __('ui.home.by_numbers') }}</span>
+                    <h2 class="section-title">{{ __('ui.home.at_a_glance') }}</h2>
                 </div>
-            @endforeach
+
+                <div class="glance-head-aside">
+                    <p class="glance-sub">{{ __('ui.home.glance_sub') }}</p>
+                    <a href="{{ route('about') }}" class="glance-link">
+                        {{ __('ui.home.glance_link') }} <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+
+            <ul class="glance-stats">
+                @foreach ([
+                    ['bi-people-fill', __('ui.home.students_enrolled'), $stats['students'], true],
+                    ['bi-person-badge-fill', __('ui.home.expert_teachers'), $stats['teachers'], true],
+                    ['bi-easel-fill', __('ui.home.active_classes'), $stats['classes'], false],
+                    ['bi-award-fill', __('ui.home.years_excellence'), $stats['years'], true],
+                ] as $stat)
+                    <li class="glance-stat">
+                        <i class="bi {{ $stat[0] }}" aria-hidden="true"></i>
+                        <div class="glance-value">
+                            <span data-count="{{ $stat[2] }}">0</span>@if ($stat[3])<span class="glance-suffix">+</span>@endif
+                        </div>
+                        <span class="glance-label">{{ $stat[1] }}</span>
+                    </li>
+                @endforeach
+            </ul>
         </div>
     </div>
 </section>
