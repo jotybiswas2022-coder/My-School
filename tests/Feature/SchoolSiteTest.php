@@ -228,6 +228,157 @@ class SchoolSiteTest extends TestCase
         $this->actingAs($admin)->get(route('admin.gallery.show', $album))->assertOk();
     }
 
+    public function test_admin_can_remove_a_teacher_photo_from_the_edit_form(): void
+    {
+        Storage::fake('public');
+
+        $admin = \App\Models\User::where('is_admin', true)->first();
+        $teacher = \App\Models\Teacher::firstOrFail();
+        $png = base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==');
+
+        $this->actingAs($admin)->put(route('admin.teachers.update', $teacher), [
+            'name' => $teacher->name,
+            'photo' => UploadedFile::fake()->createWithContent('teacher.png', $png),
+        ])->assertRedirect();
+
+        $teacher->refresh();
+        $this->assertNotNull($teacher->photo);
+        $path = $teacher->photo;
+        Storage::disk('public')->assertExists($path);
+
+        $this->actingAs($admin)->put(route('admin.teachers.update', $teacher), [
+            'name' => $teacher->name,
+            'remove_photo' => '1',
+        ])->assertRedirect();
+
+        $this->assertNull($teacher->refresh()->photo);
+        Storage::disk('public')->assertMissing($path);
+    }
+
+    public function test_admin_can_remove_a_news_featured_image_from_the_edit_form(): void
+    {
+        Storage::fake('public');
+
+        $admin = \App\Models\User::where('is_admin', true)->first();
+        $article = \App\Models\News::firstOrFail();
+        $png = base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==');
+
+        $this->actingAs($admin)->put(route('admin.news.update', $article), [
+            'title' => $article->title,
+            'category' => $article->category,
+            'description' => $article->description,
+            'featured_image' => UploadedFile::fake()->createWithContent('news.png', $png),
+        ])->assertRedirect();
+
+        $article->refresh();
+        $this->assertNotNull($article->featured_image);
+        $path = $article->featured_image;
+        Storage::disk('public')->assertExists($path);
+
+        $this->actingAs($admin)->put(route('admin.news.update', $article), [
+            'title' => $article->title,
+            'category' => $article->category,
+            'description' => $article->description,
+            'remove_featured_image' => '1',
+        ])->assertRedirect();
+
+        $this->assertNull($article->refresh()->featured_image);
+        Storage::disk('public')->assertMissing($path);
+    }
+
+    public function test_admin_can_remove_an_event_image_from_the_edit_form(): void
+    {
+        Storage::fake('public');
+
+        $admin = \App\Models\User::where('is_admin', true)->first();
+        $event = \App\Models\Event::firstOrFail();
+        $png = base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==');
+
+        $this->actingAs($admin)->put(route('admin.events.update', $event), [
+            'title' => $event->title,
+            'description' => $event->description,
+            'event_date' => $event->event_date->format('Y-m-d'),
+            'image' => UploadedFile::fake()->createWithContent('event.png', $png),
+        ])->assertRedirect();
+
+        $event->refresh();
+        $this->assertNotNull($event->image);
+        $path = $event->image;
+        Storage::disk('public')->assertExists($path);
+
+        $this->actingAs($admin)->put(route('admin.events.update', $event), [
+            'title' => $event->title,
+            'description' => $event->description,
+            'event_date' => $event->event_date->format('Y-m-d'),
+            'remove_image' => '1',
+        ])->assertRedirect();
+
+        $this->assertNull($event->refresh()->image);
+        Storage::disk('public')->assertMissing($path);
+    }
+
+    public function test_admin_can_remove_a_notice_attachment_from_the_edit_form(): void
+    {
+        Storage::fake('public');
+
+        $admin = \App\Models\User::where('is_admin', true)->first();
+        $notice = \App\Models\Notice::firstOrFail();
+        $png = base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==');
+
+        $this->actingAs($admin)->put(route('admin.notices.update', $notice), [
+            'title' => $notice->title,
+            'category' => $notice->category,
+            'description' => $notice->description,
+            'attachment' => UploadedFile::fake()->createWithContent('notice.png', $png),
+        ])->assertRedirect();
+
+        $notice->refresh();
+        $this->assertNotNull($notice->attachment);
+        $path = $notice->attachment;
+        Storage::disk('public')->assertExists($path);
+
+        $this->actingAs($admin)->put(route('admin.notices.update', $notice), [
+            'title' => $notice->title,
+            'category' => $notice->category,
+            'description' => $notice->description,
+            'remove_attachment' => '1',
+        ])->assertRedirect();
+
+        $this->assertNull($notice->refresh()->attachment);
+        Storage::disk('public')->assertMissing($path);
+    }
+
+    public function test_admin_can_remove_an_album_cover_image(): void
+    {
+        Storage::fake('public');
+
+        $admin = \App\Models\User::where('is_admin', true)->first();
+        $album = \App\Models\GalleryAlbum::firstOrFail();
+        $png = base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==');
+
+        $this->actingAs($admin)->put(route('admin.gallery.update', $album), [
+            'title' => $album->title,
+            'category' => $album->category,
+            'description' => $album->description,
+            'cover_image' => UploadedFile::fake()->createWithContent('cover.png', $png),
+        ])->assertRedirect();
+
+        $album->refresh();
+        $this->assertNotNull($album->cover_image);
+        $path = $album->cover_image;
+        Storage::disk('public')->assertExists($path);
+
+        $this->actingAs($admin)->put(route('admin.gallery.update', $album), [
+            'title' => $album->title,
+            'category' => $album->category,
+            'description' => $album->description,
+            'remove_cover_image' => '1',
+        ])->assertRedirect();
+
+        $this->assertNull($album->refresh()->cover_image);
+        Storage::disk('public')->assertMissing($path);
+    }
+
     public function test_admin_can_delete_a_settings_image(): void
     {
         Storage::fake('public');

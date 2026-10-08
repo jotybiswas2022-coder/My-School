@@ -50,6 +50,9 @@ class EventController extends Controller
         if ($image = $this->uploadImage($request->file('image'), 'events')) {
             $this->deleteImage($event->image);
             $data['image'] = $image;
+        } elseif ($request->boolean('remove_image') && $event->image) {
+            $this->deleteImage($event->image);
+            $data['image'] = null;
         }
 
         $event->update($data);

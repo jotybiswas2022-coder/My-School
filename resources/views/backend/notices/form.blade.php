@@ -64,6 +64,9 @@
                     <div class="b-card-body">
                         @if ($notice->attachment)
                             <a href="{{ asset('storage/' . $notice->attachment) }}" target="_blank" rel="noopener" class="b-btn b-btn-outline b-btn-sm b-btn-block" style="margin-bottom:12px;">View current file</a>
+                            <label class="checkbox-row" style="margin-bottom:14px;">
+                                <input type="checkbox" name="remove_attachment" value="1"> Remove current file
+                            </label>
                         @endif
                         <input type="file" name="attachment" class="form-control" accept=".jpg,.jpeg,.png,.webp,.pdf,.doc,.docx">
                         <div class="form-hint">Images or documents. Max 5MB.</div>

@@ -67,6 +67,9 @@ class TeacherController extends Controller
         if ($photo = $this->uploadImage($request->file('photo'), 'teachers')) {
             $this->deleteImage($teacher->photo);
             $data['photo'] = $photo;
+        } elseif ($request->boolean('remove_photo') && $teacher->photo) {
+            $this->deleteImage($teacher->photo);
+            $data['photo'] = null;
         }
 
         $teacher->update($data);

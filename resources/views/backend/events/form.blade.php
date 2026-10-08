@@ -57,6 +57,9 @@
                     <div class="b-card-body">
                         @if ($event->image)
                             <img src="{{ asset('storage/' . $event->image) }}" alt="Event image" style="width:100%;border-radius:var(--radius-sm);margin-bottom:14px;">
+                            <label class="checkbox-row" style="margin-bottom:14px;">
+                                <input type="checkbox" name="remove_image" value="1"> Remove current image
+                            </label>
                         @endif
                         <input type="file" name="image" class="form-control" accept="image/*">
                         <div class="form-hint">JPG, PNG, WEBP or SVG. Max 4MB.</div>

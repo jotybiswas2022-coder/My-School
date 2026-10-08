@@ -58,6 +58,9 @@ class NewsController extends Controller
         if ($image = $this->uploadImage($request->file('featured_image'), 'news')) {
             $this->deleteImage($news->featured_image);
             $data['featured_image'] = $image;
+        } elseif ($request->boolean('remove_featured_image') && $news->featured_image) {
+            $this->deleteImage($news->featured_image);
+            $data['featured_image'] = null;
         }
 
         $news->update($data);

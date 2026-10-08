@@ -65,6 +65,9 @@ class GalleryController extends Controller
         if ($cover = $this->uploadImage($request->file('cover_image'), 'gallery')) {
             $this->deleteImage($album->cover_image);
             $data['cover_image'] = $cover;
+        } elseif ($request->boolean('remove_cover_image') && $album->cover_image) {
+            $this->deleteImage($album->cover_image);
+            $data['cover_image'] = null;
         }
 
         $album->update($data);

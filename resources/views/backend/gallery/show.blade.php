@@ -101,7 +101,11 @@
                                     <div class="img-name" data-preview-name hidden></div>
                                 </div>
                             </div>
-                            @if (! $album->cover_image)
+                            @if ($album->cover_image)
+                                <label class="checkbox-row" style="margin-bottom:2px;">
+                                    <input type="checkbox" name="remove_cover_image" value="1"> Remove current cover
+                                </label>
+                            @else
                                 <div class="form-hint">No cover set — the first album image is used instead.</div>
                             @endif
                         </div>

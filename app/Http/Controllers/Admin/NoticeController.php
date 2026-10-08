@@ -61,6 +61,9 @@ class NoticeController extends Controller
         if ($attachment = $this->uploadImage($request->file('attachment'), 'notices')) {
             $this->deleteImage($notice->attachment);
             $data['attachment'] = $attachment;
+        } elseif ($request->boolean('remove_attachment') && $notice->attachment) {
+            $this->deleteImage($notice->attachment);
+            $data['attachment'] = null;
         }
 
         $notice->update($data);
