@@ -14,6 +14,11 @@
     {{-- Bootstrap Icons (icon font used instead of emoji) --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
+    {{-- Bengali UI font (falls back to local system fonts when offline) --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
         /* ===================== DESIGN TOKENS ===================== */
         :root {
@@ -37,13 +42,13 @@
             --shadow: 0 10px 30px -12px rgba(15,23,42,.15);
             --shadow-lg: 0 24px 60px -20px rgba(37,99,235,.28);
             --nav-h: 74px;
-            --font: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, 'Nirmala UI', 'Noto Sans Bengali', 'SolaimanLipi', sans-serif;
-            --bn-font: 'Nirmala UI', 'Noto Sans Bengali', 'SolaimanLipi', 'Segoe UI', system-ui, sans-serif;
+            --font: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, 'Hind Siliguri', 'Nirmala UI', 'Noto Sans Bengali', 'SolaimanLipi', sans-serif;
+            --bn-font: 'Hind Siliguri', 'Nirmala UI', 'Noto Sans Bengali', 'SolaimanLipi', 'Segoe UI', sans-serif;
         }
 
         /* Bengali typography */
         html[lang="bn"] body { font-family: var(--bn-font); line-height: 1.75; }
-        html[lang="bn"] h1, html[lang="bn"] h2, html[lang="bn"] h3, html[lang="bn"] h4 { line-height: 1.45; }
+        html[lang="bn"] h1, html[lang="bn"] h2, html[lang="bn"] h3, html[lang="bn"] h4 { line-height: 1.45; font-weight: 700; }
         html[lang="bn"] .eyebrow, html[lang="bn"] .badge { letter-spacing: 0; }
 
         /* Icon sizing helper */
