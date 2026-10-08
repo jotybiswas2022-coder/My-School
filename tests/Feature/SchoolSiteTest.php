@@ -1085,6 +1085,7 @@ class SchoolSiteTest extends TestCase
 
     public function test_homepage_program_cards_are_whole_links_with_one_shared_cta(): void
     {
+        $this->get(route('language.switch', 'en'))->assertRedirect();
         $html = $this->get('/')->assertOk()->getContent();
 
         // The homepage previews 6 of the 10 seeded classes.

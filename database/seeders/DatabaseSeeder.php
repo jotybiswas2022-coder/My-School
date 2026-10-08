@@ -52,19 +52,30 @@ class DatabaseSeeder extends Seeder
     private function seedSettings(): void
     {
         Setting::put('school_name', 'My School');
+        Setting::put('school_name_bn', 'মাই স্কুল');
         Setting::put('tagline', 'Empowering Students. Inspiring Futures.');
+        Setting::put('tagline_bn', 'শিক্ষার্থীদের ক্ষমতায়ন, ভবিষ্যতের অনুপ্রেরণা।');
         Setting::put('email', 'info@myschool.edu');
         Setting::put('phone', '+1 (555) 123-4567');
         Setting::put('address', '123 Education Avenue, Springfield, ST 12345');
+        Setting::put('address_bn', '১২৩ এডুকেশন অ্যাভিনিউ, স্প্রিংফিল্ড, এসটি ১২৩৪৫');
         Setting::put('office_hours', 'Monday - Friday, 8:00 AM - 4:00 PM');
+        Setting::put('office_hours_bn', 'সোমবার - শুক্রবার, সকাল ৮:০০ - বিকাল ৪:০০');
         Setting::put('established_year', '1998');
         Setting::put('principal_name', 'Dr. Sarah Mitchell');
+        Setting::put('principal_name_bn', 'ড. সারাহ মিচেল');
         Setting::put('principal_designation', 'Principal');
+        Setting::put('principal_designation_bn', 'অধ্যক্ষ');
         Setting::put('principal_message', "Welcome to My School. For more than two decades we have been a place where curiosity is celebrated and character is built.\n\nOur dedicated teachers, modern facilities and vibrant community create an environment where every student can discover their strengths. We believe education is more than examinations - it is about becoming thoughtful, resilient and compassionate people.\n\nI warmly invite you to visit our campus, meet our teachers and see for yourself what makes our school special.");
+        Setting::put('principal_message_bn', "মাই স্কুলে আপনাকে স্বাগতম। দুই দশকেরও বেশি সময় ধরে আমরা এমন একটি জায়গা, যেখানে কৌতূহলকে উদযাপন করা হয় এবং চরিত্র গঠিত হয়।\n\nআমাদের নিবেদিতপ্রাণ শিক্ষকগণ, আধুনিক সুবিধা ও প্রাণবন্ত পরিবেশ এমন এক পরিবেশ তৈরি করে, যেখানে প্রতিটি শিক্ষার্থী নিজের শক্তিকে আবিষ্কার করতে পারে। আমরা বিশ্বাস করি, শিক্ষা শুধু পরীক্ষার মধ্যে সীমাবদ্ধ নয় — এটি চিন্তাশীল, স্থিতিস্থাপক ও সহানুভূতিশীল মানুষ হয়ে ওঠার বিষয়।\n\nআমি আপনাকে আন্তরিকভাবে আমাদের ক্যাম্পাস পরিদর্শন, আমাদের শিক্ষকদের সাথে সাক্ষাৎ এবং নিজে দেখার জন্য আমন্ত্রণ জানাচ্ছি, কী আমাদের বিদ্যালয়কে বিশেষ করে তোলে।");
         Setting::put('about_description', 'My School is a modern learning community dedicated to academic excellence, creativity and character development. Since 1998 we have helped thousands of students discover their potential in a caring and inclusive environment.');
+        Setting::put('about_description_bn', 'মাই স্কুল একটি আধুনিক শিক্ষা প্রতিষ্ঠান, যা একাডেমিক উৎকর্ষ, সৃজনশীলতা ও চরিত্র বিকাশে নিবেদিত। ১৯৯৮ সাল থেকে আমরা যত্নশীল ও অন্তর্ভুক্তিমূলক পরিবেশে হাজারো শিক্ষার্থীকে নিজেদের সম্ভাবনা আবিষ্কারে সহায়তা করে আসছি।');
         Setting::put('mission', 'To provide an inspiring, future-ready education that develops confident, responsible and compassionate global citizens.');
+        Setting::put('mission_bn', 'আত্মবিশ্বাসী, দায়িত্বশীল ও সহানুভূতিশীল বৈশ্বিক নাগরিক গড়ে তুলতে অনুপ্রেরণাদায়ী ও ভবিষ্যত-প্রস্তুত শিক্ষা প্রদান করা।');
         Setting::put('vision', 'To be a leading school recognised for academic innovation, inclusion and character formation.');
+        Setting::put('vision_bn', 'একাডেমিক উদ্ভাবন, অন্তর্ভুক্তি ও চরিত্র গঠনের জন্য স্বীকৃত একটি শীর্ষস্থানীয় বিদ্যালয় হওয়া।');
         Setting::put('footer_text', '© ' . date('Y') . ' My School. All rights reserved.');
+        Setting::put('footer_text_bn', '© ' . date('Y') . ' মাই স্কুল। সর্বস্বত্ব সংরক্ষিত।');
         Setting::put('facebook', 'https://facebook.com/myschool');
         Setting::put('twitter', 'https://twitter.com/myschool');
         Setting::put('instagram', 'https://instagram.com/myschool');
@@ -109,13 +120,17 @@ class DatabaseSeeder extends Seeder
     private function seedClasses(): \Illuminate\Support\Collection
     {
         $names = ['Grade 1', 'Grade 2', 'Grade 3', 'Grade 4', 'Grade 5', 'Grade 6', 'Grade 7', 'Grade 8', 'Grade 9', 'Grade 10'];
+        $namesBn = ['প্রথম শ্রেণী', 'দ্বিতীয় শ্রেণী', 'তৃতীয় শ্রেণী', 'চতুর্থ শ্রেণী', 'পঞ্চম শ্রেণী', 'ষষ্ঠ শ্রেণী', 'সপ্তম শ্রেণী', 'অষ্টম শ্রেণী', 'নবম শ্রেণী', 'দশম শ্রেণী'];
 
         foreach ($names as $index => $name) {
+            $nameBn = $namesBn[$index];
             $class = SchoolClass::updateOrCreate(
                 ['name' => $name],
                 [
                     'code' => 'G' . ($index + 1),
+                    'name_bn' => $nameBn,
                     'description' => 'A balanced curriculum focused on strong foundations and holistic growth for ' . $name . ' students.',
+                    'description_bn' => $nameBn . ' শিক্ষার্থীদের জন্য মজবুত ভিত্তি ও সার্বিক বিকাশ নিশ্চিত করে এমন একটি সুষম পাঠ্যক্রম।',
                     'order' => $index,
                 ]
             );
@@ -153,21 +168,46 @@ class DatabaseSeeder extends Seeder
             ['Mr. Ethan Brooks', 'Teacher', 'Humanities', 'M.A Geography', '9 years'],
         ];
 
+        // Bengali name/designation/department/qualification plus the numeric
+        // experience (Bengali digits can't be cast to int for join dates).
+        $teachersBn = [
+            0 => ['name' => 'ড. সারাহ মিচেল', 'designation' => 'অধ্যক্ষ', 'department' => 'প্রশাসন', 'qualification' => 'শিক্ষায় পিএইচ.ডি', 'experience' => '২৪ বছর', 'years' => 24],
+            1 => ['name' => 'জনাব জেমস কার্টার', 'designation' => 'উপ-অধ্যক্ষ', 'department' => 'প্রশাসন', 'qualification' => 'এম.এড, বি.এ', 'experience' => '১৮ বছর', 'years' => 18],
+            2 => ['name' => 'জনাবা এমিলি নগুয়েন', 'designation' => 'সিনিয়র শিক্ষক', 'department' => 'বিজ্ঞান', 'qualification' => 'পদার্থবিজ্ঞানে এম.এসসি, বি.এড', 'experience' => '১২ বছর', 'years' => 12],
+            3 => ['name' => 'জনাব ডেভিড ওকাফর', 'designation' => 'সিনিয়র শিক্ষক', 'department' => 'গণিত', 'qualification' => 'গণিতে এম.এসসি', 'experience' => '১৪ বছর', 'years' => 14],
+            4 => ['name' => 'জনাবা আয়েশা রহমান', 'designation' => 'শিক্ষক', 'department' => 'ইংরেজি', 'qualification' => 'ইংরেজিতে এম.এ, বি.এড', 'experience' => '৯ বছর', 'years' => 9],
+            5 => ['name' => 'জনাব লুকাস সিলভা', 'designation' => 'শিক্ষক', 'department' => 'বিজ্ঞান', 'qualification' => 'রসায়নে এম.এসসি', 'experience' => '৭ বছর', 'years' => 7],
+            6 => ['name' => 'জনাবা হান্না লি', 'designation' => 'শিক্ষক', 'department' => 'কম্পিউটার বিজ্ঞান', 'qualification' => 'কম্পিউটার বিজ্ঞানে বি.এসসি', 'experience' => '৬ বছর', 'years' => 6],
+            7 => ['name' => 'জনাব মোহাম্মদ আলী', 'designation' => 'শিক্ষক', 'department' => 'গণিত', 'qualification' => 'গণিতে বি.এসসি, বি.এড', 'experience' => '১০ বছর', 'years' => 10],
+            8 => ['name' => 'জনাবা গ্রেস থম্পসন', 'designation' => 'শিক্ষক', 'department' => 'মানবিক', 'qualification' => 'ইতিহাসে এম.এ', 'experience' => '৮ বছর', 'years' => 8],
+            9 => ['name' => 'জনাব রায়ান প্যাটেল', 'designation' => 'শিক্ষক', 'department' => 'শারীরিক শিক্ষা', 'qualification' => 'বি.পি.এড', 'experience' => '১১ বছর', 'years' => 11],
+            10 => ['name' => 'জনাবা সোফিয়া রসি', 'designation' => 'শিক্ষক', 'department' => 'ভাষা', 'qualification' => 'ফরাসি ভাষায় এম.এ', 'experience' => '৫ বছর', 'years' => 5],
+            11 => ['name' => 'জনাব ড্যানিয়েল কিম', 'designation' => 'শিক্ষক', 'department' => 'চারুকলা', 'qualification' => 'বি.এফ.এ', 'experience' => '৬ বছর', 'years' => 6],
+            12 => ['name' => 'জনাবা ফাতিমা নূর', 'designation' => 'শিক্ষক', 'department' => 'ইংরেজি', 'qualification' => 'এম.এড, বি.এ', 'experience' => '১৩ বছর', 'years' => 13],
+            13 => ['name' => 'জনাব ইথান ব্রুকস', 'designation' => 'শিক্ষক', 'department' => 'মানবিক', 'qualification' => 'ভূগোলে এম.এ', 'experience' => '৯ বছর', 'years' => 9],
+        ];
+
         $photo = $this->sampleImage('teacher-portrait', 'Academic Staff', ['#2563EB', '#1E40AF']);
 
         foreach ($teachers as $index => [$name, $designation, $department, $qualification, $experience]) {
+            $bn = $teachersBn[$index];
             Teacher::updateOrCreate(
                 ['email' => strtolower(str_replace([' ', '.', "'"], ['', '', ''], $name)) . '@myschool.edu'],
                 [
                     'name' => $name,
+                    'name_bn' => $bn['name'],
                     'designation' => $designation,
+                    'designation_bn' => $bn['designation'],
                     'department' => $department,
+                    'department_bn' => $bn['department'],
                     'qualification' => $qualification,
-                    'experience' => $experience,
+                    'qualification_bn' => $bn['qualification'],
+                    'experience' => $bn['experience'],
                     'phone' => '+1 (555) ' . str_pad((string) (200 + $index), 3, '0', STR_PAD_LEFT) . '-' . $this->faker->numerify('####'),
                     'bio' => $name . ' has been part of the My School community for ' . $experience . '. ' . $this->faker->paragraph(3),
+                    'bio_bn' => $bn['name'] . ' গত ' . $bn['experience'] . ' ধরে মাই স্কুল পরিবারের সাথে যুক্ত। তিনি শিক্ষার্থীদের প্রতি নিবেদিতপ্রাণ, অভিজ্ঞ ও আন্তরিক একজন শিক্ষক।',
                     'photo' => $photo,
-                    'join_date' => now()->subYears((int) filter_var($experience, FILTER_SANITIZE_NUMBER_INT))->startOfYear(),
+                    'join_date' => now()->subYears($bn['years'])->startOfYear(),
                     'is_featured' => $index < 4,
                     'is_active' => true,
                 ]
@@ -183,24 +223,26 @@ class DatabaseSeeder extends Seeder
     private function seedSubjects(\Illuminate\Support\Collection $classes, \Illuminate\Support\Collection $teachers): \Illuminate\Support\Collection
     {
         $definitions = [
-            ['English Language', 'ENG', 'English'],
-            ['Mathematics', 'MATH', 'Mathematics'],
-            ['General Science', 'SCI', 'Science'],
-            ['Social Studies', 'SOC', 'Humanities'],
-            ['Computer Science', 'COMP', 'Computer Science'],
-            ['Physical Education', 'PE', 'Physical Education'],
-            ['Fine Arts', 'ART', 'Arts'],
-            ['Second Language', 'LANG', 'Languages'],
+            ['English Language', 'ইংরেজি ভাষা', 'ENG', 'English'],
+            ['Mathematics', 'গণিত', 'MATH', 'Mathematics'],
+            ['General Science', 'সাধারণ বিজ্ঞান', 'SCI', 'Science'],
+            ['Social Studies', 'সমাজ অধ্যয়ন', 'SOC', 'Humanities'],
+            ['Computer Science', 'কম্পিউটার বিজ্ঞান', 'COMP', 'Computer Science'],
+            ['Physical Education', 'শারীরিক শিক্ষা', 'PE', 'Physical Education'],
+            ['Fine Arts', 'চারুকলা', 'ART', 'Arts'],
+            ['Second Language', 'দ্বিতীয় ভাষা', 'LANG', 'Languages'],
         ];
 
-        foreach ($definitions as [$name, $code, $department]) {
+        foreach ($definitions as [$name, $nameBn, $code, $department]) {
             $teacher = $teachers->firstWhere('department', $department) ?? $teachers->first();
 
             Subject::updateOrCreate(
                 ['code' => $code],
                 [
                     'name' => $name,
+                    'name_bn' => $nameBn,
                     'description' => 'A comprehensive ' . $name . ' programme developing core knowledge, critical thinking and practical skills.',
+                    'description_bn' => $nameBn . ' বিষয়ে গভীর জ্ঞান, সমালোচনামূলক চিন্তা ও ব্যবহারিক দক্ষতা বিকাশে সহায়ক একটি পূর্ণাঙ্গ কর্মসূচি।',
                     'teacher_id' => $teacher?->id,
                 ]
             );
@@ -295,14 +337,16 @@ class DatabaseSeeder extends Seeder
         $previous = AcademicSession::where('is_current', false)->first();
 
         $definitions = [
-            ['First Term Examination', 'Written', $previous, now()->subMonths(8), now()->subMonths(7), true],
-            ['Mid Term Examination', 'Written', $current, now()->subMonths(3), now()->subMonths(3)->addDays(10), true],
-            ['Final Term Examination', 'Written', $current, now()->addMonth(), now()->addMonth()->addDays(12), false],
+            ['First Term Examination', 'প্রথম সাময়িক পরীক্ষা', 'Written', 'লিখিত', $previous, now()->subMonths(8), now()->subMonths(7), true],
+            ['Mid Term Examination', 'মধ্যমেয়াদি পরীক্ষা', 'Written', 'লিখিত', $current, now()->subMonths(3), now()->subMonths(3)->addDays(10), true],
+            ['Final Term Examination', 'বার্ষিক পরীক্ষা', 'Written', 'লিখিত', $current, now()->addMonth(), now()->addMonth()->addDays(12), false],
         ];
 
-        foreach ($definitions as [$name, $type, $session, $start, $end, $published]) {
+        foreach ($definitions as [$name, $nameBn, $type, $typeBn, $session, $start, $end, $published]) {
             Exam::updateOrCreate(['name' => $name], [
+                'name_bn' => $nameBn,
                 'exam_type' => $type,
+                'exam_type_bn' => $typeBn,
                 'academic_session_id' => $session?->id,
                 'start_date' => $start->toDateString(),
                 'end_date' => $end->toDateString(),
@@ -358,22 +402,24 @@ class DatabaseSeeder extends Seeder
         $adminId = User::where('is_admin', true)->value('id');
 
         $noticeTemplates = [
-            ['Annual Sports Day Announcement', 'Event', 'Our annual sports day will be held next month. All students are encouraged to participate in at least one event.'],
-            ['Mid Term Examination Schedule', 'Exam', 'The mid term examination schedule has now been published. Please collect your admit card from the class teacher.'],
-            ['Parent-Teacher Meeting', 'Academic', 'Parents are invited to the termly parent-teacher meeting to discuss student progress.'],
-            ['Admission Open for New Session', 'Admission', 'Online admission for the upcoming academic session is now open. Apply early to secure your seat.'],
-            ['School Closed for Public Holiday', 'Holiday', 'The school will remain closed for the upcoming public holiday. Regular classes resume the following day.'],
-            ['Science Fair Registration', 'General', 'Registration for the inter-school science fair is now open for Grade 6 to Grade 10 students.'],
-            ['Library Book Return Notice', 'General', 'All borrowed library books must be returned before the end of this month to avoid fines.'],
-            ['Urgent: Revised Bus Timings', 'Urgent', 'Please note the revised school bus timings effective from Monday. Contact the office for details.'],
-            ['Annual Cultural Festival', 'Event', 'Our annual cultural festival is back. Auditions for performances begin next week.'],
-            ['Scholarship Applications Invited', 'Academic', 'Applications for merit-based scholarships are now open for eligible students.'],
+            ['Annual Sports Day Announcement', 'বার্ষিক ক্রীড়া প্রতিযোগিতার ঘোষণা', 'Event', 'আগামী মাসে আমাদের বার্ষিক ক্রীড়া প্রতিযোগিতা অনুষ্ঠিত হবে। সকল শিক্ষার্থীকে অন্তত একটি ইভেন্টে অংশগ্রহণ করতে উৎসাহিত করা হচ্ছে।'],
+            ['Mid Term Examination Schedule', 'মধ্যমেয়াদি পরীক্ষার সময়সূচি', 'Exam', 'মধ্যমেয়াদি পরীক্ষার সময়সূচি প্রকাশ করা হয়েছে। অনুগ্রহ করে শ্রেণি শিক্ষকের কাছ থেকে প্রবেশপত্র সংগ্রহ করুন।'],
+            ['Parent-Teacher Meeting', 'অভিভাবক-শিক্ষক সভা', 'Academic', 'শিক্ষার্থীদের অগ্রগতি নিয়ে আলোচনার জন্য অভিভাবকদের ত্রৈমাসিক অভিভাবক-শিক্ষক সভায় আমন্ত্রণ জানানো হচ্ছে।'],
+            ['Admission Open for New Session', 'নতুন শিক্ষাবর্ষে ভর্তি শুরু', 'Admission', 'আগামী শিক্ষাবর্ষের অনলাইন ভর্তি প্রক্রিয়া এখন চালু। আসন নিশ্চিত করতে তাড়াতাড়ি আবেদন করুন।'],
+            ['School Closed for Public Holiday', 'সরকারি ছুটিতে বিদ্যালয় বন্ধ', 'Holiday', 'আগামী সরকারি ছুটির কারণে বিদ্যালয় বন্ধ থাকবে। পরবর্তী দিন নিয়মিত ক্লাস শুরু হবে।'],
+            ['Science Fair Registration', 'বিজ্ঞান মেলায় নিবন্ধন', 'General', 'ষষ্ঠ থেকে দশম শ্রেণীর শিক্ষার্থীদের জন্য আন্তঃস্কুল বিজ্ঞান মেলার নিবন্ধন এখন চালু।'],
+            ['Library Book Return Notice', 'গ্রন্থাগারের বই ফেরতের নোটিশ', 'General', 'জরিমানা এড়াতে সব ধার করা গ্রন্থাগারের বই এই মাস শেষ হবার আগেই ফেরত দিতে হবে।'],
+            ['Urgent: Revised Bus Timings', 'জরুরি: সংশোধিত বাস সময়সূচি', 'Urgent', 'সোমবার থেকে কার্যকর স্কুল বাসের সংশোধিত সময়সূচি লক্ষ্য করুন। বিস্তারিত জানতে অফিসে যোগাযোগ করুন।'],
+            ['Annual Cultural Festival', 'বার্ষিক সাংস্কৃতিক উৎসব', 'Event', 'আমাদের বার্ষিক সাংস্কৃতিক উৎসব ফিরে এসেছে। আগামী সপ্তাহে পরিবেশনার জন্য অডিশন শুরু হবে।'],
+            ['Scholarship Applications Invited', 'বৃত্তির আবেদন আহ্বান', 'Academic', 'যোগ্য শিক্ষার্থীদের জন্য মেধাভিত্তিক বৃত্তির আবেদন এখন চালু।'],
         ];
 
-        foreach ($noticeTemplates as $index => [$title, $category, $body]) {
+        foreach ($noticeTemplates as $index => [$title, $titleBn, $category, $body]) {
             Notice::updateOrCreate(['title' => $title], [
+                'title_bn' => $titleBn,
                 'category' => $category,
                 'description' => $body . "\n\n" . $this->faker->paragraph(3),
+                'description_bn' => $body . "\n\nবিস্তারিত জানতে বিদ্যালয় অফিসে যোগাযোগ করুন।",
                 'is_published' => true,
                 'published_at' => now()->subDays($index * 2),
                 'user_id' => $adminId,
@@ -381,42 +427,47 @@ class DatabaseSeeder extends Seeder
         }
 
         $eventDefinitions = [
-            ['Annual Sports Day', now()->addDays(12), '10:00', 'Main Sports Ground'],
-            ['Science & Innovation Fair', now()->addDays(24), '09:30', 'Science Block'],
-            ['Parent-Teacher Meeting', now()->addDays(6), '14:00', 'Classrooms'],
-            ['Cultural Festival', now()->addDays(40), '17:00', 'Auditorium'],
-            ['Inter-School Quiz Championship', now()->addDays(18), '11:00', 'Library Hall'],
-            ['Graduation Ceremony', now()->addDays(70), '16:00', 'Auditorium'],
-            ['Independence Day Celebration', now()->subDays(20), '08:00', 'Front Lawn'],
-            ['Art & Craft Exhibition', now()->subDays(45), '10:00', 'Arts Room'],
+            ['Annual Sports Day', 'বার্ষিক ক্রীড়া প্রতিযোগিতা', now()->addDays(12), '10:00', 'Main Sports Ground', 'প্রধান ক্রীড়া মাঠ'],
+            ['Science & Innovation Fair', 'বিজ্ঞান ও উদ্ভাবন মেলা', now()->addDays(24), '09:30', 'Science Block', 'বিজ্ঞান ভবন'],
+            ['Parent-Teacher Meeting', 'অভিভাবক-শিক্ষক সভা', now()->addDays(6), '14:00', 'Classrooms', 'শ্রেণিকক্ষ'],
+            ['Cultural Festival', 'সাংস্কৃতিক উৎসব', now()->addDays(40), '17:00', 'Auditorium', 'মিলনায়তন'],
+            ['Inter-School Quiz Championship', 'আন্তঃস্কুল কুইজ চ্যাম্পিয়নশিপ', now()->addDays(18), '11:00', 'Library Hall', 'লাইব্রেরি হল'],
+            ['Graduation Ceremony', 'শিক্ষাসমাপনী অনুষ্ঠান', now()->addDays(70), '16:00', 'Auditorium', 'মিলনায়তন'],
+            ['Independence Day Celebration', 'স্বাধীনতা দিবস উদযাপন', now()->subDays(20), '08:00', 'Front Lawn', 'সম্মুখ লন'],
+            ['Art & Craft Exhibition', 'শিল্প ও কারুশিল্প প্রদর্শনী', now()->subDays(45), '10:00', 'Arts Room', 'চারুকলা কক্ষ'],
         ];
 
-        foreach ($eventDefinitions as [$title, $date, $time, $location]) {
+        foreach ($eventDefinitions as [$title, $titleBn, $date, $time, $location, $locationBn]) {
             Event::updateOrCreate(['title' => $title], [
+                'title_bn' => $titleBn,
                 'description' => $this->faker->paragraph(4),
+                'description_bn' => $titleBn . " উপলক্ষে সকল শিক্ষার্থী, অভিভাবক ও শিক্ষকবৃন্দের অংশগ্রহণ কাম্য। বিস্তারিত তথ্য বিদ্যালয় অফিসে পাওয়া যাবে।",
                 'image' => $this->sampleImage('event-' . strtolower(preg_replace('/[^a-z]+/i', '-', $title)), $title, ['#0EA5E9', '#2563EB']),
                 'event_date' => $date->toDateString(),
                 'event_time' => $time,
                 'location' => $location,
+                'location_bn' => $locationBn,
                 'is_published' => true,
             ]);
         }
 
         $newsDefinitions = [
-            ['Students Excel at Regional Science Fair', 'Achievement'],
-            ['New Computer Lab Officially Opened', 'Campus'],
-            ['Football Team Wins District Championship', 'Sports'],
-            ['Cultural Week Celebrates Diversity', 'Cultural'],
-            ['Library Expands Digital Collection', 'Campus'],
-            ['Alumni Return for Career Day', 'General'],
-            ['New Academic Session Begins', 'Academic'],
-            ['Green Initiative: 500 Trees Planted', 'General'],
+            ['Students Excel at Regional Science Fair', 'আঞ্চলিক বিজ্ঞান মেলায় শিক্ষার্থীদের অসামান্য সাফল্য', 'Achievement'],
+            ['New Computer Lab Officially Opened', 'নতুন কম্পিউটার ল্যাব আনুষ্ঠানিকভাবে চালু', 'Campus'],
+            ['Football Team Wins District Championship', 'ফুটবল দল জেলা চ্যাম্পিয়নশিপে বিজয়ী', 'Sports'],
+            ['Cultural Week Celebrates Diversity', 'সাংস্কৃতিক সপ্তাহে বৈচিত্র্যের উদযাপন', 'Cultural'],
+            ['Library Expands Digital Collection', 'গ্রন্থাগারের ডিজিটাল সংগ্রহ সম্প্রসারিত', 'Campus'],
+            ['Alumni Return for Career Day', 'ক্যারিয়ার দিবসে প্রাক্তন শিক্ষার্থীদের শুভাগমন', 'General'],
+            ['New Academic Session Begins', 'নতুন শিক্ষাবর্ষের সূচনা', 'Academic'],
+            ['Green Initiative: 500 Trees Planted', 'সবুজ উদ্যোগ: ৫০০ গাছ রোপণ', 'General'],
         ];
 
-        foreach ($newsDefinitions as $index => [$title, $category]) {
+        foreach ($newsDefinitions as $index => [$title, $titleBn, $category]) {
             News::updateOrCreate(['title' => $title], [
+                'title_bn' => $titleBn,
                 'category' => $category,
                 'description' => $this->faker->paragraph(5) . "\n\n" . $this->faker->paragraph(4),
+                'description_bn' => $titleBn . " — মাই স্কুলের শিক্ষার্থী ও শিক্ষকদের যৌথ প্রচেষ্টায় এই অর্জন সম্ভব হয়েছে। বিস্তারিত জানতে বিদ্যালয়ের সংবাদ বিভাগে যোগাযোগ করুন।",
                 'featured_image' => $this->sampleImage('news-' . $index, $title, ['#F59E0B', '#DC2626']),
                 'is_published' => true,
                 'published_at' => now()->subDays($index * 3),
@@ -424,26 +475,28 @@ class DatabaseSeeder extends Seeder
         }
 
         $albumDefinitions = [
-            ['Campus Life', 'Campus'],
-            ['Annual Sports Day 2025', 'Sports'],
-            ['Cultural Festival', 'Cultural'],
-            ['Science Fair Highlights', 'Academic'],
-            ['Classroom Moments', 'Campus'],
+            ['Campus Life', 'ক্যাম্পাস জীবন', 'Campus'],
+            ['Annual Sports Day 2025', 'বার্ষিক ক্রীড়া প্রতিযোগিতা ২০২৫', 'Sports'],
+            ['Cultural Festival', 'সাংস্কৃতিক উৎসব', 'Cultural'],
+            ['Science Fair Highlights', 'বিজ্ঞান মেলার উল্লেখযোগ্য মুহূর্ত', 'Academic'],
+            ['Classroom Moments', 'শ্রেণিকক্ষের মুহূর্ত', 'Campus'],
         ];
 
-        foreach ($albumDefinitions as $aIndex => [$title, $category]) {
+        foreach ($albumDefinitions as $aIndex => [$title, $titleBn, $category]) {
             $album = GalleryAlbum::updateOrCreate(['title' => $title], [
+                'title_bn' => $titleBn,
                 'category' => $category,
                 'description' => 'A collection of photographs capturing ' . $title . ' at My School.',
+                'description_bn' => 'মাই স্কুলে ' . $titleBn . ' বিষয়ক মুহূর্তগুলো ধারণ করা আলোকচিত্রের সংগ্রহ।',
                 'cover_image' => $this->sampleImage('album-' . $aIndex . '-cover', $title, ['#2563EB', '#0EA5E9']),
             ]);
 
             for ($i = 1; $i <= 6; $i++) {
                 $album->images()->updateOrCreate(
                     ['image' => 'samples/album-' . $aIndex . '-' . $i . '.svg'],
-                    ['caption' => $title . ' — photo ' . $i]
+                    ['caption' => $titleBn . ' — ছবি ' . $i]
                 );
-                Storage::disk('public')->put('samples/album-' . $aIndex . '-' . $i . '.svg', $this->svg($title . ' #' . $i, ['#3B82F6', '#1E40AF']));
+                Storage::disk('public')->put('samples/album-' . $aIndex . '-' . $i . '.svg', $this->svg($titleBn . ' #' . $i, ['#3B82F6', '#1E40AF']));
             }
         }
     }
