@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\ConvertDigits;
 use App\Http\Middleware\RedirectIfAuthenticated;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Foundation\Application;
@@ -20,8 +21,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'guest' => RedirectIfAuthenticated::class,
         ]);
 
-        // Apply the visitor's chosen language on every web request.
-        $middleware->web(append: [SetLocale::class]);
+        // Apply the visitor's chosen language on every web request, then render
+        // numbers in Bengali digits when the site is in Bengali.
+        $middleware->web(append: [SetLocale::class, ConvertDigits::class]);
 
         // Send unauthenticated visitors to the correct login screen.
         $middleware->redirectGuestsTo(function (Request $request) {

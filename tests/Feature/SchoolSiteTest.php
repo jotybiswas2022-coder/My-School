@@ -604,6 +604,7 @@ class SchoolSiteTest extends TestCase
 
     public function test_homepage_admission_cta_matches_the_light_sections_around_it(): void
     {
+        $this->get(route('language.switch', 'en'))->assertRedirect();
         $html = $this->get('/')->assertOk()->getContent();
 
         $start = strpos($html, '<div class="cta reveal">');
@@ -702,6 +703,7 @@ class SchoolSiteTest extends TestCase
 
     public function test_homepage_gallery_titles_are_visible_without_hovering(): void
     {
+        $this->get(route('language.switch', 'en'))->assertRedirect();
         $html = $this->get('/')->assertOk()->getContent();
 
         $this->assertStringContainsString('<div class="gal">', $html);
@@ -786,6 +788,7 @@ class SchoolSiteTest extends TestCase
 
     public function test_homepage_events_are_a_schedule_rail_with_logistics_chips(): void
     {
+        $this->get(route('language.switch', 'en'))->assertRedirect();
         $html = $this->get('/')->assertOk()->getContent();
 
         $this->assertStringContainsString('<ol class="elist">', $html);
@@ -825,6 +828,7 @@ class SchoolSiteTest extends TestCase
 
     public function test_homepage_notices_are_a_dated_list_not_cards_with_buttons(): void
     {
+        $this->get(route('language.switch', 'en'))->assertRedirect();
         $html = $this->get('/')->assertOk()->getContent();
 
         $this->assertStringContainsString('class="sechead reveal"', $html);
@@ -1218,6 +1222,32 @@ class SchoolSiteTest extends TestCase
 
         $this->get(route('language.switch', 'bn'))->assertRedirect();
         $this->get('/')->assertOk()->assertSee('<html lang="bn">', false);
+    }
+
+    public function test_bengali_site_renders_bengali_numerals_everywhere_but_keeps_links_and_attributes(): void
+    {
+        $bnYear = strtr((string) now()->year, ['0' => '০', '1' => '১', '2' => '২', '3' => '৩', '4' => '৪', '5' => '৫', '6' => '৬', '7' => '৭', '8' => '৮', '9' => '৯']);
+        $html = $this->get('/')->assertOk()->getContent();
+
+        // Visible text: footer year and phone become Bengali numerals.
+        $this->assertStringContainsString('© ' . $bnYear, $html);
+        $this->assertStringContainsString('+১ (৫৫৫) ১২৩-৪৫৬৭', $html);
+        $this->assertStringNotContainsString('© ' . now()->year . ' মাই স্কুল', $html);
+
+        // URLs and attributes stay roman so navigation and ids keep working.
+        $this->assertMatchesRegularExpression('/href="http:\/\/localhost\/teachers\/2"/', $html);
+        $this->assertMatchesRegularExpression('/datetime="\d{4}-\d{2}-\d{2}"/', $html);
+    }
+
+    public function test_english_site_keeps_roman_numerals(): void
+    {
+        $this->get(route('language.switch', 'en'))->assertRedirect();
+
+        $html = $this->get('/')->assertOk()->getContent();
+
+        $this->assertStringContainsString('© ' . now()->year, $html);
+        $this->assertStringContainsString('+1 (555) 123-4567', $html);
+        $this->assertStringNotContainsString('+১ (৫৫৫)', $html);
     }
 
     public function test_admin_panel_defaults_to_english(): void

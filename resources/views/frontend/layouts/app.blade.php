@@ -1535,6 +1535,13 @@
             const counters = document.querySelectorAll('[data-count]');
             if (!counters.length) return;
 
+            const bn = document.documentElement.lang === 'bn';
+            const fmt = (n) => {
+                let s = Math.floor(n).toLocaleString('en-IN');
+                if (bn) s = s.replace(/[0-9]/g, (d) => '০১২৩৪৫৬৭৮৯'['0123456789'.indexOf(d)]);
+                return s;
+            };
+
             const run = (el) => {
                 const target = parseFloat(el.dataset.count);
                 const duration = 1600;
@@ -1544,9 +1551,9 @@
                 const tick = (now) => {
                     const progress = Math.min((now - start) / duration, 1);
                     const eased = 1 - Math.pow(1 - progress, 3);
-                    el.textContent = Math.floor(eased * target).toLocaleString() + suffix;
+                    el.textContent = fmt(eased * target) + suffix;
                     if (progress < 1) requestAnimationFrame(tick);
-                    else el.textContent = target.toLocaleString() + suffix;
+                    else el.textContent = fmt(target) + suffix;
                 };
                 requestAnimationFrame(tick);
             };
