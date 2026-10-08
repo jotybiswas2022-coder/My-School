@@ -217,7 +217,7 @@
                                     </button>
                                 </figure>
                             @empty
-                                <p class="form-hint" style="grid-column:1/-1;margin:0;">No images yet — the homepage hero falls back to gallery photos.</p>
+                                <p class="form-hint" style="grid-column:1/-1;margin:0;">No images yet — only images added here appear in the homepage hero slider.</p>
                             @endforelse
                         </div>
                         <div class="form-row" style="margin-top:14px;">
@@ -225,7 +225,7 @@
                             @error('hero_images')<div class="form-error">{{ $message }}</div>@enderror
                             @error('hero_images.*')<div class="form-error">{{ $message }}</div>@enderror
                         </div>
-                        <div class="form-hint">Select several landscape 16:9 images at once — they rotate as the homepage hero background, followed by gallery photos. Max 4MB each.</div>
+                        <div class="form-hint">Select several landscape 16:9 images at once — only these rotate as the homepage hero background. Max 4MB each.</div>
                     </div>
                 </div>
 

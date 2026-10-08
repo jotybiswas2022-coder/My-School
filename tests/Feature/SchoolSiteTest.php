@@ -246,12 +246,15 @@ class SchoolSiteTest extends TestCase
         $this->assertCount(2, $slides);
 
         $response = $this->get('/');
-        $response->assertOk()->assertSee('hero-slider', escape: false);
+        $response->assertOk();
 
         foreach ($slides as $path) {
             Storage::disk('public')->assertExists($path);
             $response->assertSee(asset('storage/' . $path));
         }
+
+        // exactly the two uploaded images: seeded gallery photos are not slider slides
+        $this->assertSame(2, preg_match_all('/<div class="hero-slide( active)?"/', $response->getContent()));
     }
 
     public function test_admin_can_remove_a_single_hero_slider_image(): void
@@ -308,9 +311,11 @@ class SchoolSiteTest extends TestCase
 
         $html = $this->get('/')->assertOk()->getContent();
 
-        // the old card/box markup is gone; the hero image now lives in the background slider
+        // the old card/box markup is gone, and with no uploads there is no slider at all —
+        // seeded gallery photos must not appear as hero slides either
         $this->assertStringNotContainsString('hero-card-image', $html);
         $this->assertStringNotContainsString('bi-mortarboard-fill', $html);
+        $this->assertStringNotContainsString('<div class="hero-slider"', $html);
         $this->assertStringContainsString('class="hero"', $html);
     }
 

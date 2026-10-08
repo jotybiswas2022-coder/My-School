@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\AcademicSession;
 use App\Models\Event;
 use App\Models\GalleryAlbum;
-use App\Models\GalleryImage;
 use App\Models\News;
 use App\Models\Notice;
 use App\Models\SchoolClass;
@@ -28,14 +27,12 @@ class HomeController extends Controller
             'years' => max(1, now()->year - $established),
         ];
 
+        // Only images uploaded under "Hero Slider Images" become slides.
         $heroSlides = [];
         if ($heroImage = Setting::getRaw('hero_image')) {
             $heroSlides[] = asset('storage/' . $heroImage);
         }
         foreach ((array) json_decode(Setting::getRaw('hero_images') ?? '[]', true) as $image) {
-            $heroSlides[] = asset('storage/' . $image);
-        }
-        foreach (GalleryImage::latest()->take(8)->pluck('image') as $image) {
             $heroSlides[] = asset('storage/' . $image);
         }
         $heroSlides = array_values(array_unique(array_filter($heroSlides)));
