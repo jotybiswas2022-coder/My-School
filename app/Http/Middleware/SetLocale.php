@@ -23,7 +23,9 @@ class SetLocale
         $locale = $request->session()->get('locale');
 
         if (! is_string($locale) || ! array_key_exists($locale, self::SUPPORTED)) {
-            $locale = config('app.locale');
+            // Bengali-first public site; the admin panel reads better in English
+            // because its interface text is English-only.
+            $locale = ($request->is('admin') || $request->is('admin/*')) ? 'en' : 'bn';
         }
 
         app()->setLocale($locale);

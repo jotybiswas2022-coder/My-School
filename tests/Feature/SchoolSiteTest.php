@@ -512,6 +512,7 @@ class SchoolSiteTest extends TestCase
 
     public function test_homepage_principal_message_is_a_properly_labelled_quote_panel(): void
     {
+        $this->get(route('language.switch', 'en'))->assertRedirect();
         $html = $this->get('/')->assertOk()->getContent();
 
         // The quote used to be the section heading, which left the section with no heading at all.
@@ -1032,6 +1033,7 @@ class SchoolSiteTest extends TestCase
 
     public function test_principal_page_is_a_profile_column_beside_the_letter(): void
     {
+        $this->get(route('language.switch', 'en'))->assertRedirect();
         $html = $this->get('/principal')->assertOk()->getContent();
 
         // The old centred profile card stacked a full-width gradient banner over the letter,
@@ -1062,6 +1064,7 @@ class SchoolSiteTest extends TestCase
 
     public function test_classes_page_uses_a_disclosure_list_with_the_first_class_open(): void
     {
+        $this->get(route('language.switch', 'en'))->assertRedirect();
         $html = $this->get('/classes')->assertOk()->getContent();
 
         // Ten seeded classes, each a native <details> so the page needs no JS.
@@ -1145,6 +1148,7 @@ class SchoolSiteTest extends TestCase
 
     public function test_facilities_page_groups_the_facilities_into_two_sections(): void
     {
+        $this->get(route('language.switch', 'en'))->assertRedirect();
         $html = $this->get('/facilities')->assertOk()->getContent();
 
         $this->assertStringContainsString('Learning Spaces', $html);
@@ -1202,5 +1206,21 @@ class SchoolSiteTest extends TestCase
     public function test_404_page_renders(): void
     {
         $this->get('/this-page-does-not-exist')->assertNotFound();
+    }
+
+    public function test_public_site_defaults_to_bengali_but_can_switch_to_english(): void
+    {
+        $this->get('/')->assertOk()->assertSee('<html lang="bn">', false);
+
+        $this->get(route('language.switch', 'en'))->assertRedirect();
+        $this->get('/')->assertOk()->assertSee('<html lang="en">', false);
+
+        $this->get(route('language.switch', 'bn'))->assertRedirect();
+        $this->get('/')->assertOk()->assertSee('<html lang="bn">', false);
+    }
+
+    public function test_admin_panel_defaults_to_english(): void
+    {
+        $this->get(route('admin.login'))->assertOk()->assertSee('<html lang="en">', false);
     }
 }
