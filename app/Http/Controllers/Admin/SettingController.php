@@ -66,6 +66,8 @@ class SettingController extends Controller
 
     public function edit()
     {
+        $this->foldLegacyHeroImage();
+
         return view('backend.settings.edit', [
             'values' => collect(array_merge(self::TEXT_KEYS, self::BENGALI_KEYS))
                 ->mapWithKeys(fn ($key) => [$key => Setting::getRaw($key)])
@@ -74,7 +76,7 @@ class SettingController extends Controller
             'logo' => Setting::get('logo'),
             'favicon' => Setting::get('favicon'),
             'principalPhoto' => Setting::get('principal_photo'),
-            'heroImage' => Setting::get('hero_image'),
+            'heroSlides' => $this->heroSlidePaths(),
         ]);
     }
 
@@ -104,6 +106,8 @@ class SettingController extends Controller
             'favicon' => $this->imageRules(),
             'principal_photo' => $this->imageRules(),
             'hero_image' => $this->imageRules(),
+            'hero_images' => ['nullable', 'array', 'max:12'],
+            'hero_images.*' => $this->imageRules(),
             'school_name_bn' => ['nullable', 'string', 'max:120'],
             'tagline_bn' => ['nullable', 'string', 'max:180'],
             'address_bn' => ['nullable', 'string', 'max:255'],
@@ -130,6 +134,21 @@ class SettingController extends Controller
             }
         }
 
+        // The single hero_image key predates the slider: fold it into hero_images
+        // so every slider slide lives in one list, then append the new uploads.
+        $this->foldLegacyHeroImage();
+
+        $added = [];
+        foreach ($request->file('hero_images', []) as $file) {
+            if ($path = $this->uploadImage($file, 'settings')) {
+                $added[] = $path;
+            }
+        }
+
+        if ($added) {
+            Setting::put('hero_images', json_encode(array_merge($this->heroSlidePaths(), $added)));
+        }
+
         return back()->with('success', 'Settings updated successfully.');
     }
 
@@ -141,5 +160,52 @@ class SettingController extends Controller
         Setting::put($key, null);
 
         return back()->with('success', ucfirst(str_replace('_', ' ', $key)) . ' removed successfully.');
+    }
+
+    public function destroyHeroSlide(string $index)
+    {
+        abort_unless(ctype_digit($index), 404);
+
+        $slides = $this->heroSlidePaths();
+        abort_unless(isset($slides[(int) $index]), 404);
+
+        $this->deleteImage($slides[(int) $index]);
+        unset($slides[(int) $index]);
+
+        Setting::put('hero_images', json_encode(array_values($slides)));
+
+        return back()->with('success', 'Hero image removed successfully.');
+    }
+
+    /**
+     * Storage paths of the hero slider images, in slide order.
+     *
+     * @return array<int, string>
+     */
+    private function heroSlidePaths(): array
+    {
+        $stored = json_decode(Setting::getRaw('hero_images') ?? '[]', true);
+
+        return array_values(array_filter(is_array($stored) ? $stored : []));
+    }
+
+    /**
+     * The single-image hero_image key was the first slide before the slider
+     * existed; move it into hero_images so the settings page shows one list.
+     */
+    private function foldLegacyHeroImage(): void
+    {
+        $legacy = Setting::getRaw('hero_image');
+        if (! $legacy) {
+            return;
+        }
+
+        $slides = $this->heroSlidePaths();
+        if (! in_array($legacy, $slides, true)) {
+            array_unshift($slides, $legacy);
+        }
+
+        Setting::put('hero_images', json_encode($slides));
+        Setting::put('hero_image', null);
     }
 }

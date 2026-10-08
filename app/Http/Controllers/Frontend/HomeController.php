@@ -29,8 +29,11 @@ class HomeController extends Controller
         ];
 
         $heroSlides = [];
-        if ($heroImage = Setting::get('hero_image')) {
+        if ($heroImage = Setting::getRaw('hero_image')) {
             $heroSlides[] = asset('storage/' . $heroImage);
+        }
+        foreach ((array) json_decode(Setting::getRaw('hero_images') ?? '[]', true) as $image) {
+            $heroSlides[] = asset('storage/' . $image);
         }
         foreach (GalleryImage::latest()->take(8)->pluck('image') as $image) {
             $heroSlides[] = asset('storage/' . $image);

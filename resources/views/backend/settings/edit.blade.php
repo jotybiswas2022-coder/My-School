@@ -204,28 +204,28 @@
                 </div>
 
                 <div class="b-card">
-                    <div class="b-card-head"><h3>Hero Image</h3></div>
+                    <div class="b-card-head"><h3>Hero Slider Images</h3></div>
                     <div class="b-card-body">
-                        <div class="img-field" data-preview>
-                            <div class="img-preview{{ $heroImage ? '' : ' is-empty' }}" data-preview-box>
-                                @if ($heroImage)
-                                    <img src="{{ asset('storage/' . $heroImage) }}" alt="Hero Image" data-preview-img>
-                                @else
-                                    <i class="bi bi-card-image" data-preview-icon></i>
-                                @endif
-                            </div>
-                            <div class="img-actions">
-                                <input type="file" name="hero_image" class="form-control" accept="image/*" data-preview-input>
-                                @error('hero_image')<div class="form-error">{{ $message }}</div>@enderror
-                                @if ($heroImage)
-                                    <button type="button" class="b-btn b-btn-danger b-btn-sm b-btn-block"
-                                            data-form="deleteHeroImageForm" data-confirm="Delete the hero image?">
-                                        <i class="bi bi-trash"></i> Delete Image
+                        <div class="hero-slides">
+                            @forelse ($heroSlides as $index => $slide)
+                                <figure class="hero-slide-thumb">
+                                    <img src="{{ asset('storage/' . $slide) }}" alt="Hero slide {{ $index + 1 }}">
+                                    <button type="button" class="hero-slide-del" title="Remove from slider"
+                                            data-form="deleteHeroSlide{{ $index }}"
+                                            data-confirm="Remove this image from the hero slider?">
+                                        <i class="bi bi-trash"></i>
                                     </button>
-                                @endif
-                            </div>
+                                </figure>
+                            @empty
+                                <p class="form-hint" style="grid-column:1/-1;margin:0;">No images yet — the homepage hero falls back to gallery photos.</p>
+                            @endforelse
                         </div>
-                        <div class="form-hint">Shown as the first slide of the homepage hero background slider, followed by gallery photos. A landscape 16:9 image fits best. Max 4MB.</div>
+                        <div class="form-row" style="margin-top:14px;">
+                            <input type="file" name="hero_images[]" class="form-control" accept="image/*" multiple>
+                            @error('hero_images')<div class="form-error">{{ $message }}</div>@enderror
+                            @error('hero_images.*')<div class="form-error">{{ $message }}</div>@enderror
+                        </div>
+                        <div class="form-hint">Select several landscape 16:9 images at once — they rotate as the homepage hero background, followed by gallery photos. Max 4MB each.</div>
                     </div>
                 </div>
 
@@ -257,13 +257,26 @@
             @csrf @method('DELETE')
         </form>
     @endif
-    @if ($heroImage)
-        <form id="deleteHeroImageForm" method="POST" action="{{ route('admin.settings.images.destroy', 'hero_image') }}" hidden>
+    @foreach ($heroSlides as $index => $slide)
+        <form id="deleteHeroSlide{{ $index }}" method="POST" action="{{ route('admin.settings.hero-images.destroy', $index) }}" hidden>
             @csrf @method('DELETE')
         </form>
-    @endif
+    @endforeach
 
     <style>
         @media (max-width: 900px) { .b-grid[style*="340px"] { grid-template-columns: 1fr !important; } }
+
+        .hero-slides { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
+        .hero-slide-thumb {
+            position: relative; margin: 0; aspect-ratio: 16/9;
+            border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: #F8FAFC;
+        }
+        .hero-slide-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .hero-slide-del {
+            position: absolute; top: 6px; right: 6px; width: 27px; height: 27px; padding: 0;
+            border: 0; border-radius: 8px; background: rgba(15,23,42,.72); color: #fff;
+            display: grid; place-items: center; font-size: .8rem; cursor: pointer; transition: background .15s ease;
+        }
+        .hero-slide-del:hover { background: var(--danger); }
     </style>
 @endsection

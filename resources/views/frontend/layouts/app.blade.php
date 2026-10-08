@@ -1570,7 +1570,9 @@
                 const trigger = e.target.closest('[data-confirm]');
                 if (trigger) {
                     e.preventDefault();
-                    pendingForm = trigger.closest('form') || document.getElementById(trigger.dataset.form);
+                    // a data-form reference wins over the surrounding form, if any
+                    pendingForm = (trigger.dataset.form && document.getElementById(trigger.dataset.form))
+                        || trigger.closest('form');
                     text.textContent = trigger.dataset.confirm || 'This action cannot be undone.';
                     modal.classList.add('open');
                     return;

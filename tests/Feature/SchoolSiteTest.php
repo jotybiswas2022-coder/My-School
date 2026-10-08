@@ -225,36 +225,86 @@ class SchoolSiteTest extends TestCase
             ->assertNotFound();
     }
 
-    public function test_admin_can_upload_the_hero_image_and_it_renders_on_the_homepage(): void
+    public function test_admin_can_upload_multiple_hero_slider_images_that_render_on_the_homepage(): void
     {
         Storage::fake('public');
 
         $admin = \App\Models\User::where('is_admin', true)->first();
+        $png = base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==');
 
         $this->actingAs($admin)
             ->put(route('admin.settings.update'), [
                 'school_name' => 'My School',
-                'hero_image' => UploadedFile::fake()->createWithContent(
-                    'hero.png',
-                    base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==')
-                ),
+                'hero_images' => [
+                    UploadedFile::fake()->createWithContent('hero-1.png', $png),
+                    UploadedFile::fake()->createWithContent('hero-2.png', $png),
+                ],
             ])
             ->assertRedirect();
 
-        $path = Setting::getRaw('hero_image');
-        $this->assertNotNull($path);
-        Storage::disk('public')->assertExists($path);
+        $slides = json_decode(Setting::getRaw('hero_images'), true);
+        $this->assertCount(2, $slides);
 
-        $this->get('/')
+        $response = $this->get('/');
+        $response->assertOk()->assertSee('hero-slider', escape: false);
+
+        foreach ($slides as $path) {
+            Storage::disk('public')->assertExists($path);
+            $response->assertSee(asset('storage/' . $path));
+        }
+    }
+
+    public function test_admin_can_remove_a_single_hero_slider_image(): void
+    {
+        Storage::fake('public');
+
+        $admin = \App\Models\User::where('is_admin', true)->first();
+        $png = base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==');
+
+        $this->actingAs($admin)
+            ->put(route('admin.settings.update'), [
+                'school_name' => 'My School',
+                'hero_images' => [
+                    UploadedFile::fake()->createWithContent('hero-1.png', $png),
+                    UploadedFile::fake()->createWithContent('hero-2.png', $png),
+                ],
+            ])
+            ->assertRedirect();
+
+        $slides = json_decode(Setting::getRaw('hero_images'), true);
+        $this->assertCount(2, $slides);
+
+        $this->actingAs($admin)
+            ->delete(route('admin.settings.hero-images.destroy', 0))
+            ->assertRedirect();
+
+        $this->assertSame([$slides[1]], json_decode(Setting::getRaw('hero_images'), true));
+        Storage::disk('public')->assertMissing($slides[0]);
+
+        $this->actingAs($admin)
+            ->delete(route('admin.settings.hero-images.destroy', 5))
+            ->assertNotFound();
+    }
+
+    public function test_legacy_hero_image_is_folded_into_the_slider_list(): void
+    {
+        Setting::put('hero_image', 'settings/legacy-hero.png');
+
+        $admin = \App\Models\User::where('is_admin', true)->first();
+
+        $this->actingAs($admin)
+            ->get(route('admin.settings.edit'))
             ->assertOk()
-            ->assertSee(asset('storage/' . $path))
-            ->assertSee('hero-slider', escape: false)
-            ->assertSee('hero-slide active', escape: false);
+            ->assertSee('storage/settings/legacy-hero.png', false);
+
+        $this->assertNull(Setting::getRaw('hero_image'));
+        $this->assertSame(['settings/legacy-hero.png'], json_decode(Setting::getRaw('hero_images'), true));
     }
 
     public function test_homepage_has_no_hero_image_box_when_no_hero_image_is_set(): void
     {
         $this->assertNull(Setting::getRaw('hero_image'));
+        $this->assertNull(Setting::getRaw('hero_images'));
 
         $html = $this->get('/')->assertOk()->getContent();
 

@@ -479,7 +479,10 @@
                 const trigger = e.target.closest('[data-confirm]');
                 if (trigger) {
                     e.preventDefault();
-                    form = trigger.closest('form') || document.getElementById(trigger.dataset.form);
+                    // a data-form reference wins: triggers inside a big form (e.g. settings)
+                    // must not submit that surrounding form instead of the intended one.
+                    form = (trigger.dataset.form && document.getElementById(trigger.dataset.form))
+                        || trigger.closest('form');
                     text.textContent = trigger.dataset.confirm || 'This action cannot be undone.';
                     modal.classList.add('open');
                     return;
