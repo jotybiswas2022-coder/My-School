@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AcademicSession;
 use App\Models\Event;
 use App\Models\GalleryAlbum;
+use App\Models\GalleryImage;
 use App\Models\News;
 use App\Models\Notice;
 use App\Models\SchoolClass;
@@ -27,6 +28,15 @@ class HomeController extends Controller
             'years' => max(1, now()->year - $established),
         ];
 
+        $heroSlides = [];
+        if ($heroImage = Setting::get('hero_image')) {
+            $heroSlides[] = asset('storage/' . $heroImage);
+        }
+        foreach (GalleryImage::latest()->take(8)->pluck('image') as $image) {
+            $heroSlides[] = asset('storage/' . $image);
+        }
+        $heroSlides = array_values(array_unique(array_filter($heroSlides)));
+
         return view('frontend.home', [
             'notices' => Notice::published()->take(4)->get(),
             'ticker' => Notice::published()->take(5)->get(),
@@ -36,6 +46,7 @@ class HomeController extends Controller
             'programs' => SchoolClass::ordered()->take(6)->withCount('students')->get(),
             'albums' => GalleryAlbum::with('images')->latest()->take(5)->get(),
             'stats' => $stats,
+            'heroSlides' => $heroSlides,
             'principal' => [
                 'name' => Setting::get('principal_name', 'Dr. Sarah Mitchell'),
                 'designation' => Setting::get('principal_designation', 'Principal'),

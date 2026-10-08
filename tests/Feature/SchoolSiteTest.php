@@ -248,14 +248,20 @@ class SchoolSiteTest extends TestCase
         $this->get('/')
             ->assertOk()
             ->assertSee(asset('storage/' . $path))
-            ->assertSee('hero-card-image', escape: false);
+            ->assertSee('hero-slider', escape: false)
+            ->assertSee('hero-slide active', escape: false);
     }
 
-    public function test_homepage_falls_back_to_the_icon_when_no_hero_image_is_set(): void
+    public function test_homepage_has_no_hero_image_box_when_no_hero_image_is_set(): void
     {
         $this->assertNull(Setting::getRaw('hero_image'));
 
-        $this->get('/')->assertOk()->assertSee('bi-mortarboard-fill', escape: false);
+        $html = $this->get('/')->assertOk()->getContent();
+
+        // the old card/box markup is gone; the hero image now lives in the background slider
+        $this->assertStringNotContainsString('hero-card-image', $html);
+        $this->assertStringNotContainsString('bi-mortarboard-fill', $html);
+        $this->assertStringContainsString('class="hero"', $html);
     }
 
     public function test_notice_ticker_track_is_wrapped_in_a_clipped_viewport(): void

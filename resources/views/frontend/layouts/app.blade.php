@@ -334,16 +334,30 @@
             position: relative; overflow: hidden; color: #fff;
             background: linear-gradient(135deg, #0F172A 0%, #1E3A8A 55%, #2563EB 100%);
         }
+        .hero > .container { position: relative; z-index: 1; }
+        .hero-slider { position: absolute; inset: 0; z-index: 0; }
+        .hero-slide {
+            position: absolute; inset: 0;
+            background-size: cover; background-position: center;
+            opacity: 0; transition: opacity 1.1s ease;
+        }
+        .hero-slide.active { opacity: 1; animation: heroZoom 7s ease-out forwards; }
+        /* slow push-in keeps the background alive while each slide is up */
+        @keyframes heroZoom { from { transform: scale(1); } to { transform: scale(1.06); } }
+        .hero-slider::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(15,23,42,.92) 0%, rgba(30,58,138,.82) 55%, rgba(37,99,235,.70) 100%);
+        }
         .hero::before, .hero::after {
             content: ''; position: absolute; border-radius: 50%; filter: blur(80px); opacity: .5;
         }
         .hero::before { width: 460px; height: 460px; background: #3B82F6; top: -160px; right: -80px; }
         .hero::after { width: 380px; height: 380px; background: #22D3EE; bottom: -180px; left: -120px; opacity: .28; }
         .hero-grid {
-            position: relative; z-index: 1;
-            display: grid; grid-template-columns: 1.1fr .9fr; gap: 60px; align-items: center;
+            display: grid; grid-template-columns: minmax(0, 1fr);
             padding: 92px 0 96px;
         }
+        .hero-grid > div { max-width: 860px; }
         .hero h1 { color: #fff; font-size: clamp(2.1rem, 5vw, 3.6rem); margin-bottom: 20px; }
         .hero h1 .accent {
             background: linear-gradient(120deg, #93C5FD, #67E8F9);
@@ -355,28 +369,15 @@
         .hero-badge strong { display: block; font-size: 1.75rem; color: #fff; }
         .hero-badge span { font-size: .8rem; color: rgba(255,255,255,.65); text-transform: uppercase; letter-spacing: .08em; }
 
-        .hero-visual { position: relative; }
-        .hero-card {
-            background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
-            backdrop-filter: blur(14px); border-radius: var(--radius-lg); padding: 26px; color: #fff;
-        }
-        .hero-card-image {
-            aspect-ratio: 4/3; border-radius: var(--radius); margin-bottom: 18px; overflow: hidden;
-            background:
-                radial-gradient(circle at 30% 25%, rgba(255,255,255,.28), transparent 55%),
-                linear-gradient(135deg, #2563EB, #0EA5E9 55%, #22D3EE);
-            display: grid; place-items: center; font-size: 3.4rem;
-        }
-        .hero-card-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .float-chip {
-            position: absolute; background: #fff; color: var(--secondary); border-radius: 14px; padding: 12px 16px;
+            position: absolute; z-index: 1; background: #fff; color: var(--secondary); border-radius: 14px; padding: 12px 16px;
             box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 10px; font-size: .82rem; font-weight: 700;
             animation: floaty 5s ease-in-out infinite;
         }
         .float-chip small { display: block; font-weight: 600; color: var(--muted); font-size: .7rem; }
         .float-chip .dot { width: 34px; height: 34px; border-radius: 10px; background: var(--gradient); display: grid; place-items: center; color: #fff; }
-        .chip-1 { top: 18px; left: -26px; }
-        .chip-2 { bottom: 26px; right: -22px; animation-delay: 1.4s; }
+        .chip-1 { top: 92px; right: 20px; }
+        .chip-2 { bottom: 92px; right: 20px; animation-delay: 1.4s; }
         @keyframes floaty { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
 
         /* ===================== TICKER ===================== */
@@ -1250,9 +1251,12 @@
         }
 
         /* ===================== RESPONSIVE ===================== */
+        /* the hero chips share the text column space, so they only appear on wide screens */
+        @media (max-width: 1199px) {
+            .float-chip { display: none; }
+        }
         @media (max-width: 1024px) {
-            .hero-grid { grid-template-columns: 1fr; gap: 46px; padding: 70px 0; }
-            .hero-visual { max-width: 520px; }
+            .hero-grid { padding: 70px 0; }
             .grid-4 { grid-template-columns: repeat(2, minmax(0,1fr)); }
             .grid-3 { grid-template-columns: repeat(2, minmax(0,1fr)); }
             .about-grid { grid-template-columns: 1fr; gap: 44px; }
@@ -1437,7 +1441,6 @@
             /* clamp the copy so one long description cannot stretch the card */
             .prog p { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
             .footer-grid { grid-template-columns: 1fr; gap: 30px; }
-            .float-chip { display: none; }
             .hero-badges { gap: 20px; }
             .footer-bottom { flex-direction: column; text-align: center; }
             .ticker-label { margin-left: 10px; }

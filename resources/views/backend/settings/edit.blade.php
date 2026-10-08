@@ -225,7 +225,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="form-hint">Shown inside the homepage hero box. A landscape ratio (4:3) fits best. Max 4MB.</div>
+                        <div class="form-hint">Shown as the first slide of the homepage hero background slider, followed by gallery photos. A landscape 16:9 image fits best. Max 4MB.</div>
                     </div>
                 </div>
 

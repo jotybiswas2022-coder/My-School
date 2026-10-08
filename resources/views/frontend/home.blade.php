@@ -6,6 +6,13 @@
 
 {{-- ===================== HERO ===================== --}}
 <section class="hero">
+    @if (! empty($heroSlides))
+        <div class="hero-slider" aria-hidden="true">
+            @foreach ($heroSlides as $index => $slide)
+                <div class="hero-slide{{ $index === 0 ? ' active' : '' }}" style="background-image: url('{{ $slide }}');"></div>
+            @endforeach
+        </div>
+    @endif
     <div class="container container-wide">
         <div class="hero-grid">
             <div>
@@ -40,29 +47,15 @@
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="hero-visual reveal">
-                <div class="hero-card">
-                    <div class="hero-card-image">
-                        @if (! empty($settings['hero_image']))
-                            <img src="{{ asset('storage/' . $settings['hero_image']) }}" alt="{{ __('ui.home.hero_image_alt') }}">
-                        @else
-                            <i class="bi bi-mortarboard-fill"></i>
-                        @endif
-                    </div>
-                    <h3 style="color:#fff;font-size:1.1rem;margin-bottom:6px;">{{ __('ui.home.campus_card_title') }}</h3>
-                    <p style="font-size:.88rem;color:rgba(255,255,255,.72);">{{ __('ui.home.campus_card_text') }}</p>
-                </div>
-
-                <div class="float-chip chip-1">
-                    <span class="dot"><i class="bi bi-star-fill"></i></span>
-                    <span>{{ __('ui.home.top_ranked') }}<small>{{ __('ui.home.top_ranked_sub') }}</small></span>
-                </div>
-                <div class="float-chip chip-2">
-                    <span class="dot"><i class="bi bi-check-lg"></i></span>
-                    <span>{{ ($settings['admission_open'] ?? '1') === '1' ? __('ui.home.admissions_open') : __('ui.home.admissions_closed') }}<small>{{ __('ui.home.apply_online_today') }}</small></span>
-                </div>
-            </div>
+        <div class="float-chip chip-1">
+            <span class="dot"><i class="bi bi-star-fill"></i></span>
+            <span>{{ __('ui.home.top_ranked') }}<small>{{ __('ui.home.top_ranked_sub') }}</small></span>
+        </div>
+        <div class="float-chip chip-2">
+            <span class="dot"><i class="bi bi-check-lg"></i></span>
+            <span>{{ ($settings['admission_open'] ?? '1') === '1' ? __('ui.home.admissions_open') : __('ui.home.admissions_closed') }}<small>{{ __('ui.home.apply_online_today') }}</small></span>
         </div>
     </div>
 </section>
@@ -647,5 +640,21 @@
         </div>
     </div>
 </section>
+
+@push('scripts')
+<script>
+    (function () {
+        const slides = document.querySelectorAll('.hero-slide');
+        if (slides.length < 2) return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        let current = 0;
+        setInterval(() => {
+            slides[current].classList.remove('active');
+            current = (current + 1) % slides.length;
+            slides[current].classList.add('active');
+        }, 6000);
+    })();
+</script>
+@endpush
 
 @endsection
