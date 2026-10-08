@@ -88,6 +88,9 @@ class StudentController extends Controller
         if ($photo = $this->uploadImage($request->file('photo'), 'students')) {
             $this->deleteImage($student->photo);
             $data['photo'] = $photo;
+        } elseif ($request->boolean('remove_photo') && $student->photo) {
+            $this->deleteImage($student->photo);
+            $data['photo'] = null;
         }
 
         if ($request->filled('password')) {

@@ -116,8 +116,14 @@
                             <img src="{{ asset('storage/' . $student->photo) }}" alt="Student photo" style="width:100%;border-radius:var(--radius-sm);margin-bottom:14px;">
                         @endif
                         <input type="file" name="photo" class="form-control" accept="image/*">
-                        <div class="form-hint">JPG, PNG, WEBP or SVG. Max 4MB.</div>
                         @error('photo')<div class="form-error">{{ $message }}</div>@enderror
+                        @if ($editing && $student->photo)
+                            <label class="checkbox-row" style="margin-top:12px;color:var(--danger);">
+                                <input type="checkbox" name="remove_photo" value="1">
+                                Remove current photo
+                            </label>
+                        @endif
+                        <div class="form-hint">JPG, PNG, WEBP or SVG. Max 4MB.</div>
                     </div>
                 </div>
 

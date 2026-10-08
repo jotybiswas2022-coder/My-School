@@ -191,6 +191,35 @@ class SchoolSiteTest extends TestCase
         $this->assertDatabaseHas('students', ['student_id' => 'STU-NEW-001']);
     }
 
+    public function test_admin_can_remove_a_student_photo_from_the_edit_form(): void
+    {
+        Storage::fake('public');
+
+        $admin = \App\Models\User::where('is_admin', true)->first();
+        $student = \App\Models\Student::firstOrFail();
+        $png = base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==');
+
+        $this->actingAs($admin)->put(route('admin.students.update', $student), [
+            'student_id' => $student->student_id,
+            'name' => $student->name,
+            'photo' => UploadedFile::fake()->createWithContent('student.png', $png),
+        ])->assertRedirect();
+
+        $student->refresh();
+        $this->assertNotNull($student->photo);
+        Storage::disk('public')->assertExists($student->photo);
+        $path = $student->photo;
+
+        $this->actingAs($admin)->put(route('admin.students.update', $student), [
+            'student_id' => $student->student_id,
+            'name' => $student->name,
+            'remove_photo' => '1',
+        ])->assertRedirect();
+
+        $this->assertNull($student->refresh()->photo);
+        Storage::disk('public')->assertMissing($path);
+    }
+
     public function test_admin_gallery_album_page_renders(): void
     {
         $admin = \App\Models\User::where('is_admin', true)->first();
