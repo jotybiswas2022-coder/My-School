@@ -44,8 +44,13 @@
                         </div>
                         <div class="form-row">
                             <label for="password">Password</label>
-                            <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror"
-                                   placeholder="{{ $editing ? 'Leave blank to keep current' : 'For student portal login' }}">
+                            <div class="input-pw">
+                                <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror"
+                                       placeholder="{{ $editing ? 'Leave blank to keep current' : 'For student portal login' }}">
+                                <button type="button" class="input-pw-toggle" tabindex="-1" aria-label="Show password" data-pw-toggle>
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
                             @error('password')<div class="form-error">{{ $message }}</div>@enderror
                         </div>
                         <div class="form-row">
@@ -147,8 +152,32 @@
     </form>
 
     <style>
+        .input-pw { position: relative; }
+        .input-pw .form-control { padding-right: 44px; }
+        .input-pw-toggle {
+            position: absolute; top: 50%; right: 6px; transform: translateY(-50%);
+            width: 34px; height: 34px; border: 0; border-radius: 8px;
+            background: transparent; color: var(--muted); cursor: pointer;
+            display: grid; place-items: center; font-size: 1rem; transition: all .15s ease;
+        }
+        .input-pw-toggle:hover { color: var(--primary); background: rgba(37,99,235,.08); }
+
         @media (max-width: 900px) {
             .b-grid[style*="320px"] { grid-template-columns: 1fr !important; }
         }
     </style>
+
+    @push('scripts')
+        <script>
+            document.querySelectorAll('[data-pw-toggle]').forEach((btn) => {
+                btn.addEventListener('click', () => {
+                    const input = btn.closest('.input-pw').querySelector('input');
+                    const show = input.type === 'password';
+                    input.type = show ? 'text' : 'password';
+                    btn.querySelector('i').className = show ? 'bi bi-eye-slash' : 'bi bi-eye';
+                    btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+                });
+            });
+        </script>
+    @endpush
 @endsection
