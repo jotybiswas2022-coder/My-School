@@ -1180,7 +1180,7 @@
             display: flex; flex-direction: column; gap: 3px;
             background: linear-gradient(to top, rgba(15,23,42,.9), rgba(15,23,42,.42) 58%, transparent);
         }
-        .gal-cap-title { font-size: .98rem; line-height: 1.35; }
+        .gal-cap-title { font-size: .98rem; line-height: 1.35; color: #fff; }
         .gal-cap-meta { display: flex; align-items: center; gap: 6px; font-size: .74rem; color: rgba(255,255,255,.78); }
         /* the photo count sits on the tile itself, so it is readable without hovering */
         .gal-count {
