@@ -1445,9 +1445,18 @@
             .prog { flex: 0 0 78%; scroll-snap-align: start; }
             /* clamp the copy so one long description cannot stretch the card */
             .prog p { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-            .footer-grid { grid-template-columns: 1fr; gap: 30px; }
+            /* keep the footer compact on phones: the brand and contact blocks span the
+               full width while the link columns pair up into two short columns. */
+            .site-footer { padding-top: 44px; }
+            .footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 20px; padding-bottom: 32px; }
+            .footer-grid > div:first-child,
+            .footer-grid > div:last-child { grid-column: 1 / -1; }
+            .footer-brand { margin-bottom: 12px; }
+            .site-footer h4 { margin-bottom: 12px; }
+            .footer-links li { margin-bottom: 8px; }
+            .footer-contact li { margin-bottom: 9px; }
             .hero-badges { gap: 20px; }
-            .footer-bottom { flex-direction: column; text-align: center; }
+            .footer-bottom { flex-direction: column; text-align: center; padding: 18px 0; }
             .ticker-label { margin-left: 10px; }
         }
     </style>
